@@ -2,7 +2,7 @@
 by Jason Cantarella and Henrik Schumacher
 
 
-A Mathematica interface for CycleSampler, which is a program for Monte-Carlo sampling of cylic polygons with prescribed edge lengths.
+A Mathematica interface for CycleSampler, a C++ library for Monte-Carlo sampling of cylic polygons with prescribed edge lengths.
 
 # Installation
 
