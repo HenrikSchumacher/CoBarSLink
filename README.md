@@ -18,4 +18,6 @@ From within Mathematica, just run
 
     Get[FileNameJoin[{<<path to cloned repo>>,"CycleSamplerLink.m"}];
     
+to load the package.
+    
 See also the notebook files *.nb in the "Examples" subdirection.
