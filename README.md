@@ -13,3 +13,9 @@ Please clone with
 to load also all submodules. If you forgot to do that, you can also run the following afterwards:
 
     git submodule update --init --recursive
+
+From within Mathematica, just run 
+
+    Get[FileNameJoin[{<<path to cloned repo>>,"CycleSamplerLink.m"}];
+    
+See also the notebook files *.nb in the "Examples" subdirection.
