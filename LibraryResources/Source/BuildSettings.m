@@ -90,7 +90,7 @@ Switch[
 		,"IncludeDirectories" -> {
 			FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"libomp"}]
-			,FileNameJoin[{DirectoryName[$InputFileName],"CyclicSampler"}]
+			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 		}
 		,"LibraryDirectories" -> {
 			FileNameJoin[{$InstallationDirectory,"SystemFiles","Libraries",$SystemID}]
@@ -108,7 +108,7 @@ Switch[
 		,"IncludeDirectories" -> {
 			FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"libomp"}]
-			,FileNameJoin[{DirectoryName[$InputFileName],"CyclicSampler"}]
+			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 		}
 		,"LibraryDirectories" -> {
 			FileNameJoin[{$InstallationDirectory,"SystemFiles","Libraries",$SystemID}]
