@@ -1,9 +1,9 @@
 (* ::Package:: *)
 
-Switch[
-	$OperatingSystem
+Switch[ $OperatingSystem
 	
-	,"MacOSX", (* Compilation settings for OS X. Assuming Apple Clang compiler is used. *)
+	,"MacOSX", 
+	(* Compilation settings for OS X. Assuming Apple Clang compiler is used and that libomp is installed homebrew. (MacPorts might also work) *)
 	{
 		"CompileOptions" -> {
 			" -Wall"
@@ -20,6 +20,7 @@ Switch[
 			,"-gcolumn-info"
 			,"-framework Accelerate"
 			,Switch[$SystemID
+			
 				,"MacOSX-ARM64"
 				,"-mcpu=apple-m1"
 		
@@ -41,34 +42,54 @@ Switch[
 			,_,
 			$Failed
 		]
+		(* We make sure that the user's ~/.zshrc is sourced before compilation. *)
+		(* This way the user can append statements like 
+		
+			export CPLUS_INCLUDE_PATH="<<path to omp.h>>:$CPLUS_INCLUDE_PATH"
+			              
+			export LIBRARY_PATH="<<path to correct OpenMP library>>:$LIBRARY_PATH"
+            export LD_LIBRARY_PATH="<<path to correct OpenMP library>>:$LD_LIBRARY_PATH"
+       
+		 *)
+		,"PreCompileCommands"->"source ~/.zshrc"
 		,"IncludeDirectories" -> Join[{
 			DirectoryName[$InputFileName]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 			},
 			Map[
 			  If[FileExistsQ[#],#,Nothing]&,
+			  (*The problem is to find a omp.h header that is compatible with the libomp.dylib/libiomp5.dylib shipped with Mathematica.*)
+			  (*Oddly enough, the header files are not provided.*)
+			  (*Using gcc's omp'h won't work! (Intel's and clang's versions seem to be compatible.)*)
 			  {
-			    "/opt/local/include"
-			    ,"/usr/local/include"
-			    ,"/opt/homebrew/include"
+			  "/usr/local/include"(* system libraries *)
+			    ,"/opt/local/include"(* used by macports and by homebrew (on x86 architectures only) *)
+			    ,"/opt/local/opt/libomp/include"(* maybe used by homebrew when libomp collides with gcc's libgomp (on x86 architectures only) *)
+			    ,"/opt/homebrew/include"(* used by homebrew on Apple Silicon *)
+			    ,"/opt/homebrew/opt/libomp/include"(* used by homebrew when libomp collides with gcc's libgomp (on Apple Silicon) *)
+			    ,"/opt/local/include/libomp"(* used by macports *)
 			 }]
-			 ]
+		]
 		,"LibraryDirectories" -> Join[{
-			FileNameJoin[{$InstallationDirectory,"SystemFiles","Libraries",$SystemID}]
+			(*FileNameJoin[{$InstallationDirectory,"SystemFiles","Libraries",$SystemID}]*)
 			},
 			Map[
 			  If[FileExistsQ[#],#,Nothing]&,
+			  (*CreateLibrary will always link Mathematica's version of OpenMP (libomp.dylib or libiomp5.dylib).*)
+			  (*Anyways, we provide search paths for sane installations of homebrew and macports.*)
 			  {
-				"/opt/local/lib"
-				,"/usr/local/lib"
-				,"/opt/homebrew/lib"
-				(*,"/opt/homebrew/opt/openblas/lib"*)
+			  "/usr/local/lib"(* system libraries *)
+			    ,"/opt/local/lib"(* used by macports and by homebrew (on x86 architectures only) *)
+			    ,"/opt/local/opt/libomp/lib"(* maybe used by homebrew when libomp collides with gcc's libgomp (on x86 architectures only) *)
+			    ,"/opt/homebrew/lib"(* used by homebrew on Apple Silicon *)
+			    ,"/opt/homebrew/opt/libomp/lib"(* used by homebrew when libomp collides with gcc's libgomp (on Apple Silicon) *)
+			    ,"/opt/local/include/lib"(* used by macports *)
 			 }]
 			 ]
-		(*,"ShellCommandFunction" -> Print*)
+		,"ShellCommandFunction" -> Print
 		,"ShellOutputFunction" -> Print
 	},
-	"Unix", (* Compilation settings for Linux. Untested so far. *)
+	"Unix", (* Compilation settings for Linux on x86 architecture. Untested so far. *)
 	{
 		"CompileOptions" -> {
 			" -Wall"
@@ -83,19 +104,16 @@ Switch[
 			,"-march=native"
 		}
 		,"LinkerOptions"->{
-			"-lm"
-			,"-ldl"
-			,"-liomp5"
+			"-lm","-ldl","-liomp5"
 		}
 		,"IncludeDirectories" -> {
 			FileNameJoin[{DirectoryName[$InputFileName]}]
-			,FileNameJoin[{DirectoryName[$InputFileName],"libomp"}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 		}
 		,"LibraryDirectories" -> {
 			FileNameJoin[{$InstallationDirectory,"SystemFiles","Libraries",$SystemID}]
 		}
-		(*,"ShellCommandFunction" -> Print*)
+		,"ShellCommandFunction" -> Print
 		,"ShellOutputFunction" -> Print
 	},
 	
