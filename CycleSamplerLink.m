@@ -32,6 +32,8 @@ If[!FileExists[$sourceDirectory],CreateDirectory[$sourceDirectory]];
 If[Not@MemberQ[$LibraryPath, $libraryDirectory],AppendTo[$LibraryPath, $libraryDirectory]];
 
 
+(* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time.*);
+
 ClearAll[cCycleSample];
 cCycleSample[d_Integer?Positive]:=Module[{lib,file,ds,class,name},
 
@@ -49,7 +51,7 @@ cCycleSample[d_Integer?Positive]:=Module[{lib,file,ds,class,name},
 
 		file=Export[FileNameJoin[{$sourceDirectory,name<>"_"<>ds<>"D.cpp"}],
 "
-
+// This is the actual C++ code.
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
 
@@ -79,6 +81,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			libData->MTensor_getDimensions(rho)[0]
 	);
 
+	// Creating a list with all the RandomVariables we want to sample. 
 	std::vector< std::unique_ptr<CycleSampler::RandomVariable<"<>ds<>",mreal,mint>> > F_list;
 
 	F_list.push_back( "<>class["ChordLength"]<>"( static_cast<mint>(0), static_cast<mint>(2) ) );
@@ -96,18 +99,21 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	const mint fun_count    = static_cast<mint>( F_list.size() );
 
+	// This creates an instance C of the Sampler class.
 	CycleSampler::Sampler<"<>ds<>",mreal,mint> C (
 		libData->MTensor_getRealData(r),
 		libData->MTensor_getRealData(rho),
 		edge_count
 	);
 
+	// The user has the choice to add-into the accumulation buffers or to whipe them.
 	if( clear_buffers != 0 )
 	{
 		std::fill( libData->MTensor_getRealData(bins), libData->MTensor_getRealData(bins) + 3*fun_count*bin_count, static_cast<mreal>(0));
 		std::fill( libData->MTensor_getRealData(moments), libData->MTensor_getRealData(moments) + 3*fun_count*moment_count, static_cast<mreal>(0));
 	}
 
+	// The user my supply their own ranges for binning -- or just use the default ones.
 	if( set_ranges != 0 )
 	{
 		mreal * restrict const ran = libData->MTensor_getRealData(ranges);
@@ -118,6 +124,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		}
 	}
 
+	// Start the sampling process.
 	C.Sample_Binned(
 		libData->MTensor_getRealData(bins),
 		bin_count,
@@ -129,6 +136,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		thread_count
 	);
 
+	// User may choose to normalize the output -- or simply return the accumulation buffers so that they can be merged with others.
 	if( normalize != 0 )
 	{
 		C.NormalizeBinnedSamples(
@@ -148,7 +156,8 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 }",
 "Text"
 		];
-
+		
+		(* Invoke CreateLibrary to compile the C++ code. *);
 		lib=CreateLibrary[
 			{file},
 			name<>"_"<>ds<>"D",
@@ -160,7 +169,8 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		Print["Compilation done."];
 		DeleteFile[file];
 	];
-
+	
+	(* Load the resulting dynamic libary into the Mathematica session; use memoization to quickly look up already loaded libraries.*);
 	cCycleSample[d] = LibraryFunctionLoad[
 		lib, 
 		name,
@@ -187,6 +197,8 @@ Options[CycleSample] = {
 	"Ranges" -> Automatic
 };
 
+(* This is the Mathematica wrapper for the compiled library It allocates the accumulation buffers, 
+sends them to the dynamic library, and postprocesses the outputs.*);
 CycleSample[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_, OptionsPattern[]]:=Module[{names, momentcount, bincount, funcount, bins, moments, ranges, setranges}, 
 	bincount = OptionValue["BinCount"]; 
 	momentcount = OptionValue["MomentCount"]; 
@@ -204,6 +216,8 @@ CycleSample[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_, OptionsPattern
 		"EdgeQuotientSpaceSamplingWeight",
 		"IterationCount"
 	}; 
+	
+	(* Allocation. *);
 	funcount  = Length[names]; 
 	bins      = ConstantArray[0., {3, funcount, bincount}]; 
 	moments   = ConstantArray[0., {3, funcount, momentcount}]; 
@@ -215,11 +229,13 @@ CycleSample[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_, OptionsPattern
 	];
 	
 	
+	(* Here the dynamic library is looked up and then called on the allocated buffers. *);
 	cCycleSample[d][
 		r, \[Rho], bins, moments, ranges, samplecount, OptionValue["ThreadCount"],
 		Boole[False], Boole[setranges], Boole[OptionValue["Normalize"]]
 	];
 	
+	(* Postprocessing, returning structured data in the form of nested Associations. *);
 	Association[
 		"Naive" -> Association[
 			Table[
