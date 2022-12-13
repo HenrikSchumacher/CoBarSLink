@@ -65,6 +65,6 @@ You may also consider to clone directly to the path where _Mathematica_ looks fo
     
 Then you can load the package just by executing
 
-    Needs["CycleSamplerLink.m"];
+    Needs["CycleSamplerLink`"];
     
 See also the notebook files *.nb in the "Examples" subdirection for usage examples.
