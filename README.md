@@ -58,5 +58,13 @@ From within Mathematica, just run
     Get[FileNameJoin[{<<path to cloned repo>>,"CycleSamplerLink.m"}];
     
 to load the package.
+
+You may also consider to clone directly to the path where _Mathematica_ looks for packages. You can find this path by executing the following the line in _Mathematica_:
+
+    FileNameJoin[{$BaseDirectory, "Applications"}]
+    
+Then you can load the package just by executing
+
+    Needs["CycleSamplerLink.m"];
     
 See also the notebook files *.nb in the "Examples" subdirection for usage examples.
