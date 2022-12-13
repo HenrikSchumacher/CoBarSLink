@@ -35,6 +35,7 @@ Method 1.: The build script always sources the _zsh_ configure file ~/zshrc. So 
 and then relaunch the _Mathematica_ kernel and run the package again.
 
 Method 2.: Execute the following _Mathematica_ statement before one of the package's routines is run before the first time:
+
     Compile`$CCompilerOptions = {
       "IncludeDirectories" -> <<directory that contains omp.h>>,
       "LibraryDirectories" -> <<directory that contains the correct OpenMP library>>
