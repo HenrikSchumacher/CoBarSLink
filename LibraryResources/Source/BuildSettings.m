@@ -1,5 +1,9 @@
 (* ::Package:: *)
 
+(* The result of executing this script will be handed over to CreateLibrary as options. *)
+(* No guarantees are given for correctness of the settings for Linux and Windows architecture. *)
+(* You may this file as needed to support your system. *)
+
 Switch[ $OperatingSystem
 	
 	,"MacOSX", 
@@ -58,6 +62,7 @@ Switch[ $OperatingSystem
 			    ,"/opt/homebrew/include"(* used by homebrew on Apple Silicon *)
 			    ,"/opt/homebrew/opt/libomp/include"(* used by homebrew when libomp collides with gcc's libgomp (on Apple Silicon) *)
 			    ,"/opt/local/include/libomp"(* used by macports *)
+			    ,{(*Put your own include directories here.*)}
 			 }]
 		}]
 		,"LibraryDirectories" -> Flatten[{
@@ -73,6 +78,7 @@ Switch[ $OperatingSystem
 			    ,"/opt/homebrew/lib"(* used by homebrew on Apple Silicon *)
 			    ,"/opt/homebrew/opt/libomp/lib"(* used by homebrew when libomp collides with gcc's libgomp (on Apple Silicon) *)
 			    ,"/opt/local/include/lib"(* used by macports *)
+			    ,{(*Put your own library directories here.*)}
 			 }]
 			 }]
 		(*,"ShellCommandFunction" -> Print*)
@@ -99,11 +105,11 @@ Switch[ $OperatingSystem
 			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
 			,FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
-			,{(*Add you own include directories here*)}
+			,{(*Put your own include directories here.*)}
 		}
 		,"LibraryDirectories" -> Flatten[{
 			("LibraryDirectories"/.Compiler`$CCompilerOptions)/."LibraryDirectories"->Nothing
-			,{(*Add you own library directories here*)}
+			,{(*Put your own library directories here.*)}
 		}]
 		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> Print
@@ -120,8 +126,8 @@ Switch[ $OperatingSystem
 			,{(*Add you own include directories here*)}
 		}]
 		,"LibraryDirectories" -> Flatten[{
-			"LibraryDirectories"/.Compiler`$CCompilerOptions
-			,{(*Add you own library directories here*)}
+			"LibraryDirectories"/.Compiler`$CCompilerOptions/."LibraryDirectories"->Nothing
+			,{(*Put your own library directories here.*)}
 		}]
 		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> Print
