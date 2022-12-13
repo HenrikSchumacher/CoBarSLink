@@ -10,17 +10,58 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     10307,        251]
-NotebookOptionsPosition[      9490,        232]
-NotebookOutlinePosition[      9882,        248]
-CellTagsIndexPosition[      9839,        245]
+NotebookDataLength[     97794,       2021]
+NotebookOptionsPosition[     90924,       1920]
+NotebookOutlinePosition[     91317,       1936]
+CellTagsIndexPosition[     91274,       1933]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+
+Cell[CellGroupData[{
+Cell["Conformal Barycenter Sampling Examples", "Title",
+ CellChangeTimes->{{3.8711040716895733`*^9, 
+  3.8711040871465397`*^9}},ExpressionUUID->"3a146095-5861-4a45-b28c-\
+af45c3a1b403"],
+
+Cell["\<\
+This notebook demonstrates the use of the conformal barycenter sampler by \
+computing some example histograms for functions where we know the expected \
+answers and comparing the results. \
+\>", "Text",
+ CellChangeTimes->{{3.871104090571639*^9, 3.871104105202362*^9}, {
+  3.87110420472656*^9, 
+  3.871104230694569*^9}},ExpressionUUID->"a59958e2-df4d-442a-b6a9-\
+14a573f8451c"],
+
+Cell[CellGroupData[{
+
 Cell[BoxData["Exit"], "Input",
- CellChangeTimes->{{3.873864239407578*^9, 3.8738642403220377`*^9}},
- CellLabel->"In[22]:=",ExpressionUUID->"e900fb1a-6400-48b5-9ddb-415fcad81665"],
+ CellLabel->"In[10]:=",ExpressionUUID->"f4a2300d-b07c-4d44-bd02-bdd16cb87718"],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellChangeTimes->{3.8713795217394857`*^9},
+ CellLabel->
+  "Out[117]=",ExpressionUUID->"ded0cf2d-8319-4595-af2a-d139abd91c17"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Loading the sampler", "Section",
+ CellChangeTimes->{{3.871104235959197*^9, 
+  3.8711042384415483`*^9}},ExpressionUUID->"b2a6aab9-7985-4628-ae85-\
+872f29fe46b3"],
+
+Cell["\<\
+The first step in using the barycenter sampling package is loading the \
+sampler. From this example file, it\[CloseCurlyQuote]s one directory up:\
+\>", "Text",
+ CellChangeTimes->{{3.879944745280239*^9, 
+  3.879944794235943*^9}},ExpressionUUID->"623ae2a1-c16a-4d52-ab94-\
+aa47a7fecadd"],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"Get", "[", "\[IndentingNewLine]", 
@@ -35,7 +76,1523 @@ Cell[BoxData[
  CellChangeTimes->{{3.873864232486377*^9, 3.873864248939806*^9}, 
    3.873864409189021*^9, {3.8738658815335197`*^9, 3.873865882905177*^9}, 
    3.878474353228426*^9},
- CellLabel->"In[1]:=",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
+ CellLabel->"In[47]:=",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
+
+Cell[BoxData["\<\"/Users/jasoncantarella/CycleSamplerLink/CycleSamplerLink.m\"\
+\>"], "Echo",
+ CellChangeTimes->{
+  3.879948231771069*^9},ExpressionUUID->"95da4662-bc93-4415-a867-\
+e4cac229f845"]
+}, Open  ]],
+
+Cell["\<\
+but you should alter the path accordingly if you\[CloseCurlyQuote]re working \
+elsewhere. \
+\>", "Text",
+ CellChangeTimes->{{3.879944806455584*^9, 
+  3.879944828451418*^9}},ExpressionUUID->"049ed49e-f68c-4ab3-9356-\
+0b16a4906846"],
+
+Cell["The first function in the library is CycleSample:", "Text",
+ CellChangeTimes->{{3.879948020483551*^9, 
+  3.879948033599403*^9}},ExpressionUUID->"23acb972-f7c6-4df9-a9ca-\
+1fa419d217fc"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "CycleSample"}]], "Input",
+ CellChangeTimes->{{3.879944866518929*^9, 3.8799448745075483`*^9}, {
+  3.879945810495215*^9, 3.879945816044141*^9}},
+ CellLabel->"In[48]:=",ExpressionUUID->"ca4ba7c0-48cc-428e-a07c-35c183f7b2eb"],
+
+Cell[BoxData[
+ InterpretationBox[
+  StyleBox[
+   FrameBox[
+    DynamicModuleBox[{System`InformationDump`open$$ = False, 
+     System`InformationDump`mouseOver$$ = False}, 
+     PaneSelectorBox[{True->
+      TagBox[GridBox[{
+         {
+          ItemBox[
+           PaneBox[
+            StyleBox["\<\" Symbol\"\>", "InformationTitleText",
+             StripOnInput->False,
+             BaseStyle -> None],
+            FrameMargins->{{4, 0}, {-1, 1}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           PaneBox[
+            
+            StyleBox["\<\"CycleSample[d_Integer, r_?VectorQ, \
+samplecount_Integer] draws samples of closed polygons in d-dimensional \
+Euclidean space. \\nThe vector r contains the length of each edge of the \
+polygon. Several options can be set:\\n\\n\\\"BinCount\\\" -> d. CycleSample \
+is designed for sample ensembles which are too large to be stored in memory. \
+For each variable, it returns the count of samples in equally spaced bins. \
+The default number of bins is 1000, but this may be changed with the BinCount \
+option.\\n\\n\\\"SphereRadii\\\" -> \[Rho]. If the edgelengths \
+\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[RowBox[{SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], \\\"1\\\"], \
+\\\",\\\", \\\"\[Ellipsis]\\\", \\\",\\\", SubscriptBox[StyleBox[\\\"r\\\", \
+\\\"TI\\\"], StyleBox[\\\"n\\\", \\\"TI\\\"]]}], TraditionalForm], \\\"errors\
+\\\" -> {}, \\\"input\\\" -> \\\"r_1, \\\\\\\\dotsc, r_n\\\", \\\"state\\\" \
+-> \\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\) \
+are different from one another, there are different plausible choices of \
+metric for the space of polygons. If \\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\
+\\\" -> FormBox[RowBox[{SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \
+RowBox[{StyleBox[\\\"d\\\", \\\"TI\\\"], \\\"-\\\", \\\"1\\\"}]], \\\"(\\\", \
+StyleBox[\\\"r\\\", \\\"TI\\\"], \\\")\\\"}], TraditionalForm], \
+\\\"errors\\\" -> {}, \\\"input\\\" -> \\\"S^{d-1}(r)\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\) is \
+the sphere of radius \\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[StyleBox[\\\"r\\\", \\\"TI\\\"], TraditionalForm], \\\"errors\\\" -> \
+{}, \\\"input\\\" -> \\\"r\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\), we \
+may define\\n\\n\\t\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[RowBox[{\\\"Pol\\\", RowBox[{\\\"(\\\", RowBox[{StyleBox[\\\"n\\\", \
+\\\"TI\\\"], \\\",\\\", StyleBox[\\\"r\\\", \\\"TI\\\"]}], \\\")\\\"}], \\\"\
+\[LongEqual]\\\", RowBox[{\\\"{\\\", RowBox[{StyleBox[\\\"x\\\", \\\"TI\\\"], \
+\\\"\[Element]\\\", SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \
+RowBox[{StyleBox[\\\"d\\\", \\\"TI\\\"], \\\"-\\\", \\\"1\\\"}]], \
+RowBox[{\\\"(\\\", \\\"1\\\", \\\")\\\"}], \\\"\[Cross]\\\", \\\"\
+\[CenterEllipsis]\\\", \\\"\[Cross]\\\", SuperscriptBox[StyleBox[\\\"S\\\", \
+\\\"TI\\\"], RowBox[{StyleBox[\\\"d\\\", \\\"TI\\\"], \\\"-\\\", \
+\\\"1\\\"}]], RowBox[{\\\"(\\\", \\\"1\\\", \\\")\\\"}], \\\"|\\\", \
+\\\"\[Sum]\\\", SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], \
+StyleBox[\\\"i\\\", \\\"TI\\\"]], SubscriptBox[StyleBox[\\\"x\\\", \
+\\\"TI\\\"], StyleBox[\\\"i\\\", \\\"TI\\\"]], \\\"\[LongEqual]\\\", \
+\\\"0\\\"}], \\\"}\\\"}]}], TraditionalForm], \\\"errors\\\" -> {}, \\\"input\
+\\\" -> \\\"\\\\\\\\text{Pol}(n,r) = \\\\\\\\{ x \\\\\\\\in S^{d-1}(1) \\\\\\\
+\\times \\\\\\\\cdots \\\\\\\\times S^{d-1}(1) \\\\\\\\mid \\\\\\\\sum r_i \
+x_i = 0 \\\\\\\\}\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\)\\n\\\
+nor we may define\\n\\n\\t\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[RowBox[{\\\"Pol\\\", RowBox[{\\\"(\\\", RowBox[{StyleBox[\\\"n\\\", \
+\\\"TI\\\"], \\\",\\\", StyleBox[\\\"r\\\", \\\"TI\\\"]}], \\\")\\\"}], \\\"\
+\[LongEqual]\\\", RowBox[{\\\"{\\\", RowBox[{StyleBox[\\\"x\\\", \\\"TI\\\"], \
+\\\"\[Element]\\\", SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \
+RowBox[{StyleBox[\\\"d\\\", \\\"TI\\\"], \\\"-\\\", \\\"1\\\"}]], \
+RowBox[{\\\"(\\\", SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], \\\"1\\\"], \
+\\\")\\\"}], \\\"\[Cross]\\\", \\\"\[CenterEllipsis]\\\", \\\"\[Cross]\\\", \
+SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], RowBox[{StyleBox[\\\"d\\\", \
+\\\"TI\\\"], \\\"-\\\", \\\"1\\\"}]], RowBox[{\\\"(\\\", \
+SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], StyleBox[\\\"n\\\", \
+\\\"TI\\\"]], \\\")\\\"}], \\\"|\\\", \\\"\[Sum]\\\", \
+SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], StyleBox[\\\"i\\\", \
+\\\"TI\\\"]], \\\"\[LongEqual]\\\", \\\"0\\\"}], \\\"}\\\"}]}], \
+TraditionalForm], \\\"errors\\\" -> {}, \\\"input\\\" -> \
+\\\"\\\\\\\\text{Pol}(n,r) = \\\\\\\\{ x \\\\\\\\in S^{d-1}(r_1) \
+\\\\\\\\times \\\\\\\\cdots \\\\\\\\times S^{d-1}(r_n) \\\\\\\\mid \
+\\\\\\\\sum x_i = 0 \\\\\\\\}\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\)\\n\\t\
+\\nIn the special case of Millson and Kapovich's symplectic structure on \
+polygons in \\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[SuperscriptBox[StyleBox[\\\"R\\\", FontSlant -> \\\"Bold\\\"], \
+\\\"3\\\"], TraditionalForm], \\\"errors\\\" -> {}, \\\"input\\\" -> \\\"\\\\\
+\\\\mathbf{R}^3\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\), they \
+define\\n\\n\\t\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[RowBox[{\\\"Pol\\\", RowBox[{\\\"(\\\", RowBox[{StyleBox[\\\"n\\\", \
+\\\"TI\\\"], \\\",\\\", StyleBox[\\\"r\\\", \\\"TI\\\"]}], \\\")\\\"}], \\\"\
+\[LongEqual]\\\", RowBox[{\\\"{\\\", RowBox[{StyleBox[\\\"x\\\", \\\"TI\\\"], \
+\\\"\[Element]\\\", SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \
+\\\"2\\\"], RowBox[{\\\"(\\\", SqrtBox[SubscriptBox[StyleBox[\\\"r\\\", \
+\\\"TI\\\"], \\\"1\\\"]], \\\")\\\"}], \\\"\[Cross]\\\", \
+\\\"\[CenterEllipsis]\\\", \\\"\[Cross]\\\", \
+SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \\\"2\\\"], \
+RowBox[{\\\"(\\\", SqrtBox[SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], \
+StyleBox[\\\"n\\\", \\\"TI\\\"]]], \\\")\\\"}], \\\"|\\\", \\\"\[Sum]\\\", \
+SqrtBox[SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], StyleBox[\\\"i\\\", \
+\\\"TI\\\"]]], SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], StyleBox[\\\"i\\\
+\", \\\"TI\\\"]], \\\"\[LongEqual]\\\", \\\"0\\\"}], \\\"}\\\"}]}], \
+TraditionalForm], \\\"errors\\\" -> {}, \\\"input\\\" -> \
+\\\"\\\\\\\\text{Pol}(n,r) = \\\\\\\\{ x \\\\\\\\in S^2(\\\\\\\\sqrt{r_1}) \\\
+\\\\\\times \\\\\\\\cdots \\\\\\\\times S^2(\\\\\\\\sqrt{r_n}) \\\\\\\\mid \\\
+\\\\\\sum \\\\\\\\sqrt{r_i} x_i = 0 \\\\\\\\}\\\", \\\"state\\\" -> \\\"Boxes\
+\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\)\\n\\t\\nThese \
+choices yield different metrics on the space of polygons and hence different \
+measures for sampling.\\nThe default choice is the second option (sphere \
+radii equal to edgelengths), but the user may set the \\nradii of the spheres \
+\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> FormBox[SubscriptBox[\\\"\
+\[Rho]\\\", StyleBox[\\\"i\\\", \\\"TI\\\"]], TraditionalForm], \
+\\\"errors\\\" -> {}, \\\"input\\\" -> \\\"\\\\\\\\rho_i\\\", \\\"state\\\" \
+-> \\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\) \
+separately.\\n\"\>", "InformationUsageText",
+             StripOnInput->False,
+             LineSpacing->{1.5, 1.5, 3.}],
+            FrameMargins->{{10, 10}, {8, 10}}],
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False]},
+         {
+          PaneBox[
+           TagBox[GridBox[{
+              {
+               StyleBox[
+                TagBox[
+                 TooltipBox[
+                  StyleBox["\<\" Definitions\"\>", "InformationRowLabel",
+                   StripOnInput->False],
+                  "\"Definitions\"",
+                  TooltipStyle->"TextStyling"],
+                 Annotation[#, "Definitions", "Tooltip"]& ], "DialogStyle",
+                StripOnInput->False]},
+              {
+               TemplateBox[{"\"\[ThinSpace]\"", 
+                 GridBox[{{
+                    RowBox[{
+                    RowBox[{"CycleSample", "[", 
+                    RowBox[{"CycleSamplerLink`Private`d_Integer", ",", 
+                    RowBox[{"CycleSamplerLink`Private`r_", "?", "VectorQ"}], 
+                    ",", 
+                    
+                    RowBox[{
+                    "CycleSamplerLink`Private`\[Rho]_", "?", "VectorQ"}], ",",
+                     "CycleSamplerLink`Private`samplecount_", ",", 
+                    RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", 
+                    RowBox[{"Module", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`names", ",", 
+                    "CycleSamplerLink`Private`momentcount", ",", 
+                    "CycleSamplerLink`Private`bincount", ",", 
+                    "CycleSamplerLink`Private`funcount", ",", 
+                    "CycleSamplerLink`Private`bins", ",", 
+                    "CycleSamplerLink`Private`moments", ",", 
+                    "CycleSamplerLink`Private`ranges", ",", 
+                    "CycleSamplerLink`Private`setranges"}], "}"}], ",", 
+                    RowBox[{
+                    RowBox[{"CycleSamplerLink`Private`bincount", "=", 
+                    RowBox[{"OptionValue", "[", "\"BinCount\"", "]"}]}], ";", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`momentcount", "=", 
+                    RowBox[{"OptionValue", "[", "\"MomentCount\"", "]"}]}], 
+                    ";", 
+                    RowBox[{"CycleSamplerLink`Private`names", "=", 
+                    RowBox[{"{", 
+                    
+                    RowBox[{"\"ChordLength(0,2)\"", ",", 
+                    "\"ChordLength(0,3)\"", ",", "\"ChordLength(0,4)\"", ",", 
+                    "\"DiagonalLength\"", ",", "\"Gyradius\"", ",", 
+                    "\"ShiftNorm\"", ",", "\"TotalCurvature\"", ",", 
+                    "\"BendingEnergy(2)\"", ",", "\"MaxAngle\"", ",", 
+                    "\"EdgeSpaceSamplingWeight\"", ",", 
+                    "\"EdgeQuotientSpaceSamplingWeight\"", ",", 
+                    "\"IterationCount\""}], "}"}]}], ";", "Null", ";", 
+                    RowBox[{"CycleSamplerLink`Private`funcount", "=", 
+                    
+                    RowBox[{"Length", "[", "CycleSamplerLink`Private`names", 
+                    "]"}]}], ";", 
+                    RowBox[{"CycleSamplerLink`Private`bins", "=", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"0.`", ",", 
+                    RowBox[{"{", 
+                    
+                    RowBox[{"3", ",", "CycleSamplerLink`Private`funcount", 
+                    ",", "CycleSamplerLink`Private`bincount"}], "}"}]}], 
+                    "]"}]}], ";", 
+                    RowBox[{"CycleSamplerLink`Private`moments", "=", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"0.`", ",", 
+                    RowBox[{"{", 
+                    
+                    RowBox[{"3", ",", "CycleSamplerLink`Private`funcount", 
+                    ",", "CycleSamplerLink`Private`momentcount"}], "}"}]}], 
+                    "]"}]}], ";", 
+                    RowBox[{"CycleSamplerLink`Private`ranges", "=", 
+                    RowBox[{"OptionValue", "[", "\"Ranges\"", "]"}]}], ";", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`setranges", "=", 
+                    "False"}], ";", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"!", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    
+                    RowBox[{"MatrixQ", "[", "CycleSamplerLink`Private`ranges",
+                     "]"}], "&&", 
+                    RowBox[{
+                    
+                    RowBox[{"Dimensions", "[", 
+                    "CycleSamplerLink`Private`ranges", "]"}], "\[Equal]", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`funcount", ",", "2"}], 
+                    "}"}]}]}], ")"}]}], ",", 
+                    RowBox[{
+                    RowBox[{"CycleSamplerLink`Private`ranges", "=", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"0.`", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`funcount", ",", "2"}], 
+                    "}"}]}], "]"}]}], ";", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`setranges", "=", 
+                    "True"}], ";"}]}], "]"}], ";", "Null", ";", 
+                    RowBox[{
+                    
+                    RowBox[{"CycleSamplerLink`Private`cCycleSample", "[", 
+                    "CycleSamplerLink`Private`d", "]"}], "[", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`r", ",", 
+                    "CycleSamplerLink`Private`\[Rho]", ",", 
+                    "CycleSamplerLink`Private`bins", ",", 
+                    "CycleSamplerLink`Private`moments", ",", 
+                    "CycleSamplerLink`Private`ranges", ",", 
+                    "CycleSamplerLink`Private`samplecount", ",", 
+                    RowBox[{"OptionValue", "[", "\"ThreadCount\"", "]"}], ",", 
+                    RowBox[{"Boole", "[", "False", "]"}], ",", 
+                    
+                    RowBox[{"Boole", "[", 
+                    "CycleSamplerLink`Private`setranges", "]"}], ",", 
+                    RowBox[{"Boole", "[", 
+                    RowBox[{"OptionValue", "[", "\"Normalize\"", "]"}], 
+                    "]"}]}], "]"}], ";", "Null", ";", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{
+                    RowBox[{"\"Naive\"", "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{
+                    
+                    RowBox[{"CycleSamplerLink`Private`names", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}], "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{
+                    RowBox[{"\"BinnedData\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`bins", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"Moments\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`moments", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"DataRange\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`ranges", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}]}]}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`i", ",", "1", ",", 
+                    
+                    RowBox[{"Length", "[", "CycleSamplerLink`Private`names", 
+                    "]"}]}], "}"}]}], "]"}], "]"}]}], ",", 
+                    RowBox[{"\"TotalSpace\"", "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{
+                    
+                    RowBox[{"CycleSamplerLink`Private`names", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}], "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{
+                    RowBox[{"\"BinnedData\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`bins", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"Moments\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`moments", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"DataRange\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`ranges", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}]}]}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`i", ",", "1", ",", 
+                    
+                    RowBox[{"Length", "[", "CycleSamplerLink`Private`names", 
+                    "]"}]}], "}"}]}], "]"}], "]"}]}], ",", 
+                    RowBox[{"\"QuotientSpace\"", "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{
+                    
+                    RowBox[{"CycleSamplerLink`Private`names", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}], "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{
+                    RowBox[{"\"BinnedData\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`bins", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"3", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"Moments\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`moments", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"3", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"DataRange\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`ranges", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}]}]}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`i", ",", "1", ",", 
+                    
+                    RowBox[{"Length", "[", "CycleSamplerLink`Private`names", 
+                    "]"}]}], "}"}]}], "]"}], "]"}]}]}], "]"}]}]}], "]"}]}]}, {
+                   " "}, {
+                    RowBox[{
+                    RowBox[{"CycleSample", "[", 
+                    RowBox[{"CycleSamplerLink`Private`d_Integer", ",", 
+                    RowBox[{"CycleSamplerLink`Private`r_", "?", "VectorQ"}], 
+                    ",", "CycleSamplerLink`Private`samplecount_Integer", ",", 
+                    
+                    RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", 
+                    RowBox[{"Module", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`names", ",", 
+                    "CycleSamplerLink`Private`momentcount", ",", 
+                    "CycleSamplerLink`Private`bincount", ",", 
+                    "CycleSamplerLink`Private`funcount", ",", 
+                    "CycleSamplerLink`Private`bins", ",", 
+                    "CycleSamplerLink`Private`moments", ",", 
+                    "CycleSamplerLink`Private`ranges", ",", 
+                    "CycleSamplerLink`Private`setranges", ",", 
+                    "CycleSamplerLink`Private`length"}], "}"}], ",", 
+                    RowBox[{
+                    RowBox[{"CycleSamplerLink`Private`bincount", "=", 
+                    RowBox[{"OptionValue", "[", "\"BinCount\"", "]"}]}], ";", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`momentcount", "=", 
+                    RowBox[{"OptionValue", "[", "\"MomentCount\"", "]"}]}], 
+                    ";", 
+                    RowBox[{"CycleSamplerLink`Private`names", "=", 
+                    RowBox[{"{", 
+                    
+                    RowBox[{"\"ChordLength(0,2)\"", ",", 
+                    "\"ChordLength(0,3)\"", ",", "\"ChordLength(0,4)\"", ",", 
+                    "\"DiagonalLength\"", ",", "\"Gyradius\"", ",", 
+                    "\"ShiftNorm\"", ",", "\"TotalCurvature\"", ",", 
+                    "\"BendingEnergy(2)\"", ",", "\"MaxAngle\"", ",", 
+                    "\"EdgeSpaceSamplingWeight\"", ",", 
+                    "\"EdgeQuotientSpaceSamplingWeight\"", ",", 
+                    "\"IterationCount\""}], "}"}]}], ";", 
+                    RowBox[{"CycleSamplerLink`Private`funcount", "=", 
+                    
+                    RowBox[{"Length", "[", "CycleSamplerLink`Private`names", 
+                    "]"}]}], ";", 
+                    RowBox[{"CycleSamplerLink`Private`bins", "=", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"0.`", ",", 
+                    RowBox[{"{", 
+                    
+                    RowBox[{"3", ",", "CycleSamplerLink`Private`funcount", 
+                    ",", "CycleSamplerLink`Private`bincount"}], "}"}]}], 
+                    "]"}]}], ";", 
+                    RowBox[{"CycleSamplerLink`Private`moments", "=", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"0.`", ",", 
+                    RowBox[{"{", 
+                    
+                    RowBox[{"3", ",", "CycleSamplerLink`Private`funcount", 
+                    ",", "CycleSamplerLink`Private`momentcount"}], "}"}]}], 
+                    "]"}]}], ";", 
+                    RowBox[{"CycleSamplerLink`Private`ranges", "=", 
+                    RowBox[{"OptionValue", "[", "\"Ranges\"", "]"}]}], ";", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`setranges", "=", 
+                    "False"}], ";", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"!", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    
+                    RowBox[{"MatrixQ", "[", "CycleSamplerLink`Private`ranges",
+                     "]"}], "&&", 
+                    RowBox[{
+                    
+                    RowBox[{"Dimensions", "[", 
+                    "CycleSamplerLink`Private`ranges", "]"}], "\[Equal]", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`funcount", ",", "2"}], 
+                    "}"}]}]}], ")"}]}], ",", 
+                    RowBox[{
+                    RowBox[{"CycleSamplerLink`Private`ranges", "=", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"0.`", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`funcount", ",", "2"}], 
+                    "}"}]}], "]"}]}], ";", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`setranges", "=", 
+                    "True"}], ";"}]}], "]"}], ";", 
+                    RowBox[{"CycleSamplerLink`Private`\[Rho]", "=", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"OptionValue", "[", "\"SphereRadii\"", "]"}], 
+                    "\[NotEqual]", "None"}], ",", 
+                    RowBox[{"CycleSamplerLink`Private`\[Rho]", "=", 
+                    RowBox[{"OptionValue", "[", "\"SphereRadii\"", "]"}]}], 
+                    ",", "CycleSamplerLink`Private`r"}], "]"}]}], ";", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"2", " ", 
+                    RowBox[{"Max", "[", "CycleSamplerLink`Private`r", "]"}]}],
+                     ">", 
+                    
+                    RowBox[{"Total", "[", "CycleSamplerLink`Private`r", 
+                    "]"}]}], ",", 
+                    RowBox[{
+                    RowBox[{"Message", "[", 
+                    StyleBox[
+                    RowBox[{"CycleSample", "::", "badedgelengths"}], 
+                    "MessageName"], "]"}], ";", 
+                    RowBox[{"Return", "[", "]"}]}]}], "]"}], ";", 
+                    RowBox[{
+                    
+                    RowBox[{"CycleSamplerLink`Private`cCycleSample", "[", 
+                    "CycleSamplerLink`Private`d", "]"}], "[", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`r", ",", 
+                    "CycleSamplerLink`Private`\[Rho]", ",", 
+                    "CycleSamplerLink`Private`bins", ",", 
+                    "CycleSamplerLink`Private`moments", ",", 
+                    "CycleSamplerLink`Private`ranges", ",", 
+                    "CycleSamplerLink`Private`samplecount", ",", 
+                    RowBox[{"OptionValue", "[", "\"ThreadCount\"", "]"}], ",", 
+                    RowBox[{"Boole", "[", "False", "]"}], ",", 
+                    
+                    RowBox[{"Boole", "[", 
+                    "CycleSamplerLink`Private`setranges", "]"}], ",", 
+                    RowBox[{"Boole", "[", 
+                    RowBox[{"OptionValue", "[", "\"Normalize\"", "]"}], 
+                    "]"}]}], "]"}], ";", "Null", ";", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{
+                    RowBox[{"\"Naive\"", "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{
+                    
+                    RowBox[{"CycleSamplerLink`Private`names", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}], "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{
+                    RowBox[{"\"BinnedData\"", "\[Rule]", 
+                    RowBox[{"CycleSamplerLink`Private`bins", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"Moments\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`moments", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"DataRange\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`ranges", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}]}]}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`i", ",", "1", ",", 
+                    
+                    RowBox[{"Length", "[", "CycleSamplerLink`Private`names", 
+                    "]"}]}], "}"}]}], "]"}], "]"}]}], ",", 
+                    RowBox[{"\"TotalSpace\"", "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{
+                    
+                    RowBox[{"CycleSamplerLink`Private`names", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}], "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{
+                    RowBox[{"\"BinnedData\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`bins", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"Moments\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`moments", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"DataRange\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`ranges", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}]}]}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`i", ",", "1", ",", 
+                    
+                    RowBox[{"Length", "[", "CycleSamplerLink`Private`names", 
+                    "]"}]}], "}"}]}], "]"}], "]"}]}], ",", 
+                    RowBox[{"\"QuotientSpace\"", "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{
+                    
+                    RowBox[{"CycleSamplerLink`Private`names", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}], "\[Rule]", 
+                    RowBox[{"Association", "[", 
+                    RowBox[{
+                    RowBox[{"\"BinnedData\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`bins", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"3", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"Moments\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`moments", 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"3", ",", "CycleSamplerLink`Private`i"}], 
+                    "\[RightDoubleBracket]"}]}], ",", 
+                    RowBox[{"\"DataRange\"", "\[Rule]", 
+                    
+                    RowBox[{"CycleSamplerLink`Private`ranges", 
+                    "\[LeftDoubleBracket]", "CycleSamplerLink`Private`i", 
+                    "\[RightDoubleBracket]"}]}]}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"CycleSamplerLink`Private`i", ",", "1", ",", 
+                    
+                    RowBox[{"Length", "[", "CycleSamplerLink`Private`names", 
+                    "]"}]}], "}"}]}], "]"}], "]"}]}]}], "]"}]}]}], "]"}]}]}, {
+                   " "}}, GridBoxAlignment -> {"Columns" -> {{Left}}}, 
+                  DefaultBaseStyle -> "Column", 
+                  GridBoxItemSize -> {
+                   "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]},
+                "RowDefault"]}
+             },
+             DefaultBaseStyle->"Column",
+             GridBoxAlignment->{"Columns" -> {{Left}}},
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+            "Column"],
+           FrameMargins->{{6, 0}, {3, 6}}], "\<\"\"\>"},
+         {
+          PaneBox[GridBox[{
+             {
+              
+              DynamicModuleBox[{System`InformationDump`open$$ = {
+               False, False, False, False, False, False}}, 
+               StyleBox[GridBox[{
+                  {
+                   PaneSelectorBox[{True->
+                    ButtonBox[
+                    PaneSelectorBox[{False->
+                    TemplateBox[{"\[ThickSpace]", "\"\[ThickSpace]\"", 
+                    StyleBox[
+                    "\"Options\"", "InformationRowLabel", StripOnInput -> 
+                    False], 
+                    DynamicBox[
+                    FEPrivate`FrontEndResource[
+                    "FEBitmaps", "DownPointerOpener"]]},
+                    "RowWithSeparators"], True->
+                    TemplateBox[{"\[ThickSpace]", "\"\[ThickSpace]\"", 
+                    StyleBox[
+                    "\"Options\"", "InformationRowLabel", StripOnInput -> 
+                    False], 
+                    DynamicBox[
+                    FEPrivate`FrontEndResource[
+                    "FEBitmaps", "DownPointerOpenerHot"]]},
+                    "RowWithSeparators"]}, Dynamic[
+                    CurrentValue["MouseOver"]],
+                    FrameMargins->0,
+                    ImageSize->Automatic],
+                    Appearance->None,
+                    BaseStyle->None,
+                    
+                    ButtonFunction:>(Part[System`InformationDump`open$$, 3] = 
+                    False),
+                    Evaluator->Automatic,
+                    FrameMargins->0,
+                    ImageMargins->0,
+                    Method->"Preemptive"], False->
+                    ButtonBox[
+                    PaneSelectorBox[{False->
+                    TemplateBox[{"\[ThickSpace]", "\"\[ThickSpace]\"", 
+                    StyleBox[
+                    "\"Options\"", "InformationRowLabel", StripOnInput -> 
+                    False], 
+                    DynamicBox[
+                    FEPrivate`FrontEndResource[
+                    "FEBitmaps", "RightPointerOpener"]]},
+                    "RowWithSeparators"], True->
+                    TemplateBox[{"\[ThickSpace]", "\"\[ThickSpace]\"", 
+                    StyleBox[
+                    "\"Options\"", "InformationRowLabel", StripOnInput -> 
+                    False], 
+                    DynamicBox[
+                    FEPrivate`FrontEndResource[
+                    "FEBitmaps", "RightPointerOpenerHot"]]},
+                    "RowWithSeparators"]}, Dynamic[
+                    CurrentValue["MouseOver"]],
+                    FrameMargins->0,
+                    ImageSize->Automatic],
+                    Appearance->None,
+                    BaseStyle->None,
+                    
+                    ButtonFunction:>(Part[System`InformationDump`open$$, 3] = 
+                    True),
+                    Evaluator->Automatic,
+                    FrameMargins->0,
+                    ImageMargins->0,
+                    Method->"Preemptive"]}, Dynamic[
+                    FEPrivate`Part[System`InformationDump`open$$, 3]]], 
+                   PaneSelectorBox[{True->GridBox[{
+                    {
+                    RowBox[{"\<\"SphereRadii\"\>", "\[Rule]", "None"}]},
+                    {
+                    RowBox[{"\<\"BinCount\"\>", "\[Rule]", "1000"}]},
+                    {
+                    RowBox[{"\<\"MomentCount\"\>", "\[Rule]", "3"}]},
+                    {
+                    RowBox[{"\<\"ThreadCount\"\>", "\[RuleDelayed]", 
+                    RowBox[{"(", 
+                    
+                    RowBox[{"\<\"ParallelThreadNumber\"\>", "/.", 
+                    "\[VeryThinSpace]", 
+                    RowBox[{"(", 
+                    
+                    RowBox[{"\<\"ParallelOptions\"\>", "/.", 
+                    "\[VeryThinSpace]", 
+                    RowBox[{
+                    "SystemOptions", "[", "\<\"ParallelOptions\"\>", "]"}]}], 
+                    ")"}]}], ")"}]}]},
+                    {
+                    RowBox[{"\<\"Normalize\"\>", "\[Rule]", "True"}]},
+                    {
+                    RowBox[{"\<\"Ranges\"\>", "\[Rule]", "Automatic"}]},
+                    {
+                    StyleBox[
+                    
+                    TemplateBox[{
+                    "\"(\"", "\"\[InvisibleSpace]\"", "6", "\" total)\""},
+                    "RowDefault"], "InformationRowOpener",
+                    StripOnInput->False]}
+                    },
+                    BaselinePosition->{Baseline, {1, 1}},
+                    DefaultBaseStyle->"Column",
+                    GridBoxAlignment->{"Columns" -> {{Left}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{1.}}}], False->
+                    RowBox[{
+                    RowBox[{"\<\"SphereRadii\"\>", "\[Rule]", "None"}], 
+                    "\[ThinSpace]", 
+                    StyleBox["\<\"\[Ellipsis]\"\>", "InformationRowOpener",
+                    StripOnInput->False], "\[ThinSpace]", 
+                    StyleBox[
+                    
+                    TemplateBox[{
+                    "\"(\"", "\"\[InvisibleSpace]\"", "6", "\" total)\""},
+                    "RowDefault"], "InformationRowOpener",
+                    StripOnInput->False]}]}, Dynamic[
+                    FEPrivate`Part[System`InformationDump`open$$, 3]],
+                    BaselinePosition->Baseline,
+                    ImageSize->Automatic]},
+                  {
+                   TagBox[
+                    TooltipBox[
+                    StyleBox["\<\" Full Name\"\>", "InformationRowLabel",
+                    StripOnInput->False],
+                    "\"FullName\"",
+                    TooltipStyle->"TextStyling"],
+                    
+                    Annotation[#, "FullName", 
+                    "Tooltip"]& ], "\<\"CycleSamplerLink`CycleSample\"\>"}
+                 },
+                 AutoDelete->False,
+                 GridBoxAlignment->{"Columns" -> {Right, Left}},
+                 GridBoxDividers->None,
+                 GridBoxItemSize->{"Columns" -> {Automatic, Automatic}},
+                 GridBoxSpacings->{"Columns" -> {
+                    Offset[0.27999999999999997`], {
+                    Offset[0.5599999999999999]}, 
+                    Offset[0.27999999999999997`]}, "Rows" -> {
+                    Offset[0.2], {
+                    Offset[0.8]}, 
+                    Offset[0.2]}}], "DialogStyle",
+                StripOnInput->False],
+               DynamicModuleValues:>{}]}
+            },
+            DefaultBaseStyle->"Column",
+            GridBoxAlignment->{"Columns" -> {{Left}}},
+            GridBoxDividers->{"Columns" -> {{False}}, "Rows" -> {{False}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {
+                Offset[0.27999999999999997`], {
+                 Offset[0.5599999999999999]}, 
+                Offset[0.27999999999999997`]}, "Rows" -> {
+                Offset[0.2], {
+                 Offset[3.6]}, 
+                Offset[0.2]}}],
+           FrameMargins->{{6, 6}, {6, 3}}], ""},
+         {
+          ItemBox[
+           TagBox[
+            ButtonBox[
+             PaneSelectorBox[{False->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "UpPointerOpener"]], True->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "UpPointerOpenerHot"]]}, Dynamic[
+              System`InformationDump`mouseOver$$]],
+             Alignment->Left,
+             Appearance->{"Default" -> None},
+             
+             ButtonFunction:>FEPrivate`Set[
+              System`InformationDump`open$$, False],
+             Evaluator->Automatic,
+             FrameMargins->{{9, 0}, {0, 0}},
+             ImageMargins->0,
+             ImageSize->Full,
+             Method->"Preemptive"],
+            
+            EventHandlerTag[{
+             "MouseEntered" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
+              "MouseExited" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, False], 
+              Method -> "Preemptive", PassEventsDown -> Automatic, 
+              PassEventsUp -> True}]],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], "\[SpanFromLeft]"}
+        },
+        AutoDelete->False,
+        FrameStyle->Directive[
+          GrayLevel[0.8], 
+          Thickness[Tiny]],
+        GridBoxAlignment->{"Columns" -> {Left, Right}, "Rows" -> {{Center}}},
+        GridBoxDividers->{
+         "Columns" -> {{None}}, "Rows" -> {False, {True}, False}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+       "Grid"], False->
+      TagBox[GridBox[{
+         {
+          ItemBox[
+           PaneBox[
+            StyleBox["\<\" Symbol\"\>", "InformationTitleText",
+             StripOnInput->False],
+            FrameMargins->{{4, 0}, {-1, 1}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           PaneBox[
+            
+            StyleBox["\<\"CycleSample[d_Integer, r_?VectorQ, \
+samplecount_Integer] draws samples of closed polygons in d-dimensional \
+Euclidean space. \\nThe vector r contains the length of each edge of the \
+polygon. Several options can be set:\\n\\n\\\"BinCount\\\" -> d. CycleSample \
+is designed for sample ensembles which are too large to be stored in memory. \
+For each variable, it returns the count of samples in equally spaced bins. \
+The default number of bins is 1000, but this may be changed with the BinCount \
+option.\\n\\n\\\"SphereRadii\\\" -> \[Rho]. If the edgelengths \
+\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[RowBox[{SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], \\\"1\\\"], \
+\\\",\\\", \\\"\[Ellipsis]\\\", \\\",\\\", SubscriptBox[StyleBox[\\\"r\\\", \
+\\\"TI\\\"], StyleBox[\\\"n\\\", \\\"TI\\\"]]}], TraditionalForm], \\\"errors\
+\\\" -> {}, \\\"input\\\" -> \\\"r_1, \\\\\\\\dotsc, r_n\\\", \\\"state\\\" \
+-> \\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\) \
+are different from one another, there are different plausible choices of \
+metric for the space of polygons. If \\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\
+\\\" -> FormBox[RowBox[{SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \
+RowBox[{StyleBox[\\\"d\\\", \\\"TI\\\"], \\\"-\\\", \\\"1\\\"}]], \\\"(\\\", \
+StyleBox[\\\"r\\\", \\\"TI\\\"], \\\")\\\"}], TraditionalForm], \
+\\\"errors\\\" -> {}, \\\"input\\\" -> \\\"S^{d-1}(r)\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\) is \
+the sphere of radius \\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[StyleBox[\\\"r\\\", \\\"TI\\\"], TraditionalForm], \\\"errors\\\" -> \
+{}, \\\"input\\\" -> \\\"r\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\), we \
+may define\\n\\n\\t\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[RowBox[{\\\"Pol\\\", RowBox[{\\\"(\\\", RowBox[{StyleBox[\\\"n\\\", \
+\\\"TI\\\"], \\\",\\\", StyleBox[\\\"r\\\", \\\"TI\\\"]}], \\\")\\\"}], \\\"\
+\[LongEqual]\\\", RowBox[{\\\"{\\\", RowBox[{StyleBox[\\\"x\\\", \\\"TI\\\"], \
+\\\"\[Element]\\\", SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \
+RowBox[{StyleBox[\\\"d\\\", \\\"TI\\\"], \\\"-\\\", \\\"1\\\"}]], \
+RowBox[{\\\"(\\\", \\\"1\\\", \\\")\\\"}], \\\"\[Cross]\\\", \\\"\
+\[CenterEllipsis]\\\", \\\"\[Cross]\\\", SuperscriptBox[StyleBox[\\\"S\\\", \
+\\\"TI\\\"], RowBox[{StyleBox[\\\"d\\\", \\\"TI\\\"], \\\"-\\\", \
+\\\"1\\\"}]], RowBox[{\\\"(\\\", \\\"1\\\", \\\")\\\"}], \\\"|\\\", \
+\\\"\[Sum]\\\", SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], \
+StyleBox[\\\"i\\\", \\\"TI\\\"]], SubscriptBox[StyleBox[\\\"x\\\", \
+\\\"TI\\\"], StyleBox[\\\"i\\\", \\\"TI\\\"]], \\\"\[LongEqual]\\\", \
+\\\"0\\\"}], \\\"}\\\"}]}], TraditionalForm], \\\"errors\\\" -> {}, \\\"input\
+\\\" -> \\\"\\\\\\\\text{Pol}(n,r) = \\\\\\\\{ x \\\\\\\\in S^{d-1}(1) \\\\\\\
+\\times \\\\\\\\cdots \\\\\\\\times S^{d-1}(1) \\\\\\\\mid \\\\\\\\sum r_i \
+x_i = 0 \\\\\\\\}\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\)\\n\\\
+nor we may define\\n\\n\\t\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[RowBox[{\\\"Pol\\\", RowBox[{\\\"(\\\", RowBox[{StyleBox[\\\"n\\\", \
+\\\"TI\\\"], \\\",\\\", StyleBox[\\\"r\\\", \\\"TI\\\"]}], \\\")\\\"}], \\\"\
+\[LongEqual]\\\", RowBox[{\\\"{\\\", RowBox[{StyleBox[\\\"x\\\", \\\"TI\\\"], \
+\\\"\[Element]\\\", SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \
+RowBox[{StyleBox[\\\"d\\\", \\\"TI\\\"], \\\"-\\\", \\\"1\\\"}]], \
+RowBox[{\\\"(\\\", SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], \\\"1\\\"], \
+\\\")\\\"}], \\\"\[Cross]\\\", \\\"\[CenterEllipsis]\\\", \\\"\[Cross]\\\", \
+SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], RowBox[{StyleBox[\\\"d\\\", \
+\\\"TI\\\"], \\\"-\\\", \\\"1\\\"}]], RowBox[{\\\"(\\\", \
+SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], StyleBox[\\\"n\\\", \
+\\\"TI\\\"]], \\\")\\\"}], \\\"|\\\", \\\"\[Sum]\\\", \
+SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], StyleBox[\\\"i\\\", \
+\\\"TI\\\"]], \\\"\[LongEqual]\\\", \\\"0\\\"}], \\\"}\\\"}]}], \
+TraditionalForm], \\\"errors\\\" -> {}, \\\"input\\\" -> \
+\\\"\\\\\\\\text{Pol}(n,r) = \\\\\\\\{ x \\\\\\\\in S^{d-1}(r_1) \
+\\\\\\\\times \\\\\\\\cdots \\\\\\\\times S^{d-1}(r_n) \\\\\\\\mid \
+\\\\\\\\sum x_i = 0 \\\\\\\\}\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\)\\n\\t\
+\\nIn the special case of Millson and Kapovich's symplectic structure on \
+polygons in \\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[SuperscriptBox[StyleBox[\\\"R\\\", FontSlant -> \\\"Bold\\\"], \
+\\\"3\\\"], TraditionalForm], \\\"errors\\\" -> {}, \\\"input\\\" -> \\\"\\\\\
+\\\\mathbf{R}^3\\\", \\\"state\\\" -> \
+\\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\), they \
+define\\n\\n\\t\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> \
+FormBox[RowBox[{\\\"Pol\\\", RowBox[{\\\"(\\\", RowBox[{StyleBox[\\\"n\\\", \
+\\\"TI\\\"], \\\",\\\", StyleBox[\\\"r\\\", \\\"TI\\\"]}], \\\")\\\"}], \\\"\
+\[LongEqual]\\\", RowBox[{\\\"{\\\", RowBox[{StyleBox[\\\"x\\\", \\\"TI\\\"], \
+\\\"\[Element]\\\", SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \
+\\\"2\\\"], RowBox[{\\\"(\\\", SqrtBox[SubscriptBox[StyleBox[\\\"r\\\", \
+\\\"TI\\\"], \\\"1\\\"]], \\\")\\\"}], \\\"\[Cross]\\\", \
+\\\"\[CenterEllipsis]\\\", \\\"\[Cross]\\\", \
+SuperscriptBox[StyleBox[\\\"S\\\", \\\"TI\\\"], \\\"2\\\"], \
+RowBox[{\\\"(\\\", SqrtBox[SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], \
+StyleBox[\\\"n\\\", \\\"TI\\\"]]], \\\")\\\"}], \\\"|\\\", \\\"\[Sum]\\\", \
+SqrtBox[SubscriptBox[StyleBox[\\\"r\\\", \\\"TI\\\"], StyleBox[\\\"i\\\", \
+\\\"TI\\\"]]], SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], StyleBox[\\\"i\\\
+\", \\\"TI\\\"]], \\\"\[LongEqual]\\\", \\\"0\\\"}], \\\"}\\\"}]}], \
+TraditionalForm], \\\"errors\\\" -> {}, \\\"input\\\" -> \
+\\\"\\\\\\\\text{Pol}(n,r) = \\\\\\\\{ x \\\\\\\\in S^2(\\\\\\\\sqrt{r_1}) \\\
+\\\\\\times \\\\\\\\cdots \\\\\\\\times S^2(\\\\\\\\sqrt{r_n}) \\\\\\\\mid \\\
+\\\\\\sum \\\\\\\\sqrt{r_i} x_i = 0 \\\\\\\\}\\\", \\\"state\\\" -> \\\"Boxes\
+\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\)\\n\\t\\nThese \
+choices yield different metrics on the space of polygons and hence different \
+measures for sampling.\\nThe default choice is the second option (sphere \
+radii equal to edgelengths), but the user may set the \\nradii of the spheres \
+\\!\\(\\*FormBox[TemplateBox[<|\\\"boxes\\\" -> FormBox[SubscriptBox[\\\"\
+\[Rho]\\\", StyleBox[\\\"i\\\", \\\"TI\\\"]], TraditionalForm], \
+\\\"errors\\\" -> {}, \\\"input\\\" -> \\\"\\\\\\\\rho_i\\\", \\\"state\\\" \
+-> \\\"Boxes\\\"|>,\\n\\\"TeXAssistantTemplate\\\"],\\nTraditionalForm]\\) \
+separately.\\n\"\>", "InformationUsageText",
+             StripOnInput->False,
+             LineSpacing->{1.5, 1.5, 3.}],
+            FrameMargins->{{10, 10}, {8, 10}}],
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           TagBox[
+            ButtonBox[
+             PaneSelectorBox[{False->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "DownPointerOpener"],
+               ImageSizeCache->{10., {2., 8.}}], True->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "DownPointerOpenerHot"],
+               ImageSizeCache->{10., {2., 8.}}]}, Dynamic[
+              System`InformationDump`mouseOver$$]],
+             Alignment->Left,
+             Appearance->{"Default" -> None},
+             
+             ButtonFunction:>FEPrivate`Set[
+              System`InformationDump`open$$, True],
+             Evaluator->Automatic,
+             FrameMargins->{{9, 0}, {0, 0}},
+             ImageMargins->0,
+             ImageSize->Full,
+             Method->"Preemptive"],
+            
+            EventHandlerTag[{
+             "MouseEntered" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
+              "MouseExited" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, False], 
+              Method -> "Preemptive", PassEventsDown -> Automatic, 
+              PassEventsUp -> True}]],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], "\[SpanFromLeft]"}
+        },
+        AutoDelete->False,
+        FrameStyle->Directive[
+          GrayLevel[0.8], 
+          Thickness[Tiny]],
+        GridBoxAlignment->{"Columns" -> {Left, Right}, "Rows" -> {{Center}}},
+        GridBoxDividers->{
+         "Columns" -> {{None}}, "Rows" -> {False, {True}, False}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+       "Grid"]}, Dynamic[System`InformationDump`open$$],
+      BaselinePosition->Baseline,
+      FrameMargins->0,
+      ImageSize->Automatic],
+     DynamicModuleValues:>{}],
+    BaseStyle->"InformationGridFrame",
+    StripOnInput->False], "InformationGridPlain",
+   StripOnInput->False],
+  InformationData[<|
+   "ObjectType" -> "Symbol", "Usage" -> 
+    "CycleSample[d_Integer, r_?VectorQ, samplecount_Integer] draws samples of \
+closed polygons in d-dimensional Euclidean space. \nThe vector r contains the \
+length of each edge of the polygon. Several options can be set:\n\n\"BinCount\
+\" -> d. CycleSample is designed for sample ensembles which are too large to \
+be stored in memory. For each variable, it returns the count of samples in \
+equally spaced bins. The default number of bins is 1000, but this may be \
+changed with the BinCount option.\n\n\"SphereRadii\" -> \[Rho]. If the \
+edgelengths \!\(\*FormBox[TemplateBox[<|\"boxes\" -> \
+FormBox[RowBox[{SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \",\", \"\
+\[Ellipsis]\", \",\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \
+\"TI\"]]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r_1, \
+\\\\dotsc, r_n\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],\n\
+TraditionalForm]\) are different from one another, there are different \
+plausible choices of metric for the space of polygons. If \
+\!\(\*FormBox[TemplateBox[<|\"boxes\" -> \
+FormBox[RowBox[{SuperscriptBox[StyleBox[\"S\", \"TI\"], \
+RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], \"(\", StyleBox[\"r\", \"TI\
+\"], \")\"}], TraditionalForm], \"errors\" -> {}, \"input\" -> \
+\"S^{d-1}(r)\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],\n\
+TraditionalForm]\) is the sphere of radius \
+\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[StyleBox[\"r\", \"TI\"], \
+TraditionalForm], \"errors\" -> {}, \"input\" -> \"r\", \"state\" -> \
+\"Boxes\"|>,\n\"TeXAssistantTemplate\"],\nTraditionalForm]\), we may define\n\
+\n\t\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", \
+RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \
+\"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \
+\"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \
+RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \
+\")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", \
+SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \
+\"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"|\", \"\[Sum]\", \
+SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]], \
+SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \
+\"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \
+\"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(1) \\\\times \
+\\\\cdots \\\\times S^{d-1}(1) \\\\mid \\\\sum r_i x_i = 0 \\\\}\", \"state\" \
+-> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],\nTraditionalForm]\)\n\nor we may \
+define\n\n\t\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", \
+RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \
+\"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \
+\"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \
+RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \
+SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \")\"}], \"\[Cross]\", \"\
+\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \
+RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \
+SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]], \")\"}], \
+\"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\
+\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> \
+{}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(r_1) \\\\times \
+\\\\cdots \\\\times S^{d-1}(r_n) \\\\mid \\\\sum x_i = 0 \\\\}\", \"state\" \
+-> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],\nTraditionalForm]\)\n\t\nIn the \
+special case of Millson and Kapovich's symplectic structure on polygons in \!\
+\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SuperscriptBox[StyleBox[\"R\", \
+FontSlant -> \"Bold\"], \"3\"], TraditionalForm], \"errors\" -> {}, \"input\" \
+-> \"\\\\mathbf{R}^3\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],\
+\nTraditionalForm]\), they define\n\n\t\!\(\*FormBox[TemplateBox[<|\"boxes\" \
+-> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \
+\",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", \
+RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", \
+SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", \
+SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"]], \")\"}], \"\[Cross]\", \
+\"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \
+\"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], \
+StyleBox[\"n\", \"TI\"]]], \")\"}], \"|\", \"\[Sum]\", \
+SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]]], \
+SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \
+\"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \
+\"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^2(\\\\sqrt{r_1}) \
+\\\\times \\\\cdots \\\\times S^2(\\\\sqrt{r_n}) \\\\mid \\\\sum \
+\\\\sqrt{r_i} x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\
+\"TeXAssistantTemplate\"],\nTraditionalForm]\)\n\t\nThese choices yield \
+different metrics on the space of polygons and hence different measures for \
+sampling.\nThe default choice is the second option (sphere radii equal to \
+edgelengths), but the user may set the \nradii of the spheres \
+\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SubscriptBox[\"\[Rho]\", \
+StyleBox[\"i\", \"TI\"]], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\
+\\\\rho_i\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],\n\
+TraditionalForm]\) separately.\n", "Documentation" -> None, "OwnValues" -> 
+    None, "UpValues" -> None, "DownValues" -> 
+    Information`InformationValueForm[
+     DownValues, CycleSamplerLink`CycleSample, {CycleSamplerLink`CycleSample[
+         Pattern[CycleSamplerLink`Private`d, 
+          Blank[Integer]], 
+         PatternTest[
+          Pattern[CycleSamplerLink`Private`r, 
+           Blank[]], VectorQ], 
+         PatternTest[
+          Pattern[CycleSamplerLink`Private`\[Rho], 
+           Blank[]], VectorQ], 
+         Pattern[CycleSamplerLink`Private`samplecount, 
+          Blank[]], 
+         OptionsPattern[]] :> 
+       Module[{CycleSamplerLink`Private`names, 
+          CycleSamplerLink`Private`momentcount, 
+          CycleSamplerLink`Private`bincount, 
+          CycleSamplerLink`Private`funcount, CycleSamplerLink`Private`bins, 
+          CycleSamplerLink`Private`moments, CycleSamplerLink`Private`ranges, 
+          CycleSamplerLink`Private`setranges}, 
+         CycleSamplerLink`Private`bincount = OptionValue["BinCount"]; 
+         CycleSamplerLink`Private`momentcount = OptionValue["MomentCount"]; 
+         CycleSamplerLink`Private`names = {
+           "ChordLength(0,2)", "ChordLength(0,3)", "ChordLength(0,4)", 
+            "DiagonalLength", "Gyradius", "ShiftNorm", "TotalCurvature", 
+            "BendingEnergy(2)", "MaxAngle", "EdgeSpaceSamplingWeight", 
+            "EdgeQuotientSpaceSamplingWeight", "IterationCount"}; Null; 
+         CycleSamplerLink`Private`funcount = 
+          Length[CycleSamplerLink`Private`names]; 
+         CycleSamplerLink`Private`bins = 
+          ConstantArray[
+           0., {3, CycleSamplerLink`Private`funcount, 
+             CycleSamplerLink`Private`bincount}]; 
+         CycleSamplerLink`Private`moments = 
+          ConstantArray[
+           0., {3, CycleSamplerLink`Private`funcount, 
+             CycleSamplerLink`Private`momentcount}]; 
+         CycleSamplerLink`Private`ranges = OptionValue["Ranges"]; 
+         CycleSamplerLink`Private`setranges = False; If[
+           Not[
+            And[
+             MatrixQ[CycleSamplerLink`Private`ranges], 
+             Dimensions[CycleSamplerLink`Private`ranges] == {
+              CycleSamplerLink`Private`funcount, 2}]], 
+           CycleSamplerLink`Private`ranges = 
+            ConstantArray[0., {CycleSamplerLink`Private`funcount, 2}]; 
+           CycleSamplerLink`Private`setranges = True; Null]; Null; 
+         CycleSamplerLink`Private`cCycleSample[CycleSamplerLink`Private`d][
+          CycleSamplerLink`Private`r, CycleSamplerLink`Private`\[Rho], 
+           CycleSamplerLink`Private`bins, CycleSamplerLink`Private`moments, 
+           CycleSamplerLink`Private`ranges, 
+           CycleSamplerLink`Private`samplecount, 
+           OptionValue["ThreadCount"], 
+           Boole[False], 
+           Boole[CycleSamplerLink`Private`setranges], 
+           Boole[
+            OptionValue["Normalize"]]]; Null; <|"Naive" -> <|
+             Table[
+             Part[CycleSamplerLink`Private`names, 
+                CycleSamplerLink`Private`i] -> <|
+               "BinnedData" -> 
+                Part[CycleSamplerLink`Private`bins, 1, 
+                  CycleSamplerLink`Private`i], "Moments" -> 
+                Part[CycleSamplerLink`Private`moments, 1, 
+                  CycleSamplerLink`Private`i], "DataRange" -> 
+                Part[CycleSamplerLink`Private`ranges, 
+                  CycleSamplerLink`Private`i]|>, {
+              CycleSamplerLink`Private`i, 1, 
+               Length[CycleSamplerLink`Private`names]}]|>, "TotalSpace" -> <|
+             Table[
+             Part[CycleSamplerLink`Private`names, 
+                CycleSamplerLink`Private`i] -> <|
+               "BinnedData" -> 
+                Part[CycleSamplerLink`Private`bins, 2, 
+                  CycleSamplerLink`Private`i], "Moments" -> 
+                Part[CycleSamplerLink`Private`moments, 2, 
+                  CycleSamplerLink`Private`i], "DataRange" -> 
+                Part[CycleSamplerLink`Private`ranges, 
+                  CycleSamplerLink`Private`i]|>, {
+              CycleSamplerLink`Private`i, 1, 
+               Length[CycleSamplerLink`Private`names]}]|>, 
+           "QuotientSpace" -> <|
+             Table[
+             Part[CycleSamplerLink`Private`names, 
+                CycleSamplerLink`Private`i] -> <|
+               "BinnedData" -> 
+                Part[CycleSamplerLink`Private`bins, 3, 
+                  CycleSamplerLink`Private`i], "Moments" -> 
+                Part[CycleSamplerLink`Private`moments, 3, 
+                  CycleSamplerLink`Private`i], "DataRange" -> 
+                Part[CycleSamplerLink`Private`ranges, 
+                  CycleSamplerLink`Private`i]|>, {
+              CycleSamplerLink`Private`i, 1, 
+               Length[CycleSamplerLink`Private`names]}]|>|>], 
+       CycleSamplerLink`CycleSample[
+         Pattern[CycleSamplerLink`Private`d, 
+          Blank[Integer]], 
+         PatternTest[
+          Pattern[CycleSamplerLink`Private`r, 
+           Blank[]], VectorQ], 
+         Pattern[CycleSamplerLink`Private`samplecount, 
+          Blank[Integer]], 
+         OptionsPattern[]] :> 
+       Module[{CycleSamplerLink`Private`names, 
+          CycleSamplerLink`Private`momentcount, 
+          CycleSamplerLink`Private`bincount, 
+          CycleSamplerLink`Private`funcount, CycleSamplerLink`Private`bins, 
+          CycleSamplerLink`Private`moments, CycleSamplerLink`Private`ranges, 
+          CycleSamplerLink`Private`setranges, 
+          CycleSamplerLink`Private`length}, 
+         CycleSamplerLink`Private`bincount = OptionValue["BinCount"]; 
+         CycleSamplerLink`Private`momentcount = OptionValue["MomentCount"]; 
+         CycleSamplerLink`Private`names = {
+           "ChordLength(0,2)", "ChordLength(0,3)", "ChordLength(0,4)", 
+            "DiagonalLength", "Gyradius", "ShiftNorm", "TotalCurvature", 
+            "BendingEnergy(2)", "MaxAngle", "EdgeSpaceSamplingWeight", 
+            "EdgeQuotientSpaceSamplingWeight", "IterationCount"}; 
+         CycleSamplerLink`Private`funcount = 
+          Length[CycleSamplerLink`Private`names]; 
+         CycleSamplerLink`Private`bins = 
+          ConstantArray[
+           0., {3, CycleSamplerLink`Private`funcount, 
+             CycleSamplerLink`Private`bincount}]; 
+         CycleSamplerLink`Private`moments = 
+          ConstantArray[
+           0., {3, CycleSamplerLink`Private`funcount, 
+             CycleSamplerLink`Private`momentcount}]; 
+         CycleSamplerLink`Private`ranges = OptionValue["Ranges"]; 
+         CycleSamplerLink`Private`setranges = False; If[
+           Not[
+            And[
+             MatrixQ[CycleSamplerLink`Private`ranges], 
+             Dimensions[CycleSamplerLink`Private`ranges] == {
+              CycleSamplerLink`Private`funcount, 2}]], 
+           CycleSamplerLink`Private`ranges = 
+            ConstantArray[0., {CycleSamplerLink`Private`funcount, 2}]; 
+           CycleSamplerLink`Private`setranges = True; Null]; 
+         CycleSamplerLink`Private`\[Rho] = 
+          If[OptionValue["SphereRadii"] != None, 
+            CycleSamplerLink`Private`\[Rho] = OptionValue["SphereRadii"], 
+            CycleSamplerLink`Private`r]; 
+         If[2 Max[CycleSamplerLink`Private`r] > 
+           Total[CycleSamplerLink`Private`r], Message[
+             MessageName[CycleSamplerLink`CycleSample, "badedgelengths"]]; 
+           Return[]]; 
+         CycleSamplerLink`Private`cCycleSample[CycleSamplerLink`Private`d][
+          CycleSamplerLink`Private`r, CycleSamplerLink`Private`\[Rho], 
+           CycleSamplerLink`Private`bins, CycleSamplerLink`Private`moments, 
+           CycleSamplerLink`Private`ranges, 
+           CycleSamplerLink`Private`samplecount, 
+           OptionValue["ThreadCount"], 
+           Boole[False], 
+           Boole[CycleSamplerLink`Private`setranges], 
+           Boole[
+            OptionValue["Normalize"]]]; Null; <|"Naive" -> <|
+             Table[
+             Part[CycleSamplerLink`Private`names, 
+                CycleSamplerLink`Private`i] -> <|
+               "BinnedData" -> 
+                Part[CycleSamplerLink`Private`bins, 1, 
+                  CycleSamplerLink`Private`i], "Moments" -> 
+                Part[CycleSamplerLink`Private`moments, 1, 
+                  CycleSamplerLink`Private`i], "DataRange" -> 
+                Part[CycleSamplerLink`Private`ranges, 
+                  CycleSamplerLink`Private`i]|>, {
+              CycleSamplerLink`Private`i, 1, 
+               Length[CycleSamplerLink`Private`names]}]|>, "TotalSpace" -> <|
+             Table[
+             Part[CycleSamplerLink`Private`names, 
+                CycleSamplerLink`Private`i] -> <|
+               "BinnedData" -> 
+                Part[CycleSamplerLink`Private`bins, 2, 
+                  CycleSamplerLink`Private`i], "Moments" -> 
+                Part[CycleSamplerLink`Private`moments, 2, 
+                  CycleSamplerLink`Private`i], "DataRange" -> 
+                Part[CycleSamplerLink`Private`ranges, 
+                  CycleSamplerLink`Private`i]|>, {
+              CycleSamplerLink`Private`i, 1, 
+               Length[CycleSamplerLink`Private`names]}]|>, 
+           "QuotientSpace" -> <|
+             Table[
+             Part[CycleSamplerLink`Private`names, 
+                CycleSamplerLink`Private`i] -> <|
+               "BinnedData" -> 
+                Part[CycleSamplerLink`Private`bins, 3, 
+                  CycleSamplerLink`Private`i], "Moments" -> 
+                Part[CycleSamplerLink`Private`moments, 3, 
+                  CycleSamplerLink`Private`i], "DataRange" -> 
+                Part[CycleSamplerLink`Private`ranges, 
+                  CycleSamplerLink`Private`i]|>, {
+              CycleSamplerLink`Private`i, 1, 
+               Length[CycleSamplerLink`Private`names]}]|>|>]}], "SubValues" -> 
+    None, "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
+    "Options" -> {
+     "SphereRadii" -> None, "BinCount" -> 1000, "MomentCount" -> 3, 
+      "ThreadCount" :> ReplaceAll["ParallelThreadNumber", 
+        ReplaceAll["ParallelOptions", 
+         SystemOptions["ParallelOptions"]]], "Normalize" -> True, "Ranges" -> 
+      Automatic}, "Attributes" -> {}, "FullName" -> 
+    "CycleSamplerLink`CycleSample"|>, False]]], "Output",
+ CellChangeTimes->{
+  3.8799448749443283`*^9, {3.879945161805049*^9, 3.879945189712207*^9}, 
+   3.879945234370632*^9, 3.879945607343759*^9, 3.879945658876663*^9, {
+   3.879945811064625*^9, 3.879945816778311*^9}, {3.87994592082376*^9, 
+   3.879945924895995*^9}, 3.87994635579137*^9, 3.879946413974305*^9, 
+   3.87994734616057*^9, 3.879947949296138*^9, 3.879948198099382*^9, 
+   3.8799482333109303`*^9},
+ CellLabel->"Out[48]=",ExpressionUUID->"51b3307c-a367-416e-9c76-8ae886ae01b4"]
+}, Open  ]],
+
+Cell["\<\
+The edgelength vector r must have the property that no single edge has more \
+than half the total length of the polygon.\
+\>", "Text",
+ CellChangeTimes->{{3.879947364226242*^9, 3.879947393964572*^9}, {
+  3.8799485480332823`*^9, 
+  3.879948552033725*^9}},ExpressionUUID->"339b9a60-ab4b-4119-a112-\
+db42742b7b7b"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CycleSample", "[", 
+  RowBox[{"3", ",", 
+   RowBox[{"{", 
+    RowBox[{"5", ",", "1", ",", "1", ",", "1"}], "}"}], ",", "10"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.879947066257532*^9, 3.8799470784515247`*^9}},
+ CellLabel->"In[42]:=",ExpressionUUID->"be142f0b-f1e2-4e98-a1af-d6803b8b71bf"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "CycleSample", "badedgelengths", 
+   "\"One edge has more than half the total length of the polygon. No closed \
+polygons with these edgelengths exist.\"", 2, 42, 1, 31165404699167837296, 
+   "Local", "CycleSamplerLink`CycleSample"},
+  "MessageTemplate2"]], "Message", "MSG",
+ CellChangeTimes->{3.879947348485198*^9},
+ CellLabel->
+  "During evaluation of \
+In[42]:=",ExpressionUUID->"63c297a5-e0ed-409a-95e7-2faf1bfe3198"]
+}, Open  ]],
+
+Cell["\<\
+Sampling 1 million 4-gons in 3 dimensional space is very fast:\
+\>", "Text",
+ CellChangeTimes->{{3.879948679500442*^9, 
+  3.8799486940119762`*^9}},ExpressionUUID->"2579d99e-a9d2-4580-9c59-\
+cebb26ca7f94"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"First", "@", 
+  RowBox[{"AbsoluteTiming", "[", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"results", " ", "=", " ", 
+      RowBox[{"CycleSample", "[", 
+       RowBox[{"3", ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "1", ",", "1", ",", "1"}], "}"}], ",", "1000000"}],
+        "]"}]}], ")"}], ";"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.8799485573824387`*^9, 3.879948619532395*^9}, {
+  3.879948651805373*^9, 3.879948664091014*^9}},
+ CellLabel->"In[54]:=",ExpressionUUID->"6106a7cf-e34b-4804-add9-db6d257f941f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"dimension    = 3\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664794908*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"5ebce030-8592-4b8d-94ac-beaf8b856801"],
+
+Cell[BoxData["\<\"edge_count   = 4\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664800786*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"51f7fb03-be4d-4522-a650-9f45ebab4929"],
+
+Cell[BoxData["\<\"sample_count = 1000000\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664807345*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"345b789c-3661-4e73-94d5-fe8ca4a9d577"],
+
+Cell[BoxData["\<\"fun_count    = 12\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664810783*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"b0b3e0d6-9db5-4c4f-b3da-e548cf6b5827"],
+
+Cell[BoxData["\<\"bin_count    = 1000\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.8799486648138437`*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"b707336e-c8c6-46b2-9b14-a00c9ea4bfa1"],
+
+Cell[BoxData["\<\"moment_count = 3\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664816743*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"37c2d031-deb5-47a4-9d05-cf00aa3f9e98"],
+
+Cell[BoxData["\<\"thread_count = 4\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664819469*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"b2e0d107-eafd-4219-a32d-1cc203817241"],
+
+Cell[BoxData["\<\"Sampling the following random variables:\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664822034*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"5c747719-72f9-453d-a73e-8733fc663ad3"],
+
+Cell[BoxData["\<\"    ChordLength(0,2)\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664824445*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"449050d9-17ea-46ac-8085-7ca18b08b0d9"],
+
+Cell[BoxData["\<\"    ChordLength(0,3)\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664826826*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"22680642-fd38-4a9b-b2cd-b0dc9488b9fc"],
+
+Cell[BoxData["\<\"    ChordLength(0,4)\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664829213*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"c5324bcc-bcb1-4a73-8c80-a7a6dc8f833b"],
+
+Cell[BoxData["\<\"    DiagonalLength\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664831615*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"77a206ee-1157-46a9-9cd6-457ebd89f30f"],
+
+Cell[BoxData["\<\"    Gyradius\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664834008*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"5d40c001-6b9a-4c91-81cb-3cefaceffe81"],
+
+Cell[BoxData["\<\"    ShiftNorm\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664836391*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"f7e47a3a-d24c-43e8-9e3b-056b902bca00"],
+
+Cell[BoxData["\<\"    TotalCurvature\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.87994866483877*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"2012f26d-e7d7-487c-99be-af786d8cc120"],
+
+Cell[BoxData["\<\"    BendingEnergy(2)\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664841146*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"de5f1723-66d1-4665-98d3-47dcc915eb34"],
+
+Cell[BoxData["\<\"    MaxAngle\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664843528*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"fabee45e-164a-423c-a122-0618f7ac8879"],
+
+Cell[BoxData["\<\"    EdgeSpaceSamplingWeight\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664845912*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"a7ba29c7-2973-4b42-8e0e-51fc0bb3566a"],
+
+Cell[BoxData["\<\"    EdgeQuotientSpaceSamplingWeight\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.879948664848309*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"6221196a-dc1c-4a4e-8a52-f7795d358c20"],
+
+Cell[BoxData["\<\"    IterationCount\"\>"], "Print",
+ CellChangeTimes->{{3.8799485697101717`*^9, 3.879948619971792*^9}, 
+   3.87994866485071*^9},
+ CellLabel->
+  "During evaluation of \
+In[54]:=",ExpressionUUID->"9f77274f-707c-443c-b592-09f7021ee4e8"]
+}, Open  ]],
+
+Cell[BoxData["0.334223`"], "Output",
+ CellChangeTimes->{{3.8799486097363567`*^9, 3.879948620302814*^9}, 
+   3.879948665105834*^9},
+ CellLabel->"Out[54]=",ExpressionUUID->"bef3ab2d-49e2-40f8-b0a1-093df74f64e7"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Keys", "[", "result", "]"}]], "Input",
+ CellChangeTimes->{{3.879948735698367*^9, 3.879948738785932*^9}},
+ CellLabel->"In[55]:=",ExpressionUUID->"e9eaf1a6-ba2b-43b3-93dc-0f9c5f8c4f55"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"Naive\"\>", ",", "\<\"TotalSpace\"\>", 
+   ",", "\<\"QuotientSpace\"\>"}], "}"}]], "Output",
+ CellChangeTimes->{3.879948739307458*^9},
+ CellLabel->"Out[55]=",ExpressionUUID->"6efc6a36-bc21-4b44-b199-b38a3a031167"]
+}, Open  ]],
+
+Cell["", "Text",ExpressionUUID->"8df8f936-2806-47bd-8b35-9ac28ce8acce"],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
@@ -91,9 +1648,7 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"result", "=", 
     RowBox[{"CycleSample", "[", 
-     RowBox[{
-     "d", ",", "r", ",", "\[Rho]", ",", "sampleCount", ",", 
-      "\[IndentingNewLine]", 
+     RowBox[{"d", ",", "r", ",", "sampleCount", ",", "\[IndentingNewLine]", 
       RowBox[{"\"\<ThreadCount\>\"", "->", "8"}], ",", "\[IndentingNewLine]", 
       
       RowBox[{"\"\<BinCount\>\"", "->", "1000"}], ",", "\[IndentingNewLine]", 
@@ -111,8 +1666,139 @@ Cell[BoxData[{
    3.8738959693736134`*^9}, {3.873896052939456*^9, 3.873896070685927*^9}, 
    3.873896386751601*^9, {3.8738967087531633`*^9, 3.873896798961095*^9}, {
    3.87389684314485*^9, 3.873896844510106*^9}, {3.878474379533868*^9, 
-   3.878474379831757*^9}, {3.879587828022121*^9, 3.87958785102085*^9}},
- CellLabel->"In[9]:=",ExpressionUUID->"c50f9754-6b35-43b8-9dee-d3ab6f847078"],
+   3.878474379831757*^9}, {3.879587828022121*^9, 3.87958785102085*^9}, {
+   3.879945689935136*^9, 3.87994569038311*^9}},
+ CellLabel->"In[21]:=",ExpressionUUID->"c50f9754-6b35-43b8-9dee-d3ab6f847078"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"dimension    = 3\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.87994569266271*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"2880232d-b606-4891-b3c7-e69f1fe6a1d1"],
+
+Cell[BoxData["\<\"edge_count   = 4\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692667214*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"159ddf81-4c82-4d9b-90e5-cf57a014e49a"],
+
+Cell[BoxData["\<\"sample_count = 100000000\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692671947*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"6f4c23d9-dfc3-489d-a812-da9a1e349950"],
+
+Cell[BoxData["\<\"fun_count    = 12\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692674548*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"1f9b14d8-aac3-4d61-bb32-8c744caabb30"],
+
+Cell[BoxData["\<\"bin_count    = 1000\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692677*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"8f67dbd5-c753-4615-9155-7c9afe7b358d"],
+
+Cell[BoxData["\<\"moment_count = 3\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692679379*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"b6470ab4-dd0f-4bb9-8b71-d43e5400afa2"],
+
+Cell[BoxData["\<\"thread_count = 8\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.87994569268182*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"cc797eb5-7441-46e3-a589-cdd6530581ec"],
+
+Cell[BoxData["\<\"Sampling the following random variables:\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692684142*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"2077572b-bde5-4c21-af19-8ae64c864130"],
+
+Cell[BoxData["\<\"    ChordLength(0,2)\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692686376*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"bc5b5229-231d-460d-8405-bcc1fa408220"],
+
+Cell[BoxData["\<\"    ChordLength(0,3)\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692688991*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"28e40d35-79c4-47d9-a219-b7d324562824"],
+
+Cell[BoxData["\<\"    ChordLength(0,4)\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692691847*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"2d35b4b0-f971-4844-86b3-9bc35e80eb87"],
+
+Cell[BoxData["\<\"    DiagonalLength\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692694601*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"bdec7dd5-9691-457a-b359-cbc72a09d8ed"],
+
+Cell[BoxData["\<\"    Gyradius\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692697365*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"5e511168-4959-4142-b9d0-d866696ef1d8"],
+
+Cell[BoxData["\<\"    ShiftNorm\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692699808*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"ec9c59bd-b24e-42d9-91e7-ae9fef17160a"],
+
+Cell[BoxData["\<\"    TotalCurvature\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.87994569270227*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"e8b15dd8-cf37-43cc-a879-5574dc35690d"],
+
+Cell[BoxData["\<\"    BendingEnergy(2)\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692704891*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"b84b6c00-936d-4881-858b-de521deba517"],
+
+Cell[BoxData["\<\"    MaxAngle\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.879945692706635*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"87047091-e227-4498-8c79-712282973847"],
+
+Cell[BoxData["\<\"    EdgeSpaceSamplingWeight\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.8799456927080917`*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"337a10ab-3af2-450d-8a03-fc5814ad1e97"],
+
+Cell[BoxData["\<\"    EdgeQuotientSpaceSamplingWeight\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.8799456927095137`*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"b42fd01d-9912-405c-a49a-c923e0ae4f8d"],
+
+Cell[BoxData["\<\"    IterationCount\"\>"], "Print",
+ CellChangeTimes->{3.879942759661315*^9, 3.8799456927109203`*^9},
+ CellLabel->
+  "During evaluation of \
+In[21]:=",ExpressionUUID->"5bbc9d57-5c17-4395-afcd-b2f8d0242280"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"21.155954`", ",", "Null"}], "}"}]], "Output",
+ CellChangeTimes->{3.879942781884033*^9, 3.8799457137999763`*^9},
+ CellLabel->"Out[27]=",ExpressionUUID->"478da7ae-75cd-4f25-8d27-71179430a06c"]
+}, Open  ]],
 
 Cell[BoxData[{
  RowBox[{
@@ -229,9 +1915,11 @@ Cell[BoxData[{
   3.873896310583124*^9, 3.873896403321754*^9}, {3.873896560578032*^9, 
   3.873896561712283*^9}},
  CellLabel->"In[20]:=",ExpressionUUID->"f904fdb4-f925-4a56-b614-999ccdefe692"]
+}, Open  ]]
+}, Open  ]]
 },
-WindowSize->{1496, 905},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
+WindowSize->{1013, 733},
+WindowMargins->{{83, Automatic}, {Automatic, 0}},
 FrontEndVersion->"13.1 for Mac OS X ARM (64-bit) (June 16, 2022)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"73625570-1f10-4484-a975-174cf3ce5425"
@@ -247,12 +1935,94 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 177, 2, 33, "Input",ExpressionUUID->"e900fb1a-6400-48b5-9ddb-415fcad81665"],
-Cell[738, 24, 588, 13, 76, "Input",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
-Cell[1329, 39, 2956, 75, 307, "Input",ExpressionUUID->"c50f9754-6b35-43b8-9dee-d3ab6f847078"],
-Cell[4288, 116, 1533, 33, 328, "Input",ExpressionUUID->"9a99d703-6c3f-41e9-a754-47f7a3989fb4"],
-Cell[5824, 151, 1872, 39, 328, "Input",ExpressionUUID->"83fe59ee-a603-40bd-8e26-c0c037e3ec59"],
-Cell[7699, 192, 1787, 38, 328, "Input",ExpressionUUID->"f904fdb4-f925-4a56-b614-999ccdefe692"]
+Cell[CellGroupData[{
+Cell[580, 22, 185, 3, 98, "Title",ExpressionUUID->"3a146095-5861-4a45-b28c-af45c3a1b403"],
+Cell[768, 27, 386, 8, 58, "Text",ExpressionUUID->"a59958e2-df4d-442a-b6a9-14a573f8451c"],
+Cell[CellGroupData[{
+Cell[1179, 39, 109, 1, 30, "Input",ExpressionUUID->"f4a2300d-b07c-4d44-bd02-bdd16cb87718"],
+Cell[1291, 42, 162, 3, 34, "Output",ExpressionUUID->"ded0cf2d-8319-4595-af2a-d139abd91c17"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1490, 50, 166, 3, 67, "Section",ExpressionUUID->"b2a6aab9-7985-4628-ae85-872f29fe46b3"],
+Cell[1659, 55, 295, 6, 35, "Text",ExpressionUUID->"623ae2a1-c16a-4d52-ab94-aa47a7fecadd"],
+Cell[CellGroupData[{
+Cell[1979, 65, 589, 13, 73, "Input",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
+Cell[2571, 80, 195, 4, 25, "Echo",ExpressionUUID->"95da4662-bc93-4415-a867-e4cac229f845"]
+}, Open  ]],
+Cell[2781, 87, 240, 6, 35, "Text",ExpressionUUID->"049ed49e-f68c-4ab3-9356-0b16a4906846"],
+Cell[3024, 95, 191, 3, 35, "Text",ExpressionUUID->"23acb972-f7c6-4df9-a9ca-1fa419d217fc"],
+Cell[CellGroupData[{
+Cell[3240, 102, 250, 4, 30, "Input",ExpressionUUID->"ca4ba7c0-48cc-428e-a07c-35c183f7b2eb"],
+Cell[3493, 108, 66515, 1260, 647, "Output",ExpressionUUID->"51b3307c-a367-416e-9c76-8ae886ae01b4"]
+}, Open  ]],
+Cell[70023, 1371, 321, 7, 35, "Text",ExpressionUUID->"339b9a60-ab4b-4119-a112-db42742b7b7b"],
+Cell[CellGroupData[{
+Cell[70369, 1382, 317, 7, 30, "Input",ExpressionUUID->"be142f0b-f1e2-4e98-a1af-d6803b8b71bf"],
+Cell[70689, 1391, 453, 10, 28, "Message",ExpressionUUID->"63c297a5-e0ed-409a-95e7-2faf1bfe3198"]
+}, Open  ]],
+Cell[71157, 1404, 214, 5, 35, "Text",ExpressionUUID->"2579d99e-a9d2-4580-9c59-cebb26ca7f94"],
+Cell[CellGroupData[{
+Cell[71396, 1413, 549, 13, 30, "Input",ExpressionUUID->"6106a7cf-e34b-4804-add9-db6d257f941f"],
+Cell[CellGroupData[{
+Cell[71970, 1430, 249, 5, 24, "Print",ExpressionUUID->"5ebce030-8592-4b8d-94ac-beaf8b856801"],
+Cell[72222, 1437, 249, 5, 24, "Print",ExpressionUUID->"51f7fb03-be4d-4522-a650-9f45ebab4929"],
+Cell[72474, 1444, 255, 5, 24, "Print",ExpressionUUID->"345b789c-3661-4e73-94d5-fe8ca4a9d577"],
+Cell[72732, 1451, 250, 5, 24, "Print",ExpressionUUID->"b0b3e0d6-9db5-4c4f-b3da-e548cf6b5827"],
+Cell[72985, 1458, 254, 5, 24, "Print",ExpressionUUID->"b707336e-c8c6-46b2-9b14-a00c9ea4bfa1"],
+Cell[73242, 1465, 249, 5, 24, "Print",ExpressionUUID->"37c2d031-deb5-47a4-9d05-cf00aa3f9e98"],
+Cell[73494, 1472, 249, 5, 24, "Print",ExpressionUUID->"b2e0d107-eafd-4219-a32d-1cc203817241"],
+Cell[73746, 1479, 273, 5, 24, "Print",ExpressionUUID->"5c747719-72f9-453d-a73e-8733fc663ad3"],
+Cell[74022, 1486, 253, 5, 24, "Print",ExpressionUUID->"449050d9-17ea-46ac-8085-7ca18b08b0d9"],
+Cell[74278, 1493, 253, 5, 24, "Print",ExpressionUUID->"22680642-fd38-4a9b-b2cd-b0dc9488b9fc"],
+Cell[74534, 1500, 253, 5, 24, "Print",ExpressionUUID->"c5324bcc-bcb1-4a73-8c80-a7a6dc8f833b"],
+Cell[74790, 1507, 251, 5, 24, "Print",ExpressionUUID->"77a206ee-1157-46a9-9cd6-457ebd89f30f"],
+Cell[75044, 1514, 245, 5, 24, "Print",ExpressionUUID->"5d40c001-6b9a-4c91-81cb-3cefaceffe81"],
+Cell[75292, 1521, 246, 5, 24, "Print",ExpressionUUID->"f7e47a3a-d24c-43e8-9e3b-056b902bca00"],
+Cell[75541, 1528, 250, 5, 24, "Print",ExpressionUUID->"2012f26d-e7d7-487c-99be-af786d8cc120"],
+Cell[75794, 1535, 253, 5, 24, "Print",ExpressionUUID->"de5f1723-66d1-4665-98d3-47dcc915eb34"],
+Cell[76050, 1542, 245, 5, 24, "Print",ExpressionUUID->"fabee45e-164a-423c-a122-0618f7ac8879"],
+Cell[76298, 1549, 260, 5, 24, "Print",ExpressionUUID->"a7ba29c7-2973-4b42-8e0e-51fc0bb3566a"],
+Cell[76561, 1556, 268, 5, 24, "Print",ExpressionUUID->"6221196a-dc1c-4a4e-8a52-f7795d358c20"],
+Cell[76832, 1563, 250, 5, 24, "Print",ExpressionUUID->"9f77274f-707c-443c-b592-09f7021ee4e8"]
+}, Open  ]],
+Cell[77097, 1571, 209, 3, 34, "Output",ExpressionUUID->"bef3ab2d-49e2-40f8-b0a1-093df74f64e7"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[77343, 1579, 207, 3, 30, "Input",ExpressionUUID->"e9eaf1a6-ba2b-43b3-93dc-0f9c5f8c4f55"],
+Cell[77553, 1584, 257, 5, 57, "Output",ExpressionUUID->"6efc6a36-bc21-4b44-b199-b38a3a031167"]
+}, Open  ]],
+Cell[77825, 1592, 71, 0, 35, "Text",ExpressionUUID->"8df8f936-2806-47bd-8b35-9ac28ce8acce"],
+Cell[CellGroupData[{
+Cell[77921, 1596, 2978, 74, 325, "Input",ExpressionUUID->"c50f9754-6b35-43b8-9dee-d3ab6f847078"],
+Cell[CellGroupData[{
+Cell[80924, 1674, 218, 4, 24, "Print",ExpressionUUID->"2880232d-b606-4891-b3c7-e69f1fe6a1d1"],
+Cell[81145, 1680, 219, 4, 24, "Print",ExpressionUUID->"159ddf81-4c82-4d9b-90e5-cf57a014e49a"],
+Cell[81367, 1686, 227, 4, 24, "Print",ExpressionUUID->"6f4c23d9-dfc3-489d-a812-da9a1e349950"],
+Cell[81597, 1692, 220, 4, 24, "Print",ExpressionUUID->"1f9b14d8-aac3-4d61-bb32-8c744caabb30"],
+Cell[81820, 1698, 219, 4, 24, "Print",ExpressionUUID->"8f67dbd5-c753-4615-9155-7c9afe7b358d"],
+Cell[82042, 1704, 219, 4, 24, "Print",ExpressionUUID->"b6470ab4-dd0f-4bb9-8b71-d43e5400afa2"],
+Cell[82264, 1710, 218, 4, 24, "Print",ExpressionUUID->"cc797eb5-7441-46e3-a589-cdd6530581ec"],
+Cell[82485, 1716, 243, 4, 24, "Print",ExpressionUUID->"2077572b-bde5-4c21-af19-8ae64c864130"],
+Cell[82731, 1722, 223, 4, 24, "Print",ExpressionUUID->"bc5b5229-231d-460d-8405-bcc1fa408220"],
+Cell[82957, 1728, 223, 4, 24, "Print",ExpressionUUID->"28e40d35-79c4-47d9-a219-b7d324562824"],
+Cell[83183, 1734, 223, 4, 24, "Print",ExpressionUUID->"2d35b4b0-f971-4844-86b3-9bc35e80eb87"],
+Cell[83409, 1740, 221, 4, 24, "Print",ExpressionUUID->"bdec7dd5-9691-457a-b359-cbc72a09d8ed"],
+Cell[83633, 1746, 215, 4, 24, "Print",ExpressionUUID->"5e511168-4959-4142-b9d0-d866696ef1d8"],
+Cell[83851, 1752, 216, 4, 24, "Print",ExpressionUUID->"ec9c59bd-b24e-42d9-91e7-ae9fef17160a"],
+Cell[84070, 1758, 220, 4, 24, "Print",ExpressionUUID->"e8b15dd8-cf37-43cc-a879-5574dc35690d"],
+Cell[84293, 1764, 223, 4, 24, "Print",ExpressionUUID->"b84b6c00-936d-4881-858b-de521deba517"],
+Cell[84519, 1770, 215, 4, 24, "Print",ExpressionUUID->"87047091-e227-4498-8c79-712282973847"],
+Cell[84737, 1776, 232, 4, 24, "Print",ExpressionUUID->"337a10ab-3af2-450d-8a03-fc5814ad1e97"],
+Cell[84972, 1782, 240, 4, 24, "Print",ExpressionUUID->"b42fd01d-9912-405c-a49a-c923e0ae4f8d"],
+Cell[85215, 1788, 223, 4, 24, "Print",ExpressionUUID->"5bbc9d57-5c17-4395-afcd-b2f8d0242280"]
+}, Open  ]],
+Cell[85453, 1795, 230, 4, 34, "Output",ExpressionUUID->"478da7ae-75cd-4f25-8d27-71179430a06c"]
+}, Open  ]],
+Cell[85698, 1802, 1533, 33, 325, "Input",ExpressionUUID->"9a99d703-6c3f-41e9-a754-47f7a3989fb4"],
+Cell[87234, 1837, 1872, 39, 325, "Input",ExpressionUUID->"83fe59ee-a603-40bd-8e26-c0c037e3ec59"],
+Cell[89109, 1878, 1787, 38, 325, "Input",ExpressionUUID->"f904fdb4-f925-4a56-b614-999ccdefe692"]
+}, Open  ]]
+}, Open  ]]
 }
 ]
 *)

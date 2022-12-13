@@ -3,7 +3,35 @@
 BeginPackage["CycleSamplerLink`", {"CCompilerDriver`"}];
 
 
-CycleSample::usage = "CycleSample[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_Integer] draws samplecount samples of closed polygons of edege lengths r in d-dimensional Euclidean space. Then it evaluates a couple of random variables on the samples and returns binned informations as well as their moments. The vector \[Rho] specifies the Riemannian metric on the edge space";
+CycleSample::usage = "CycleSample[d_Integer, r_?VectorQ, samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space. 
+The vector r contains the length of each edge of the polygon. Several options can be set:
+
+\"BinCount\" -> d. CycleSample is designed for sample ensembles which are too large to be stored in memory. For each variable, it returns the count of samples in equally spaced bins. The default number of bins is 1000, but this may be changed with the BinCount option.
+
+\"SphereRadii\" -> \[Rho]. If the edgelengths \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \",\", \"\[Ellipsis]\", \",\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r_1, \\\\dotsc, r_n\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\) are different from one another, there are different plausible choices of metric for the space of polygons. If \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], \"(\", StyleBox[\"r\", \"TI\"], \")\"}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"S^{d-1}(r)\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\) is the sphere of radius \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[StyleBox[\"r\", \"TI\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\), we may define
+
+	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(1) \\\\times \\\\cdots \\\\times S^{d-1}(1) \\\\mid \\\\sum r_i x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\)
+
+or we may define
+
+	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]], \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(r_1) \\\\times \\\\cdots \\\\times S^{d-1}(r_n) \\\\mid \\\\sum x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\)
+	
+In the special case of Millson and Kapovich's symplectic structure on polygons in \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SuperscriptBox[StyleBox[\"R\", FontSlant -> \"Bold\"], \"3\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\mathbf{R}^3\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\), they define
+
+	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"]], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]], \")\"}], \"|\", \"\[Sum]\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^2(\\\\sqrt{r_1}) \\\\times \\\\cdots \\\\times S^2(\\\\sqrt{r_n}) \\\\mid \\\\sum \\\\sqrt{r_i} x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\)
+	
+These choices yield different metrics on the space of polygons and hence different measures for sampling.
+The default choice is the second option (sphere radii equal to edgelengths), but the user may set the 
+radii of the spheres \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SubscriptBox[\"\[Rho]\", StyleBox[\"i\", \"TI\"]], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\rho_i\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\) separately.
+"
 
 CycleSampleChordLengths::usage = "CycleSampleChordLengths[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, vertexranges_?MatrixQ, samplecount_Integer] draws samplecount samples of closed polygons of edege lengths r in d-dimensional Euclidean space. Then it evaluates the chord length functions specified by vertexranges on the samples and returns binned informations as well as their moments. The vector \[Rho] specifies the Riemannian metric on the edge space";
 
@@ -190,6 +218,7 @@ Options[CycleSample] = {
 	"ArmijoShrinkFactor" -> 0.5, 
 	"Regularization" -> 1., 
 	"Tolerance" -> 1./10^12,*)
+	"SphereRadii"-> None,
 	"BinCount" -> 1000, 
 	"MomentCount" -> 3,
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
@@ -197,9 +226,11 @@ Options[CycleSample] = {
 	"Ranges" -> Automatic
 };
 
+CycleSample::badedgelengths = "One edge has more than half the total length of the polygon. No closed polygons with these edgelengths exist."
+
 (* This is the Mathematica wrapper for the compiled library It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
-CycleSample[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_, OptionsPattern[]]:=Module[{names, momentcount, bincount, funcount, bins, moments, ranges, setranges}, 
+CycleSample[d_Integer, r_?VectorQ, samplecount_Integer, OptionsPattern[]]:=Module[{names, momentcount, bincount, funcount, bins, moments, ranges, setranges,length}, 
 	bincount = OptionValue["BinCount"]; 
 	momentcount = OptionValue["MomentCount"]; 
 	names = {
@@ -217,7 +248,7 @@ CycleSample[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_, OptionsPattern
 		"IterationCount"
 	}; 
 	
-	(* Allocation. *);
+	(* Allocation. *)
 	funcount  = Length[names]; 
 	bins      = ConstantArray[0., {3, funcount, bincount}]; 
 	moments   = ConstantArray[0., {3, funcount, momentcount}]; 
@@ -228,6 +259,9 @@ CycleSample[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_, OptionsPattern
 		setranges = True;
 	];
 	
+	\[Rho] = If[OptionValue["SphereRadii"]!=None,\[Rho] = OptionValue["SphereRadii"],r];
+	
+	If[2 Max[r]>Total[r],Message[CycleSample::badedgelengths]; Return[]]
 	
 	(* Here the dynamic library is looked up and then called on the allocated buffers. *);
 	cCycleSample[d][
