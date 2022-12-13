@@ -23,13 +23,27 @@ Then try to run the package in _Mathematica_. If you get an error message of the
 
     fatal error: 'omp.h' file not found #include <omp.h>
     
-then you have to hunt down the file `omp.h` on your system. The build script always sources the _zsh_ configure file ~/zshrc. So what you can do then is to add the lines
+then you have to hunt down the file `omp.h` on your system. Here are two methods to communicate the correct paths to _Mathematica_.
 
-    export CPLUS_INCLUDE _PATH="<<path to omp.h>>:$CPLUS_INCLUDE_PATH"
-    export LIBRARY_PATH="<<path to correct OpenMP library>>:$LIBRARY_PATH"
-    export LD_LIBRARY _PATH="<<path to correct OpenMP library>>:$LD_LIBRARY_PATH"
+
+Method 1.: The build script always sources the _zsh_ configure file ~/zshrc. So what you can do then is to add the lines
+
+    export CPLUS_INCLUDE _PATH="<<directory that contains omp.h>>:$CPLUS_INCLUDE_PATH"
+    export LIBRARY_PATH="<<directory that contains the correct OpenMP library>>:$LIBRARY_PATH"
+    export LD_LIBRARY _PATH="<<directory that contains the correct OpenMP library>>:$LD_LIBRARY_PATH"
     
-and then rerun the _Mathematica_ package again. 
+and then relaunch the _Mathematica_ kernel and run the package again.
+
+Method 2.: Execute the following _Mathematica_ statement before one of the package's routines is run before the first time:
+    Compile`$CCompilerOptions = {
+      "IncludeDirectories" -> <<directory that contains omp.h>>,
+      "LibraryDirectories" -> <<directory that contains the correct OpenMP library>>
+      }
+
+Then relaunch the _Mathematica_ kernel and run the package again. 
+
+
+In both cases the build script will search these directories first (but after the system headers and libraries).
 
 If that does not work, then please contact me via email. I am happy to help.
 
