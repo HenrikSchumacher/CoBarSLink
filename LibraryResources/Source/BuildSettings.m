@@ -18,7 +18,7 @@ Switch[ $OperatingSystem
 			,"-flto"
 			,"-gline-tables-only"
 			,"-gcolumn-info"
-			,"-framework Accelerate"
+			(*,"-framework Accelerate"*)
 			,Switch[$SystemID
 			
 				,"MacOSX-ARM64"
@@ -43,7 +43,7 @@ Switch[ $OperatingSystem
 			$Failed
 		]
 		(* We make sure that the user's ~/.zshrc is sourced before compilation. *)
-		(* This way the user can append statements like 
+		(* This way the user can append statements like following to their ~/.zshrc:
 		
 			export CPLUS_INCLUDE_PATH="<<path to omp.h>>:$CPLUS_INCLUDE_PATH"
 			              
@@ -51,12 +51,12 @@ Switch[ $OperatingSystem
             export LD_LIBRARY_PATH="<<path to correct OpenMP library>>:$LD_LIBRARY_PATH"
        
 		 *)
-		,"PreCompileCommands"->"source ~/.zshrc"
-		,"IncludeDirectories" -> Join[{
-			DirectoryName[$InputFileName]
+		(*,"PreCompileCommands"->"source ~/.zshrc"*)
+		,"IncludeDirectories" -> Flatten[{
+			"IncludeDirectories"/.Compile`$CCompilerOptions
+			,DirectoryName[$InputFileName]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
-			},
-			Map[
+			,Map[
 			  If[FileExistsQ[#],#,Nothing]&,
 			  (*The problem is to find a omp.h header that is compatible with the libomp.dylib/libiomp5.dylib shipped with Mathematica.*)
 			  (*Oddly enough, the header files are not provided.*)
@@ -69,11 +69,10 @@ Switch[ $OperatingSystem
 			    ,"/opt/homebrew/opt/libomp/include"(* used by homebrew when libomp collides with gcc's libgomp (on Apple Silicon) *)
 			    ,"/opt/local/include/libomp"(* used by macports *)
 			 }]
-		]
-		,"LibraryDirectories" -> Join[{
-			(*FileNameJoin[{$InstallationDirectory,"SystemFiles","Libraries",$SystemID}]*)
-			},
-			Map[
+		}]
+		,"LibraryDirectories" -> Flatten[{
+			"LibraryDirectories"/.Compile`$CCompilerOptions
+			,Map[
 			  If[FileExistsQ[#],#,Nothing]&,
 			  (*CreateLibrary will always link Mathematica's version of OpenMP (libomp.dylib or libiomp5.dylib).*)
 			  (*Anyways, we provide search paths for sane installations of homebrew and macports.*)
@@ -85,7 +84,7 @@ Switch[ $OperatingSystem
 			    ,"/opt/homebrew/opt/libomp/lib"(* used by homebrew when libomp collides with gcc's libgomp (on Apple Silicon) *)
 			    ,"/opt/local/include/lib"(* used by macports *)
 			 }]
-			 ]
+			 }]
 		,"ShellCommandFunction" -> Print
 		,"ShellOutputFunction" -> Print
 	},
@@ -99,38 +98,41 @@ Switch[ $OperatingSystem
 			,"-fno-math-errno"
 			,"-ffast-math"
 			,"-Ofast"
+			,"-flto"
 			,"-m64"
 			,"-fopenmp -fopenmp-simd"
 			,"-march=native"
+			,"-mtune=native"
 		}
-		,"LinkerOptions"->{
-			"-lm","-ldl","-liomp5"
-		}
+		,"LinkerOptions"->{"-lm","-ldl","-liomp5"}
 		,"IncludeDirectories" -> {
-			FileNameJoin[{DirectoryName[$InputFileName]}]
+			"IncludeDirectories"/.Compile`$CCompilerOptions
+			,FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
+			,{(*Add you own include directories here*)}
 		}
-		,"LibraryDirectories" -> {
-			FileNameJoin[{$InstallationDirectory,"SystemFiles","Libraries",$SystemID}]
-		}
+		,"LibraryDirectories" -> Flatten[{
+			"LibraryDirectories"/.Compile`$CCompilerOptions
+			,{(*Add you own library directories here*)}
+		}]
 		,"ShellCommandFunction" -> Print
 		,"ShellOutputFunction" -> Print
 	},
 	
-	"Windows", (* Compilation settings for Windows. Untested so far. *)
+	"Windows", (* Compilation settings for Windows and Microsoft Visual Studio. Untested so far. *)
 	{
 		"CompileOptions" -> {"/EHsc", "/wd4244", "/DNOMINMAX", "/arch:AVX"}
-		,"LinkerOptions"->{
-			"libiomp5md.lib"
-		}
-		,"IncludeDirectories" -> {
-			FileNameJoin[{DirectoryName[$InputFileName]}]
-			,FileNameJoin[{DirectoryName[$InputFileName],"libomp"}]
+		,"LinkerOptions"->{"libiomp5md.lib"}
+		,"IncludeDirectories" -> Flatten[{
+			"IncludeDirectories"/.Compile`$CCompilerOptions
+			,FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
-		}
-		,"LibraryDirectories" -> {
-			FileNameJoin[{$InstallationDirectory,"SystemFiles","Libraries",$SystemID}]
-		}
+			,{(*Add you own include directories here*)}
+		}]
+		,"LibraryDirectories" -> Flatten[{
+			"LibraryDirectories"/.Compile`$CCompilerOptions
+			,{(*Add you own library directories here*)}
+		}]
 		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> Print
 	}
