@@ -38,7 +38,7 @@ Method 2.: Execute the following _Mathematica_ statement before one of the packa
     Compile`$CCompilerOptions = {
       "IncludeDirectories" -> <<directory that contains omp.h>>,
       "LibraryDirectories" -> <<directory that contains the correct OpenMP library>>
-      }
+    }
 
 Then relaunch the _Mathematica_ kernel and run the package again. 
 
