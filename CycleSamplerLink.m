@@ -32,7 +32,7 @@ If[!FileExists[$sourceDirectory],CreateDirectory[$sourceDirectory]];
 If[Not@MemberQ[$LibraryPath, $libraryDirectory],AppendTo[$LibraryPath, $libraryDirectory]];
 
 
-(* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time.*);
+(* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time.*)
 
 ClearAll[cCycleSample];
 cCycleSample[d_Integer?Positive]:=Module[{lib,file,ds,class,name},
@@ -198,7 +198,7 @@ Options[CycleSample] = {
 };
 
 (* This is the Mathematica wrapper for the compiled library It allocates the accumulation buffers, 
-sends them to the dynamic library, and postprocesses the outputs.*);
+sends them to the dynamic library, and postprocesses the outputs.*)
 CycleSample[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_, OptionsPattern[]]:=Module[{names, momentcount, bincount, funcount, bins, moments, ranges, setranges}, 
 	bincount = OptionValue["BinCount"]; 
 	momentcount = OptionValue["MomentCount"]; 
