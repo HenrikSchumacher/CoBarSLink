@@ -31,7 +31,7 @@ then you have to hunt down the file `omp.h` on your system. The build script alw
     
 and then rerun the _Mathematica_ package again. 
 
-If that does not work, then contact me via email. I am happy to help.
+If that does not work, then please contact me via email. I am happy to help.
 
 
 The library might compile also with other platforms, provided the correct compiler flags are given. These can be edited in the file Source/BuildSettings.m. It's some time since I ran this build system under Linux or Windows. So please contact me if you are interested and need support.
