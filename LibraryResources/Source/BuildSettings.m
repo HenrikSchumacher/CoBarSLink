@@ -42,18 +42,8 @@ Switch[ $OperatingSystem
 			,_,
 			$Failed
 		]
-		(* We make sure that the user's ~/.zshrc is sourced before compilation. *)
-		(* This way the user can append statements like following to their ~/.zshrc:
-		
-			export CPLUS_INCLUDE_PATH="<<path to omp.h>>:$CPLUS_INCLUDE_PATH"
-			              
-			export LIBRARY_PATH="<<path to correct OpenMP library>>:$LIBRARY_PATH"
-            export LD_LIBRARY_PATH="<<path to correct OpenMP library>>:$LD_LIBRARY_PATH"
-       
-		 *)
-		(*,"PreCompileCommands"->"source ~/.zshrc"*)
 		,"IncludeDirectories" -> Flatten[{
-			"IncludeDirectories"/.Compile`$CCompilerOptions
+			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
 			,DirectoryName[$InputFileName]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 			,Map[
@@ -71,7 +61,7 @@ Switch[ $OperatingSystem
 			 }]
 		}]
 		,"LibraryDirectories" -> Flatten[{
-			"LibraryDirectories"/.Compile`$CCompilerOptions
+			("LibraryDirectories"/.Compiler`$CCompilerOptions)/."LibraryDirectories"->Nothing
 			,Map[
 			  If[FileExistsQ[#],#,Nothing]&,
 			  (*CreateLibrary will always link Mathematica's version of OpenMP (libomp.dylib or libiomp5.dylib).*)
@@ -85,7 +75,7 @@ Switch[ $OperatingSystem
 			    ,"/opt/local/include/lib"(* used by macports *)
 			 }]
 			 }]
-		,"ShellCommandFunction" -> Print
+		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> Print
 	},
 	"Unix", (* Compilation settings for Linux on x86 architecture. Untested so far. *)
@@ -106,16 +96,16 @@ Switch[ $OperatingSystem
 		}
 		,"LinkerOptions"->{"-lm","-ldl","-liomp5"}
 		,"IncludeDirectories" -> {
-			"IncludeDirectories"/.Compile`$CCompilerOptions
+			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
 			,FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 			,{(*Add you own include directories here*)}
 		}
 		,"LibraryDirectories" -> Flatten[{
-			"LibraryDirectories"/.Compile`$CCompilerOptions
+			("LibraryDirectories"/.Compiler`$CCompilerOptions)/."LibraryDirectories"->Nothing
 			,{(*Add you own library directories here*)}
 		}]
-		,"ShellCommandFunction" -> Print
+		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> Print
 	},
 	
@@ -124,13 +114,13 @@ Switch[ $OperatingSystem
 		"CompileOptions" -> {"/EHsc", "/wd4244", "/DNOMINMAX", "/arch:AVX"}
 		,"LinkerOptions"->{"libiomp5md.lib"}
 		,"IncludeDirectories" -> Flatten[{
-			"IncludeDirectories"/.Compile`$CCompilerOptions
+			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
 			,FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 			,{(*Add you own include directories here*)}
 		}]
 		,"LibraryDirectories" -> Flatten[{
-			"LibraryDirectories"/.Compile`$CCompilerOptions
+			"LibraryDirectories"/.Compiler`$CCompilerOptions
 			,{(*Add you own library directories here*)}
 		}]
 		(*,"ShellCommandFunction" -> Print*)
