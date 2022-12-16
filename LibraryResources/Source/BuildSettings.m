@@ -82,7 +82,7 @@ Switch[ $OperatingSystem
 			 }]
 			 }]
 		(*,"ShellCommandFunction" -> Print*)
-		,"ShellOutputFunction" -> Print
+		,"ShellOutputFunction" -> (If[#=!="",Print[#]]&)
 	},
 	"Unix", (* Compilation settings for Linux on x86 architecture. Untested so far. *)
 	{

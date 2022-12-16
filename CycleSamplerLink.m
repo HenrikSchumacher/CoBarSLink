@@ -3,83 +3,83 @@
 BeginPackage["CycleSamplerLink`", {"CCompilerDriver`"}];
 
 
+Begin["`Private`"];
+
+sphereRadiiUsage = "\"SphereRadii\" -> \[Rho]. If the edgelengths \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \",\", \"\[Ellipsis]\", \",\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r_1, \\\\dotsc, r_n\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\) are different from one another, there are different plausible choices of metric for the space of polygons. If \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], \"(\", StyleBox[\"r\", \"TI\"], \")\"}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"S^{d-1}(r)\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\) is the sphere of radius \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[StyleBox[\"r\", \"TI\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\), we may define
+
+	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(1) \\\\times \\\\cdots \\\\times S^{d-1}(1) \\\\mid \\\\sum r_i x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\)
+
+or we may define
+
+	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]], \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(r_1) \\\\times \\\\cdots \\\\times S^{d-1}(r_n) \\\\mid \\\\sum x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\)
+	
+In the special case of Millson and Kapovich's symplectic structure on polygons in \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SuperscriptBox[StyleBox[\"R\", FontSlant -> \"Bold\"], \"3\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\mathbf{R}^3\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\), they define
+
+	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"]], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]], \")\"}], \"|\", \"\[Sum]\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^2(\\\\sqrt{r_1}) \\\\times \\\\cdots \\\\times S^2(\\\\sqrt{r_n}) \\\\mid \\\\sum \\\\sqrt{r_i} x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\)
+	
+These choices yield different metrics on the space of polygons and hence different measures for sampling.
+The default choice is the second option (sphere radii equal to edgelengths), but the user may set the 
+radii of the spheres \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SubscriptBox[\"\[Rho]\", StyleBox[\"i\", \"TI\"]], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\rho_i\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\) separately.
+";
+
+End[];
+
+
 CycleSample::usage = "CycleSample[d_Integer, r_?VectorQ, samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
 The vector r contains the length of each edge of the polygon. As option one can set:
 
-\"SphereRadii\" -> \[Rho]. If the edgelengths \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \",\", \"\[Ellipsis]\", \",\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r_1, \\\\dotsc, r_n\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) are different from one another, there are different plausible choices of metric for the space of polygons. If \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], \"(\", StyleBox[\"r\", \"TI\"], \")\"}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"S^{d-1}(r)\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) is the sphere of radius \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[StyleBox[\"r\", \"TI\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\), we may define
-
-	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(1) \\\\times \\\\cdots \\\\times S^{d-1}(1) \\\\mid \\\\sum r_i x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\)
-
-or we may define
-
-	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]], \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(r_1) \\\\times \\\\cdots \\\\times S^{d-1}(r_n) \\\\mid \\\\sum x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\)
-	
-In the special case of Millson and Kapovich's symplectic structure on polygons in \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SuperscriptBox[StyleBox[\"R\", FontSlant -> \"Bold\"], \"3\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\mathbf{R}^3\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\), they define
-
-	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"]], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]], \")\"}], \"|\", \"\[Sum]\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^2(\\\\sqrt{r_1}) \\\\times \\\\cdots \\\\times S^2(\\\\sqrt{r_n}) \\\\mid \\\\sum \\\\sqrt{r_i} x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\)
-	
-These choices yield different metrics on the space of polygons and hence different measures for sampling.
-The default choice is the second option (sphere radii equal to edgelengths), but the user may set the 
-radii of the spheres \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SubscriptBox[\"\[Rho]\", StyleBox[\"i\", \"TI\"]], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\rho_i\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) separately.
-";
+"<>CycleSamplerLink`Private`sphereRadiiUsage;
 
 
 CycleSampleCompressed::usage = "CycleSampleCompressed[d_Integer, r_?VectorQ, samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space. 
-The vector r contains the length of each edge of the polygon. Several options can be set:
+The vector r contains the length of each edge of the polygon. As option one can set:
 
-\"BinCount\" -> d. CycleSampleCompressed is designed for sample ensembles which are too large to be stored in memory. For each variable, it returns the count of samples in equally spaced bins. The default number of bins is 1000, but this may be changed with the BinCount option.
-
-\"SphereRadii\" -> \[Rho]. If the edgelengths \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \",\", \"\[Ellipsis]\", \",\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r_1, \\\\dotsc, r_n\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) are different from one another, there are different plausible choices of metric for the space of polygons. If \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], \"(\", StyleBox[\"r\", \"TI\"], \")\"}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"S^{d-1}(r)\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) is the sphere of radius \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[StyleBox[\"r\", \"TI\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\), we may define
-
-	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(1) \\\\times \\\\cdots \\\\times S^{d-1}(1) \\\\mid \\\\sum r_i x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\)
-
-or we may define
-
-	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]], \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(r_1) \\\\times \\\\cdots \\\\times S^{d-1}(r_n) \\\\mid \\\\sum x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\)
-	
-In the special case of Millson and Kapovich's symplectic structure on polygons in \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SuperscriptBox[StyleBox[\"R\", FontSlant -> \"Bold\"], \"3\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\mathbf{R}^3\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\), they define
-
-	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"]], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]], \")\"}], \"|\", \"\[Sum]\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^2(\\\\sqrt{r_1}) \\\\times \\\\cdots \\\\times S^2(\\\\sqrt{r_n}) \\\\mid \\\\sum \\\\sqrt{r_i} x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\)
-	
-These choices yield different metrics on the space of polygons and hence different measures for sampling.
-The default choice is the second option (sphere radii equal to edgelengths), but the user may set the 
-radii of the spheres \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SubscriptBox[\"\[Rho]\", StyleBox[\"i\", \"TI\"]], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\rho_i\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) separately.
-";
+"<>CycleSamplerLink`Private`sphereRadiiUsage;
 
 
-CycleSampleChordLengths::usage = "CycleSampleChordLengths[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, vertexranges_?MatrixQ, samplecount_Integer] draws samplecount samples of closed polygons of edege lengths r in d-dimensional Euclidean space. Then it evaluates the chord length functions specified by vertexranges on the samples and returns binned informations as well as their moments. The vector \[Rho] specifies the Riemannian metric on the edge space";
+CycleSampleChordLengths::usage = "CycleSampleChordLengths[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, vertexranges_?MatrixQ, samplecount_Integer] draws samplecount samples of closed polygons of edege lengths r in d-dimensional Euclidean space. Then it evaluates the chord length functions specified by vertexranges on the samples and returns binned informations as well as their moments. As option one can set:
+
+"<>CycleSamplerLink`Private`sphereRadiiUsage;
 
 
-RandomClosedPolygons::usage="RandomClosedPolygons[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_Integer] generates samplecount open Length[r]-gons in d dimensional Euclidean space, closes them via the conformal barycenter method. Then it returns: 
+RandomClosedPolygons::usage="RandomClosedPolygons[d_Integer, r_?VectorQ, samplecount_Integer] generates samplecount open Length[r]-gons in d dimensional Euclidean space, closes them via the conformal barycenter method. Then it returns: 
 	(i)   the open polygons' unit edge vectors;
 	(ii)  the conformal shift vectors; 
 	(iii) the closed polygons' unit edge vectors;
 	(iv)  the sampling weights for the edge space; and
-	(v)   the sampling weights for the quotient space of the edge space by the action of SO(d).";
+	(v)   the sampling weights for the quotient space of the edge space by the action of SO(d).
+
+	 As option one can set:
+
+"<>CycleSamplerLink`Private`sphereRadiiUsage;
 
 
 MomentPolytopeSample::usage="MomentPolytopeSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space.";
 
 
+(*Some error and warning messages.*)
+
+CycleSamplerLink::badedgelengths = "One edge has more than half the total length of the polygon. No closed polygons with these edgelengths exist.";
+
+CycleSamplerLink::badsphereradii = "The Length of the vector given as value for option \"SphereRadii\" does not coincide with the Length of the second argument.";
+
+CycleSamplerLink::badsphereradii2 = "The value for the option \"SphereRadii\" has to be a numerical vector or a String.";
+
+CycleSamplerLink::badsphereradii3 = "Bad value `1` for the option \"SphereRadii\".";
+
+
 Begin["`Private`"];
 
 
+$packageFile  = $InputFileName;
 $packageDirectory  = DirectoryName[$InputFileName];
 
 $libraryDirectory  = FileNameJoin[{$packageDirectory, "LibraryResources", $SystemID}];
@@ -94,7 +94,7 @@ If[Not@MemberQ[$LibraryPath, $libraryDirectory],AppendTo[$LibraryPath, $libraryD
 (* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time.*)
 
 ClearAll[cCycleSample];
-cCycleSample[d_Integer?Positive]:=Module[{lib,file,ds,class,name},
+cCycleSample[d_Integer?Positive]:=Module[{lib,file,ds,class,name,t},
 
 	name = "CycleSample";
 
@@ -175,20 +175,22 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 "Text"
 		];
 		
-		(* Invoke CreateLibrary to compile the C++ code. *);
-		lib=CreateLibrary[
-			{file},
-			name<>"_"<>ds<>"D",
-			"TargetDirectory"-> $libraryDirectory,
-			(*"ShellCommandFunction"\[Rule]Print,*)
-			(*"ShellOutputFunction"\[Rule]Print,*)
-			Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
-		];
-		Print["Compilation done."];
+		(* Invoke CreateLibrary to compile the C++ code. *)
+		t = AbsoluteTiming[
+			lib=CreateLibrary[
+				{file},
+				name,
+				"TargetDirectory"-> $libraryDirectory,
+				(*"ShellCommandFunction"\[Rule]Print,*)
+				(*"ShellOutputFunction"\[Rule]Print,*)
+				Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
+			]
+		][[1]];
+		Print["Compilation done. Time elapsed = ", t, " s.\n"];
 		DeleteFile[file];
 	];
 	
-	(* Load the resulting dynamic libary into the Mathematica session; use memoization to quickly look up already loaded libraries.*);
+	(* Load the resulting dynamic libary into the Mathematica session; use memoization to quickly look up already loaded libraries.*)
 	cCycleSample[d] = LibraryFunctionLoad[
 		lib, 
 		name,
@@ -203,26 +205,13 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 
 Options[CycleSample] = {
-	(*"MaxIterations" -> 1000, 
-	"ArmijoSlopeFactor" -> 0.01, 
-	"ArmijoShrinkFactor" -> 0.5, 
-	"Regularization" -> 1., 
-	"Tolerance" -> 1./10^12,*)
 	"SphereRadii" -> "EdgeLengths",
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
 };
 
-CycleSample::badedgelengths = "One edge has more than half the total length of the polygon. No closed polygons with these edgelengths exist.";
-
-CycleSample::badsphereradii = "The Length of the vector given as value for option \"SphereRadii\" does not coincide with the Length of the second argument.";
-
-CycleSample::badsphereradii2 = "The value for the option \"SphereRadii\" has to be a numerical vector or a String.";
-
-CycleSample::badsphereradii3 = "Bad value `1` for the option \"SphereRadii\".";
-
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
-CycleSample[d_Integer, r_?VectorQ, samplecount_Integer, OptionsPattern[]]:=Module[{names, funcount, length, \[Rho], values, edgespaceweights, edgequotientspaceweights}, 
+CycleSample[d_Integer, r_?(VectorQ[#,NumericQ]&), samplecount_Integer, OptionsPattern[]]:=Module[{names, funcount, length, \[Rho], values, edgespaceweights, edgequotientspaceweights}, 
 	
 	names = {
 		"ChordLength(0,2)", 
@@ -244,39 +233,18 @@ CycleSample[d_Integer, r_?VectorQ, samplecount_Integer, OptionsPattern[]]:=Modul
 	values                   = ConstantArray[0., {samplecount, funcount}]; 
 	edgespaceweights         = ConstantArray[0., {samplecount}]; 
 	edgequotientspaceweights = ConstantArray[0., {samplecount}]; 
-		
-	\[Rho] = OptionValue["SphereRadii"];
-	If[VectorQ[\[Rho],NumericQ],
-		If[!TrueQ[Length[\[Rho]]==Length[r]],
-			Message[CycleSample::badsphereradii];
-			Return[$Failed];
-		];
-		,
-		If[!StringQ[\[Rho]],
-			Message[CycleSample::badsphereradii2];
-			Return[$Failed];
-		,
-			Switch[\[Rho],
-				"EdgeLengths", 
-				\[Rho]=r,
-				"One", 
-				\[Rho]=ConstantArray[1.,Length[r]],
-				"SymplecticQuotient",
-				\[Rho]=Sqrt[r],
-				_, 
-				(Message[CycleSample::badsphereradii3,\[Rho]];Return[$Failed];)
-			];
-		];
-	];
 	
-	If[2 Max[r]>Total[r], Message[CycleSample::badedgelengths]; Return[$Failed]];
+	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
+	If[\[Rho]===$Failed,Return[$Failed]];
 	
-	(* Here the dynamic library is looked up and then called on the allocated buffers. *);
+	If[2 Max[r] > Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+	
+	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
 	cCycleSample[d][
 		r, \[Rho], values, edgespaceweights, edgequotientspaceweights, samplecount, OptionValue["ThreadCount"]
 	];
 	
-	(* Postprocessing, returning structured data in the form of nested Associations. *);
+	(* Postprocessing, returning structured data in the form of nested Associations. *)
 	Association[
 		"Samples" -> Association[Table[names[[i]] -> values[[All,i]],{i, 1, Length[names]}]],
 		"Weights" -> Association[
@@ -290,7 +258,7 @@ CycleSample[d_Integer, r_?VectorQ, samplecount_Integer, OptionsPattern[]]:=Modul
 (* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time.*)
 
 ClearAll[cCycleSampleCompressed];
-cCycleSampleCompressed[d_Integer?Positive]:=Module[{lib,file,ds,class,name},
+cCycleSampleCompressed[d_Integer?Positive]:=Module[{lib,file,ds,class,name,t},
 
 	name = "CycleSampleCompressed";
 
@@ -352,7 +320,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	F_list.push_back( "<>class["EdgeQuotientSpaceSamplingWeight"]<>"( ) );
 	F_list.push_back( "<>class["IterationCount"]<>"( ) );
 
-	const mint fun_count    = static_cast<mint>( F_list.size() );
+	const mint fun_count = static_cast<mint>( F_list.size() );
 
 	// This creates an instance C of the Sampler class.
 	CycleSampler::Sampler<"<>ds<>",mreal,mint> C (
@@ -412,20 +380,22 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 "Text"
 		];
 		
-		(* Invoke CreateLibrary to compile the C++ code. *);
-		lib=CreateLibrary[
-			{file},
-			name<>"_"<>ds<>"D",
-			"TargetDirectory"-> $libraryDirectory,
-			(*"ShellCommandFunction"\[Rule]Print,*)
-			(*"ShellOutputFunction"\[Rule]Print,*)
-			Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
-		];
-		Print["Compilation done."];
+		(* Invoke CreateLibrary to compile the C++ code. *)
+		t = AbsoluteTiming[
+			lib=CreateLibrary[
+				{file},
+				name,
+				"TargetDirectory"-> $libraryDirectory,
+				(*"ShellCommandFunction"\[Rule]Print,*)
+				(*"ShellOutputFunction"\[Rule]Print,*)
+				Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
+			]
+		][[1]];
+		Print["Compilation done. Time elapsed = ", t, " s.\n"];
 		DeleteFile[file];
 	];
 	
-	(* Load the resulting dynamic libary into the Mathematica session; use memoization to quickly look up already loaded libraries.*);
+	(* Load the resulting dynamic libary into the Mathematica session; use memoization to quickly look up already loaded libraries.*)
 	cCycleSampleCompressed[d] = LibraryFunctionLoad[
 		lib, 
 		name,
@@ -440,11 +410,6 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 
 Options[CycleSampleCompressed] = {
-	(*"MaxIterations" -> 1000, 
-	"ArmijoSlopeFactor" -> 0.01, 
-	"ArmijoShrinkFactor" -> 0.5, 
-	"Regularization" -> 1., 
-	"Tolerance" -> 1./10^12,*)
 	"SphereRadii" -> "EdgeLengths",
 	"BinCount" -> 1000, 
 	"MomentCount" -> 3,
@@ -453,17 +418,9 @@ Options[CycleSampleCompressed] = {
 	"Ranges" -> Automatic
 };
 
-CycleSampleCompressed::badedgelengths = "One edge has more than half the total length of the polygon. No closed polygons with these edgelengths exist.";
-
-CycleSampleCompressed::badsphereradii = "The Length of the vector given as value for option \"SphereRadii\" does not coincide with the Length of the second argument.";
-
-CycleSampleCompressed::badsphereradii2 = "The value for the option \"SphereRadii\" has to be a numerical vector or a String.";
-
-CycleSampleCompressed::badsphereradii3 = "Bad value `1` for the option \"SphereRadii\".";
-
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
-CycleSampleCompressed[d_Integer, r_?VectorQ, samplecount_Integer, OptionsPattern[]]:=Module[{names, momentcount, bincount, funcount, bins, moments, ranges, setranges, length, \[Rho]}, 
+CycleSampleCompressed[d_Integer, r_?(VectorQ[#,NumericQ]&), samplecount_Integer, OptionsPattern[]]:=Module[{names, momentcount, bincount, funcount, bins, moments, ranges, setranges, length, \[Rho]}, 
 	bincount = OptionValue["BinCount"]; 
 	momentcount = OptionValue["MomentCount"]; 
 	names = {
@@ -481,51 +438,30 @@ CycleSampleCompressed[d_Integer, r_?VectorQ, samplecount_Integer, OptionsPattern
 		"IterationCount"
 	}; 
 	
+	If[2 Max[r]>Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+		
+	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
+	If[\[Rho]===$Failed,Return[$Failed]];
+		
 	(* Allocation. *)
 	funcount  = Length[names]; 
 	bins      = ConstantArray[0., {3, funcount, bincount}]; 
 	moments   = ConstantArray[0., {3, funcount, momentcount}]; 
 	ranges    = OptionValue["Ranges"];
 	setranges = False;
+	
 	If[ !( MatrixQ[ranges,NumericQ] && Dimensions[ranges]=={funcount, 2} ),
 		ranges = ConstantArray[0., {funcount, 2}]; 
 		setranges = True;
 	];
 	
-		
-	\[Rho] = OptionValue["SphereRadii"];
-	If[VectorQ[\[Rho],NumericQ],
-		If[!TrueQ[Length[\[Rho]]==Length[r]],
-			Message[CycleSampleCompressed::badsphereradii];
-			Return[$Failed];
-		];
-		,
-		If[!StringQ[\[Rho]],
-			Message[CycleSampleCompressed::badsphereradii2];
-			Return[$Failed];
-		,
-			Switch[\[Rho],
-				"EdgeLengths", 
-				\[Rho]=r,
-				"One", 
-				\[Rho]=ConstantArray[1.,Length[r]],
-				"SymplecticQuotient",
-				\[Rho]=Sqrt[r],
-				_, 
-				(Message[CycleSampleCompressed::badsphereradii3,\[Rho]];Return[$Failed];)
-			];
-		];
-	];
-	
-	If[2 Max[r]>Total[r], Message[CycleSampleCompressed::badedgelengths]; Return[$Failed]];
-	
-	(* Here the dynamic library is looked up and then called on the allocated buffers. *);
+	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
 	cCycleSampleCompressed[d][
 		r, \[Rho], bins, moments, Developer`ToPackedArray[ranges], samplecount, OptionValue["ThreadCount"],
 		Boole[False], Boole[setranges], Boole[OptionValue["Normalize"]]
 	];
 	
-	(* Postprocessing, returning structured data in the form of nested Associations. *);
+	(* Postprocessing, returning structured data in the form of nested Associations. *)
 	Association[
 		"Naive" -> Association[
 			Table[
@@ -565,7 +501,7 @@ CycleSampleCompressed[d_Integer, r_?VectorQ, samplecount_Integer, OptionsPattern
 
 
 ClearAll[cCycleSampleChordLengths];
-cCycleSampleChordLengths[d_Integer?Positive]:=Module[{lib,file,ds,class,name},
+cCycleSampleChordLengths[d_Integer?Positive]:=Module[{lib,file,ds,class,name,t},
 
 	name = "CycleSampleChordLengths";
 
@@ -647,15 +583,18 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 "Text"
 		];
 
-		lib=CreateLibrary[
-			{file},
-			name<>"_"<>ds<>"D",
-			"TargetDirectory"-> $libraryDirectory,
-			(*"ShellCommandFunction"\[Rule]Print,*)
-			(*"ShellOutputFunction"\[Rule]Print,*)
-			Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
-		];
-		Print["Compilation done."];
+		(* Invoke CreateLibrary to compile the C++ code. *)
+		t = AbsoluteTiming[
+			lib=CreateLibrary[
+				{file},
+				name,
+				"TargetDirectory"-> $libraryDirectory,
+				(*"ShellCommandFunction"\[Rule]Print,*)
+				(*"ShellOutputFunction"\[Rule]Print,*)
+				Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
+			]
+		][[1]];
+		Print["Compilation done. Time elapsed = ", t, " s.\n"];
 		DeleteFile[file];
 	];
 
@@ -674,17 +613,19 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 
 Options[CycleSampleChordLengths] = {
-	(*"MaxIterations" -> 1000, 
-	"ArmijoSlopeFactor" -> 0.01, 
-	"ArmijoShrinkFactor" -> 0.5, 
-	"Regularization" -> 1., 
-	"Tolerance" -> 1./10^12,*)
+	"SphereRadii" -> "EdgeLengths",
 	"BinCount" -> 1000, 
 	"MomentCount" -> 3,  
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
 };
 
-CycleSampleChordLengths[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, vertexranges_?MatrixQ, samplecount_, OptionsPattern[]]:=Module[{names, momentcount, bincount, funcount, bins, moments, ranges}, 
+CycleSampleChordLengths[d_Integer, r_?(VectorQ[#,NumericQ]&), vertexranges_?MatrixQ, samplecount_, OptionsPattern[]]:=Module[{names, momentcount, bincount, funcount, bins, moments, ranges, \[Rho]}, 
+
+	If[2 Max[r] > Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+		
+	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
+	If[\[Rho]===$Failed, Return[$Failed]];		
+		
 	bincount = OptionValue["BinCount"]; 
 	momentcount = OptionValue["MomentCount"]; 
 	names = Table["ChordLength("<>IntegerString[v[[1]]]<>","<>IntegerString[v[[2]]]<>")",{v,vertexranges}];
@@ -735,7 +676,7 @@ CycleSampleChordLengths[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, vertexranges_?Ma
 
 
 ClearAll[cRandomClosedPolygons];
-cRandomClosedPolygons[d_Integer?Positive]:=Module[{lib,file,ds,name},
+cRandomClosedPolygons[d_Integer?Positive]:=Module[{lib,file,ds,name,t},
 
 	name = "RandomClosedPolygons";
 	
@@ -823,15 +764,18 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 "Text"
 		];
 
-		lib=CreateLibrary[
-			{file},
-			name<>"_"<>ds<>"D",
-			"TargetDirectory"-> $libraryDirectory,
-			(*"ShellCommandFunction"\[Rule]Print,*)
-			(*"ShellOutputFunction"\[Rule]Print,*)
-			Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
-		];
-		Print["Compilation done."];
+		(* Invoke CreateLibrary to compile the C++ code. *)
+		t = AbsoluteTiming[
+			lib=CreateLibrary[
+				{file},
+				name,
+				"TargetDirectory"-> $libraryDirectory,
+				(*"ShellCommandFunction"\[Rule]Print,*)
+				(*"ShellOutputFunction"\[Rule]Print,*)
+				Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
+			]
+		][[1]];
+		Print["Compilation done. Time elapsed = ", t, " s.\n"];
 		DeleteFile[file];
 	];
 
@@ -850,44 +794,42 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 RandomClosedPolygons::len="Lengths of the input vectors in the second and third argument are expected to coincide.";
 
 Options[RandomClosedPolygons ]= {
-	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
+	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
+	"SphereRadii" -> "EdgeLengths"
 }
 
-RandomClosedPolygons[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, samplecount_, OptionsPattern[]]:=If[
-	Length[r]==Length[\[Rho]]
-	,
-	Module[{W,edgecount,x,w,y,Klist,Kquotlist},
-		edgecount=Length[r];
+RandomClosedPolygons[d_Integer, r_?(VectorQ[#,NumericQ]&), samplecount_, OptionsPattern[]]:=Module[{W,edgecount,x,w,y,Klist,Kquotlist,\[Rho]},
+
+	If[2 Max[r]>Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
 		
-		x = ConstantArray[0.,{samplecount,edgecount,d}];
-		w = ConstantArray[0.,{samplecount,          d}];
-		y = ConstantArray[0.,{samplecount,edgecount,d}];
+	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
+	If[\[Rho]===$Failed, Return[$Failed]];
+
+	edgecount=Length[r];
 		
-		Klist     = ConstantArray[0.,{samplecount}];
-		Kquotlist = ConstantArray[0.,{samplecount}];
-		
-		cRandomClosedPolygons[d][r,\[Rho],x,w,y,Klist,Kquotlist,OptionValue["ThreadCount"]];
-		
-		Association[
-			"OpenPolygonUnitEdgeVectors"->x,
-			"ShiftVectors"->w,
-			"ClosedPolygonUnitEdgeVectors"->y,
-			"EdgeSpaceSamplingWeights"->Klist,
-			"EdgeQuotientSpaceSamplingWeights"->Kquotlist,
-			"EdgeLengths"->r,
-			"RiemannianWeights"->\[Rho]
-		]
+	x = ConstantArray[0.,{samplecount,edgecount,d}];
+	w = ConstantArray[0.,{samplecount,          d}];
+	y = ConstantArray[0.,{samplecount,edgecount,d}];
+
+	Klist     = ConstantArray[0.,{samplecount}];
+	Kquotlist = ConstantArray[0.,{samplecount}];
+
+	cRandomClosedPolygons[d][r,\[Rho],x,w,y,Klist,Kquotlist,OptionValue["ThreadCount"]];
+
+	Association[
+		"OpenPolygonUnitEdgeVectors"->x,
+		"ShiftVectors"->w,
+		"ClosedPolygonUnitEdgeVectors"->y,
+		"EdgeSpaceSamplingWeights"->Klist,
+		"EdgeQuotientSpaceSamplingWeights"->Kquotlist,
+		"EdgeLengths"->r,
+		"SphereRadii"->\[Rho]
 	]
-	,
-	(
-		Message[RandomClosedPolygons::len];
-		$Failed
-	)
 ];
 
 
 ClearAll[cMomentPolytopeSampler];
-cMomentPolytopeSampler := cMomentPolytopeSampler = Module[{lib,file,name},
+cMomentPolytopeSampler := cMomentPolytopeSampler = Module[{lib,file,name,t},
 
 	name = "MomentPolytopeSampler";
 	
@@ -930,15 +872,18 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 "Text"
 		];
 
-		lib=CreateLibrary[
-			{file},
-			name,
-			"TargetDirectory"-> $libraryDirectory,
-			(*"ShellCommandFunction"\[Rule]Print,*)
-			(*"ShellOutputFunction"\[Rule]Print,*)
-			Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
-		];
-		Print["Compilation done."];
+		(* Invoke CreateLibrary to compile the C++ code. *)
+		t = AbsoluteTiming[
+			lib=CreateLibrary[
+				{file},
+				name,
+				"TargetDirectory"-> $libraryDirectory,
+				(*"ShellCommandFunction"\[Rule]Print,*)
+				(*"ShellOutputFunction"\[Rule]Print,*)
+				Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
+			]
+		][[1]];
+		Print["Compilation done. Time elapsed = ", t, " s.\n"];
 		DeleteFile[file];
 	];
 
@@ -965,6 +910,45 @@ MomentPolytopeSample[edgecount_Integer?Positive, samplecount_Integer?Positive, O
 		"Trials"->trials
 	]
 ]
+
+
+processSphereRadii[r_?VectorQ, \[Rho]_]:=If[
+	VectorQ[\[Rho],NumericQ]
+,
+	If[
+		!TrueQ[Length[\[Rho]]==Length[r]]
+	,
+		Message[CycleSamplerLink::badsphereradii];
+		Return[$Failed];
+	,   
+		Return[\[Rho]];
+	];
+,
+	If[
+		!StringQ[\[Rho]]
+	,
+		Message[CycleSamplerLink::badsphereradii2];
+		Return[$Failed];
+	,
+		Switch[
+			\[Rho]
+			,
+			"EdgeLengths", Return[r];
+			,
+			"One", Return[ConstantArray[1.,Length[r]]];
+			,
+			"SymplecticQuotient",Return[Sqrt[r]];
+			,
+			_, (Message[CycleSamplerLink::badsphereradii3,\[Rho]];Return[$Failed];)
+		];
+	];
+];
+
+
+clearLibraries[]:=(
+	Scan[DeleteFile,FileNames["*"<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension,$libraryDirectory]];
+	Get[$packageFile];
+);
 
 
 End[];
