@@ -21,6 +21,7 @@ cRandomClosedPolygons[d_Integer?Positive]:=Module[{lib, libname, file, ds, name,
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
 
+#include \"Tensors/Tensors.hpp\"
 #include \"CycleSampler.hpp\"
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
