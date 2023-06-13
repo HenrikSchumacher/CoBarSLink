@@ -26,7 +26,6 @@ cSampleRandomVariable[d_Integer?Positive]:=Module[{lib, libname, file, ds, class
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
 #include <unordered_map>
-#include \"Tensors/Tensors.hpp\"
 #include \"CycleSampler.hpp\"
 
 using RandomVariable_Ptr = std::unique_ptr<CycleSampler::RandomVariable<"<>ds<>",mreal,mint>>;
