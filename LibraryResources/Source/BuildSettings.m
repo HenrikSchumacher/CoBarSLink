@@ -2,12 +2,12 @@
 
 (* The result of executing this script will be handed over to CreateLibrary as options. *)
 (* No guarantees are given for correctness of the settings for Linux and Windows architecture. *)
-(* You may this file as needed to support your system. *)
+(* Please edit this file as needed to support your system. *)
 
 Switch[ $OperatingSystem
 	
 	,"MacOSX", 
-	(* Compilation settings for OS X. Assuming Apple Clang compiler is used and that libomp is installed homebrew. (MacPorts might also work) *)
+	(* Compilation settings for OS X. Assuming Apple Clang compiler is used.*)
 	{
 		"CompileOptions" -> {
 			" -Wall"
@@ -23,25 +23,16 @@ Switch[ $OperatingSystem
 			,"-gcolumn-info"
 			(*,"-framework Accelerate"*)
 			,Switch[$SystemID
-			
-				,"MacOSX-ARM64"
-				,"-mcpu=apple-m1"
-		
-				,"MacOSX-x86-64"
-				,"-march=native"
-		
+				,"MacOSX-ARM64","-mcpu=apple-m1"
+				,"MacOSX-x86-64","-march=native"
 				,_,$Failed
 			]
 			,"-mtune=native"
 		}
 		,"LinkerOptions"->Switch[
 			$SystemID
-			,"MacOSX-ARM64"
-			,{"-lm","-ldl"}
-			
-			,"MacOSX-x86-64"
-			,{"-lm","-ldl"}
-			
+			,"MacOSX-ARM64",{"-lm","-ldl"}
+			,"MacOSX-x86-64",{"-lm","-ldl"}
 			,_,
 			$Failed
 		]
@@ -61,7 +52,7 @@ Switch[ $OperatingSystem
 		"CompileOptions" -> {
 			" -Wall"
 			,"-Wextra"
-			,"-std=c++17"
+			,"-std=c++20"
 			,"-Wno-unused-parameter"
 			,"-fno-math-errno"
 			,"-ffast-math"
@@ -88,7 +79,7 @@ Switch[ $OperatingSystem
 	"Windows", (* Compilation settings for Windows and Microsoft Visual Studio. Untested so far. *)
 	{
 		"CompileOptions" -> {"/EHsc", "/wd4244", "/DNOMINMAX", "/arch:AVX"}
-		,"LinkerOptions"->{"libiomp5md.lib"}
+		,"LinkerOptions"->{}
 		,"IncludeDirectories" -> Flatten[{
 			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
 			,FileNameJoin[{DirectoryName[$InputFileName]}]
