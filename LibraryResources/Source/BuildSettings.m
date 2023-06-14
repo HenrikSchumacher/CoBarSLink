@@ -13,9 +13,8 @@ Switch[ $OperatingSystem
 			" -Wall"
 			,"-Wextra"
 			,"-Wno-unused-parameter"
-			,"-mmacosx-version-min=12.0"
-			,"-std=c++17"
-			,"-Xpreprocessor -fopenmp -Xpreprocessor -fopenmp-simd"
+			(*,"-mmacosx-version-min=12.0"*)
+			,"-std=c++20"
 			,"-fno-math-errno"
 			,"-ffast-math"
 			,"-Ofast"
@@ -38,10 +37,10 @@ Switch[ $OperatingSystem
 		,"LinkerOptions"->Switch[
 			$SystemID
 			,"MacOSX-ARM64"
-			,{"-lm","-ldl","-lomp"}
+			,{"-lm","-ldl"}
 			
 			,"MacOSX-x86-64"
-			,{"-lm","-ldl","-liomp5"(*,"-lmkl_intel_ilp64","-lmkl_core","-lmkl_intel_thread","-lpthread"*)}
+			,{"-lm","-ldl"}
 			
 			,_,
 			$Failed
@@ -50,36 +49,9 @@ Switch[ $OperatingSystem
 			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
 			,DirectoryName[$InputFileName]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
-			,Map[
-			  If[FileExistsQ[#],#,Nothing]&,
-			  (*The problem is to find a omp.h header that is compatible with the libomp.dylib/libiomp5.dylib shipped with Mathematica.*)
-			  (*Oddly enough, the header files are not provided.*)
-			  (*Using gcc's omp'h won't work! (Intel's and clang's versions seem to be compatible.)*)
-			  {
-			  "/usr/local/include"(* system libraries *)
-			    ,"/opt/local/include"(* used by macports and by homebrew (on x86 architectures only) *)
-			    ,"/opt/local/opt/libomp/include"(* maybe used by homebrew when libomp collides with gcc's libgomp (on x86 architectures only) *)
-			    ,"/opt/homebrew/include"(* used by homebrew on Apple Silicon *)
-			    ,"/opt/homebrew/opt/libomp/include"(* used by homebrew when libomp collides with gcc's libgomp (on Apple Silicon) *)
-			    ,"/opt/local/include/libomp"(* used by macports *)
-			    ,{(*Put your own include directories here.*)}
-			 }]
 		}]
 		,"LibraryDirectories" -> Flatten[{
 			("LibraryDirectories"/.Compiler`$CCompilerOptions)/."LibraryDirectories"->Nothing
-			,Map[
-			  If[FileExistsQ[#],#,Nothing]&,
-			  (*CreateLibrary will always link Mathematica's version of OpenMP (libomp.dylib or libiomp5.dylib).*)
-			  (*Anyways, we provide search paths for sane installations of homebrew and macports.*)
-			  {
-			  "/usr/local/lib"(* system libraries *)
-			    ,"/opt/local/lib"(* used by macports and by homebrew (on x86 architectures only) *)
-			    ,"/opt/local/opt/libomp/lib"(* maybe used by homebrew when libomp collides with gcc's libgomp (on x86 architectures only) *)
-			    ,"/opt/homebrew/lib"(* used by homebrew on Apple Silicon *)
-			    ,"/opt/homebrew/opt/libomp/lib"(* used by homebrew when libomp collides with gcc's libgomp (on Apple Silicon) *)
-			    ,"/opt/local/include/lib"(* used by macports *)
-			    ,{(*Put your own library directories here.*)}
-			 }]
 			 }]
 		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> (If[#=!="",Print[#]]&)
@@ -96,11 +68,9 @@ Switch[ $OperatingSystem
 			,"-Ofast"
 			,"-flto"
 			,"-m64"
-			,"-fopenmp -fopenmp-simd"
-			,"-march=native"
-			,"-mtune=native"
+			,"-march=native","-mtune=native"
 		}
-		,"LinkerOptions"->{"-lm","-ldl","-liomp5"}
+		,"LinkerOptions"->{"-lm","-ldl"}
 		,"IncludeDirectories" -> {
 			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
 			,FileNameJoin[{DirectoryName[$InputFileName]}]

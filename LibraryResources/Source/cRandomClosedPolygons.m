@@ -18,6 +18,10 @@ cRandomClosedPolygons[d_Integer?Positive]:=Module[{lib, libname, file, ds, name,
 		file=Export[FileNameJoin[{$sourceDirectory,name<>"_"<>ds<>"D.cpp"}],
 "
 
+#define NDEBUG
+
+#define TOOLS_ENABLE_PROFILER
+
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
 

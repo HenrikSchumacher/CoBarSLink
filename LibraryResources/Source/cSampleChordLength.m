@@ -13,7 +13,7 @@ cSampleChordLength[d_Integer?Positive]:=Module[{lib, libname, file, ds, class, n
 	
 	lib = FileNameJoin[{$libraryDirectory, libname<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension}];
 	
-	class[s_]:="std::make_unique<CycleSampler::"<>s<>"<"<>ds<>",mreal, mint>>";
+	class[s_]:="std::make_shared<CycleSampler::"<>s<>"<"<>ds<>",mreal, mint>>";
 
 	If[Not[FileExistsQ[lib]],
 
@@ -23,12 +23,16 @@ cSampleChordLength[d_Integer?Positive]:=Module[{lib, libname, file, ds, class, n
 "
 // This is the actual C++ code.
 
+#define NDEBUG
+
+#define TOOLS_ENABLE_PROFILER
+
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
 #include <unordered_map>
 #include \"CycleSampler.hpp\"
 
-using RandomVariable_Ptr = std::unique_ptr<CycleSampler::RandomVariable<"<>ds<>",mreal,mint>>;
+using RandomVariable_Ptr = std::shared_ptr<CycleSampler::RandomVariable<"<>ds<>",mreal,mint>>;
 
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )

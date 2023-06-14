@@ -16,6 +16,10 @@ cMomentPolytopeSampler := cMomentPolytopeSampler = Module[{lib, file, name, t},
 		file=Export[FileNameJoin[{$sourceDirectory,name<>".cpp"}],
 "
 
+#define NDEBUG
+
+#define TOOLS_ENABLE_PROFILER
+
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
 

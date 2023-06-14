@@ -13,7 +13,7 @@ cSampleRandomVariable[d_Integer?Positive]:=Module[{lib, libname, file, ds, class
 	
 	lib = FileNameJoin[{$libraryDirectory, libname<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension}];
 	
-	class[s_]:="std::make_unique<CycleSampler::"<>s<>"<"<>ds<>",mreal, mint>>";
+	class[s_]:="std::make_shared<CycleSampler::"<>s<>"<"<>ds<>",mreal, mint>>";
 
 	If[Not[FileExistsQ[lib]],
 
@@ -23,12 +23,18 @@ cSampleRandomVariable[d_Integer?Positive]:=Module[{lib, libname, file, ds, class
 "
 // This is the actual C++ code.
 
+#define NDEBUG
+
+#define TOOLS_ENABLE_PROFILER
+
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
 #include <unordered_map>
 #include \"CycleSampler.hpp\"
 
-using RandomVariable_Ptr = std::unique_ptr<CycleSampler::RandomVariable<"<>ds<>",mreal,mint>>;
+using namespace Tensors;
+
+using RandomVariable_Ptr = std::shared_ptr<CycleSampler::RandomVariable<"<>ds<>",mreal,mint>>;
 
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )
@@ -67,7 +73,6 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 				libData->MTensor_getDimensions(rho)[0]
 		);
 	
-		
 		// This creates an instance S of the Sampler class.
 		CycleSampler::Sampler<"<>ds<>",mreal,mint> S (
 			libData->MTensor_getRealData(r),
@@ -76,6 +81,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		);
 	
 		RandomVariable_Ptr F = iter->second->Clone();
+
 		// Start the sampling process.
 		if( space_flag == 0 )
 		{
@@ -99,7 +105,6 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 				thread_count
 			);
 		}
-
 
 		MArgument_setInteger(Res, 0);
 	}
