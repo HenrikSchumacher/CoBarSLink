@@ -81,6 +81,12 @@ If[!FileExistsQ[$libraryDirectory],CreateDirectory[$libraryDirectory]];
 $sourceDirectory   = FileNameJoin[{$packageDirectory, "LibraryResources", "Source"}];
 If[!FileExistsQ[$sourceDirectory],CreateDirectory[$sourceDirectory]];
 
+$logFile = FileNameJoin[{$packageDirectory, "LibraryResources", $SystemID,"Log.txt"}];
+
+If[FileExistsQ[$logFile],DeleteFile[$logFile]];
+
+LogFile[] := Import[$logFile,"Text"];
+
 (* Add $libraryDirectory to $LibraryPath in case the package is not installed in $UserBaseDirectory/Applications. *)
 If[Not@MemberQ[$LibraryPath, $libraryDirectory],AppendTo[$LibraryPath, $libraryDirectory]];
 
