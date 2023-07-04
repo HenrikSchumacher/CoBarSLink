@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 ClearAll[cRandomClosedPolygons];
-cRandomClosedPolygons[d_Integer?Positive]:=Module[{lib, libname, file, ds, name, t},
+cRandomClosedPolygons[d_Integer?Positive]:=Module[{lib, libname, file, code,ds, name, t},
 
 	name = "RandomClosedPolygons";
 
@@ -15,12 +15,9 @@ cRandomClosedPolygons[d_Integer?Positive]:=Module[{lib, libname, file, ds, name,
 
 		Print["Compiling c"<>name<>"["<>ds<>"]..."];
 
-		file=Export[FileNameJoin[{$sourceDirectory,name<>"_"<>ds<>"D.cpp"}],
-"
+		code = StringJoin["
 
 #define NDEBUG
-
-#define TOOLS_ENABLE_PROFILER
 
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
@@ -29,7 +26,6 @@ cRandomClosedPolygons[d_Integer?Positive]:=Module[{lib, libname, file, ds, name,
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {
-
 	MTensor r      = MArgument_getMTensor(Args[0]);
 	MTensor rho    = MArgument_getMTensor(Args[1]);
 
@@ -74,6 +70,8 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		edge_count
 	);
 
+	Tools::Time start_time = Tools::Clock::now();
+	
 	C.RandomClosedPolygons( 
 		libData->MTensor_getRealData(x), 
 		libData->MTensor_getRealData(w),
@@ -84,6 +82,12 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		thread_count 
 	);
 
+	Tools::Time stop_time = Tools::Clock::now();
+
+	std::ofstream file ( \""<>$logFile<>"\" , std::ofstream::app );
+
+	file << C.ClassName() << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in "<>ds<>" D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
+
 	libData->MTensor_disown(x);
 	libData->MTensor_disown(w);
 	libData->MTensor_disown(y);
@@ -91,30 +95,32 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	libData->MTensor_getRealData(K_quot);
 
 	return LIBRARY_NO_ERROR;
-}",
-"Text"
-		];
+}"];
 
 		(* Invoke CreateLibrary to compile the C++ code. *)
 		t = AbsoluteTiming[
 			lib=CreateLibrary[
-				{file},
+				code,
 				libname,
+				"Language"->"C++",
 				"TargetDirectory"-> $libraryDirectory,
 				(*"ShellCommandFunction"\[Rule]Print,*)
-				(*"ShellOutputFunction"\[Rule]Print,*)
+				"ShellOutputFunction"->Print,
 				Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
 			]
 		][[1]];
 		Print["Compilation done. Time elapsed = ", t, " s.\n"];
-		DeleteFile[file];
 	];
 
 	cRandomClosedPolygons[d] = LibraryFunctionLoad[lib,name,
 		{
-			{Real,1,"Constant"},{Real,1,"Constant"},
-			{Real,3,"Shared"},{Real,2,"Shared"},{Real,3,"Shared"},
-			{Real,1,"Shared"},{Real,1,"Shared"},
+			{Real,1,"Constant"},
+			{Real,1,"Constant"},
+			{Real,3,"Shared"},
+			{Real,2,"Shared"},
+			{Real,3,"Shared"},
+			{Real,1,"Shared"},
+			{Real,1,"Shared"},
 			Integer
 		},
 		"Void"

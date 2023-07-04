@@ -1,9 +1,7 @@
 (* ::Package:: *)
 
-(* The result of executing this script will be handed over to CreateLibrary as options. *)
-(* No guarantees are given for correctness of the settings for Linux and Windows architecture. *)
-(* Please edit this file as needed to support your system. *)
-
+Print[DirectoryName[$InputFileName]];
+Print[FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]];
 Switch[ $OperatingSystem
 	
 	,"MacOSX", 
@@ -13,21 +11,20 @@ Switch[ $OperatingSystem
 			" -Wall"
 			,"-Wextra"
 			,"-Wno-unused-parameter"
-			(*,"-mmacosx-version-min=12.0"*)
-			,"-std=c++20"
-			,"-fno-math-errno"
-			,"-ffast-math"
-			,"-Ofast"
-			,"-flto"
 			,"-gline-tables-only"
 			,"-gcolumn-info"
-			(*,"-framework Accelerate"*)
+			,"-mmacosx-version-min="<>StringSplit[Import["!sw_vers &2>1","Text"]][[4]]
+			,"-std=c++20"
+			,"-fno-math-errno"
+			,"-Ofast"
+			,"-flto"
+			,"-pthread"
+			,"-framework Accelerate"
 			,Switch[$SystemID
-				,"MacOSX-ARM64","-mcpu=apple-m1"
-				,"MacOSX-x86-64","-march=native"
+				,"MacOSX-ARM64","-mcpu=apple-m1","-mtune=native"
+				,"MacOSX-x86-64","-march=native","-mtune=native"
 				,_,$Failed
 			]
-			,"-mtune=native"
 		}
 		,"LinkerOptions"->Switch[
 			$SystemID
@@ -37,13 +34,10 @@ Switch[ $OperatingSystem
 			$Failed
 		]
 		,"IncludeDirectories" -> Flatten[{
-			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
-			,DirectoryName[$InputFileName]
+			DirectoryName[$InputFileName]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 		}]
-		,"LibraryDirectories" -> Flatten[{
-			("LibraryDirectories"/.Compiler`$CCompilerOptions)/."LibraryDirectories"->Nothing
-			 }]
+		,"LibraryDirectories" -> {}
 		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> (If[#=!="",Print[#]]&)
 	},
@@ -55,41 +49,33 @@ Switch[ $OperatingSystem
 			,"-std=c++20"
 			,"-Wno-unused-parameter"
 			,"-fno-math-errno"
-			,"-ffast-math"
 			,"-Ofast"
 			,"-flto"
+			,"-pthread"
 			,"-m64"
 			,"-march=native","-mtune=native"
 		}
 		,"LinkerOptions"->{"-lm","-ldl"}
 		,"IncludeDirectories" -> {
-			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
-			,FileNameJoin[{DirectoryName[$InputFileName]}]
+			FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 			,{(*Put your own include directories here.*)}
 		}
-		,"LibraryDirectories" -> Flatten[{
-			("LibraryDirectories"/.Compiler`$CCompilerOptions)/."LibraryDirectories"->Nothing
-			,{(*Put your own library directories here.*)}
-		}]
+		,"LibraryDirectories" -> {}
 		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> Print
 	},
 	
 	"Windows", (* Compilation settings for Windows and Microsoft Visual Studio. Untested so far. *)
 	{
-		"CompileOptions" -> {"/EHsc", "/wd4244", "/DNOMINMAX", "/arch:AVX"}
+		"CompileOptions" -> {"/EHsc", "/wd4244", "/DNOMINMAX", "/arch:AVX","/O2"}
 		,"LinkerOptions"->{}
 		,"IncludeDirectories" -> Flatten[{
-			("IncludeDirectories"/.Compiler`$CCompilerOptions)/."IncludeDirectories"->Nothing
-			,FileNameJoin[{DirectoryName[$InputFileName]}]
+			FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
 			,{(*Add you own include directories here*)}
 		}]
-		,"LibraryDirectories" -> Flatten[{
-			"LibraryDirectories"/.Compiler`$CCompilerOptions/."LibraryDirectories"->Nothing
-			,{(*Put your own library directories here.*)}
-		}]
+		,"LibraryDirectories" -> {}
 		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> Print
 	}

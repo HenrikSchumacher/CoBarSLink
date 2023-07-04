@@ -3,7 +3,7 @@
 (* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time. Afterwards it is memoized. *)
 
 ClearAll[cMomentPolytopeSampler];
-cMomentPolytopeSampler := cMomentPolytopeSampler = Module[{lib, file, name, t},
+cMomentPolytopeSampler := cMomentPolytopeSampler = Module[{lib, code, name, t},
 
 	name = "MomentPolytopeSampler";
 	
@@ -13,12 +13,9 @@ cMomentPolytopeSampler := cMomentPolytopeSampler = Module[{lib, file, name, t},
 
 		Print["Compiling c"<>name<>"..."];
 
-		file=Export[FileNameJoin[{$sourceDirectory,name<>".cpp"}],
+		code=StringJoin[
 "
-
 #define NDEBUG
-
-#define TOOLS_ENABLE_PROFILER
 
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
@@ -35,26 +32,33 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	CycleSampler::MomentPolytopeSampler<mreal,mint> M ( edge_count );
 
-	const mint trials = M.RandomClosedPolygons(
+	Tools::Time start_time = Tools::Clock::now();
+	
+const mint trials = M.RandomClosedPolygons(
 		libData->MTensor_getRealData(p),
 		sample_count,
 		thread_count
 	);
+
+	Tools::Time stop_time = Tools::Clock::now();
+
+	std::ofstream file ( \""<>$logFile<>"\" , std::ofstream::app );
+
+	file << M.ClassName() << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in 3 D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
 
 	MArgument_setInteger(Res, trials);
 
 	libData->MTensor_disown(p);
 
 	return LIBRARY_NO_ERROR;
-}",
-"Text"
-		];
+}"];
 
 		(* Invoke CreateLibrary to compile the C++ code. *)
 		t = AbsoluteTiming[
 			lib=CreateLibrary[
-				{file},
+				code,
 				name,
+				"Language"->"C++",
 				"TargetDirectory"-> $libraryDirectory,
 				(*"ShellCommandFunction"\[Rule]Print,*)
 				(*"ShellOutputFunction"\[Rule]Print,*)
@@ -62,7 +66,6 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			]
 		][[1]];
 		Print["Compilation done. Time elapsed = ", t, " s.\n"];
-		DeleteFile[file];
 	];
 
 	LibraryFunctionLoad[

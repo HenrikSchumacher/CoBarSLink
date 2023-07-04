@@ -3,7 +3,7 @@
 (* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time. Afterwards it is memoized. *)
 
 ClearAll[cSampleChordLength];
-cSampleChordLength[d_Integer?Positive]:=Module[{lib, libname, file, ds, class, name, t},
+cSampleChordLength[d_Integer?Positive]:=Module[{lib, libname, code, ds, class, name, t},
 
 	name = "SampleChordLength";
 
@@ -19,13 +19,11 @@ cSampleChordLength[d_Integer?Positive]:=Module[{lib, libname, file, ds, class, n
 
 		Print["Compiling c"<>name<>"["<>ds<>"]..."];
 
-		file=Export[FileNameJoin[{$sourceDirectory,name<>"_"<>ds<>"D.cpp"}],
+		file=StringJoin[
 "
 // This is the actual C++ code.
 
 #define NDEBUG
-
-#define TOOLS_ENABLE_PROFILER
 
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
@@ -93,15 +91,14 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	libData->MTensor_disown(weights);
 
 	return LIBRARY_NO_ERROR;
-}",
-"Text"
-		];
+}"];
 		
 		(* Invoke CreateLibrary to compile the C++ code. *)
 		t = AbsoluteTiming[
 			lib=CreateLibrary[
-				{file},
+				code,
 				libname,
+				"Language"->"C++",
 				"TargetDirectory"-> $libraryDirectory,
 				(*"ShellCommandFunction"\[Rule]Print,*)
 				(*"ShellOutputFunction"\[Rule]Print,*)
@@ -109,7 +106,6 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			]
 		][[1]];
 		Print["Compilation done. Time elapsed = ", t, " s.\n"];
-		DeleteFile[file];
 	];
 	
 	(* Load the resulting dynamic libary into the Mathematica session; use memoization to quickly look up already loaded libraries.*)
