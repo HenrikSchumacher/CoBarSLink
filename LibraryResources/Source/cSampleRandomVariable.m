@@ -13,13 +13,13 @@ cSampleRandomVariable[d_Integer?Positive]:=Module[{lib, libname, code, ds, class
 	
 	lib = FileNameJoin[{$libraryDirectory, libname<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension}];
 	
-	class[s_]:="std::make_shared<CycleSampler::"<>s<>"<"<>ds<>",mreal, mint>>";
+	class[s_]:="std::make_shared<"<>s<>"<SamplerBase_T>>";
 
 	If[Not[FileExistsQ[lib]],
 
 		Print["Compiling c"<>name<>"["<>ds<>"]..."];
 
-		file = StringJoin[
+		code = StringJoin[
 "
 // This is the actual C++ code.
 
@@ -31,9 +31,12 @@ cSampleRandomVariable[d_Integer?Positive]:=Module[{lib, libname, code, ds, class
 #include \"CycleSampler.hpp\"
 
 using namespace Tensors;
+using namespace CycleSampler;
 
-using RandomVariable_Ptr = std::shared_ptr<CycleSampler::RandomVariable<"<>ds<>",mreal,mint>>;
+using Sampler_T     = Sampler<"<>ds<>",mreal,mint>;
+using SamplerBase_T = SamplerBase<"<>ds<>",mreal,mint>;
 
+using RandomVariable_Ptr = std::shared_ptr<RandomVariable<SamplerBase_T>>;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )
 {
@@ -48,7 +51,6 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	const mint space_flag   = MArgument_getInteger(Args[5]);
 	const mint sample_count = MArgument_getInteger(Args[6]);
 	const mint thread_count = MArgument_getInteger(Args[7]);
-
 
 	std::unordered_map<std::string,RandomVariable_Ptr> function_lookup;
 	function_lookup.insert( {\"DiagonalLength\",                  "<>class["DiagonalLength"]<>"()                  } );
@@ -71,7 +73,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		);
 	
 		// This creates an instance S of the Sampler class.
-		CycleSampler::Sampler<"<>ds<>",mreal,mint> S (
+		Sampler_T S (
 			libData->MTensor_getRealData(r),
 			libData->MTensor_getRealData(rho),
 			edge_count
@@ -107,7 +109,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	}
     else
 	{
-		CycleSampler::eprint(\"cSampleRandomVariable: Random variable with tag \\\"\"+key+\"\\\" not found. Aborting.\");
+		eprint(\"cSampleRandomVariable: Random variable with tag \\\"\"+key+\"\\\" not found. Aborting.\");
 		MArgument_setInteger(Res, 1);
 	}
 

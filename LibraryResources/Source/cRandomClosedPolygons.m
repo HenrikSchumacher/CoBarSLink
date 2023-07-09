@@ -24,6 +24,11 @@ cRandomClosedPolygons[d_Integer?Positive]:=Module[{lib, libname, file, code,ds, 
 
 #include \"CycleSampler.hpp\"
 
+using namespace CycleSampler;
+
+using Real = mreal;
+using Int  = int_fast32_t;
+
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {
 	MTensor r      = MArgument_getMTensor(Args[0]);
@@ -36,9 +41,9 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	MTensor K      = MArgument_getMTensor(Args[5]);
 	MTensor K_quot = MArgument_getMTensor(Args[6]);
 
-	const mint thread_count = MArgument_getInteger(Args[7]);
+	const Int thread_count = int_cast<Int>(MArgument_getInteger(Args[7]));
 
-	const mint edge_count = std::min(
+	const Int edge_count = int_cast<Int>(std::min(
 		std::min(
 			libData->MTensor_getDimensions(r)[0],
 			libData->MTensor_getDimensions(rho)[0]
@@ -48,9 +53,9 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			libData->MTensor_getDimensions(x)[1],
 			libData->MTensor_getDimensions(y)[1]
 		)
-	);
+	));
 
-	const mint sample_count = std::min(
+	const Int sample_count = int_cast<Int>(std::min(
 		std::min(
 			std::min( 
 				libData->MTensor_getDimensions(x)[0], 
@@ -62,9 +67,9 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			)
 		),
 		libData->MTensor_getDimensions(w)[0]
-	);
+	));
 
-	CycleSampler::Sampler<"<>ds<>",mreal,mint> C (
+	Sampler<"<>ds<>",Real,Int> C (
 		libData->MTensor_getRealData(r),
 		libData->MTensor_getRealData(rho),
 		edge_count

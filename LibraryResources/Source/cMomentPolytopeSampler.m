@@ -33,8 +33,8 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	CycleSampler::MomentPolytopeSampler<mreal,mint> M ( edge_count );
 
 	Tools::Time start_time = Tools::Clock::now();
-	
-const mint trials = M.RandomClosedPolygons(
+
+	const mint trials = M.RandomClosedPolygons(
 		libData->MTensor_getRealData(p),
 		sample_count,
 		thread_count

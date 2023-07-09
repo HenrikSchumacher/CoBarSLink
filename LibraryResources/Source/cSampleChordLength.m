@@ -13,13 +13,13 @@ cSampleChordLength[d_Integer?Positive]:=Module[{lib, libname, code, ds, class, n
 	
 	lib = FileNameJoin[{$libraryDirectory, libname<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension}];
 	
-	class[s_]:="std::make_shared<CycleSampler::"<>s<>"<"<>ds<>",mreal, mint>>";
+	class[s_]:="std::make_shared<"<>s<>"<SamplerBase_T>>";
 
 	If[Not[FileExistsQ[lib]],
 
 		Print["Compiling c"<>name<>"["<>ds<>"]..."];
 
-		file=StringJoin[
+		code=StringJoin[
 "
 // This is the actual C++ code.
 
@@ -30,7 +30,12 @@ cSampleChordLength[d_Integer?Positive]:=Module[{lib, libname, code, ds, class, n
 #include <unordered_map>
 #include \"CycleSampler.hpp\"
 
-using RandomVariable_Ptr = std::shared_ptr<CycleSampler::RandomVariable<"<>ds<>",mreal,mint>>;
+using namespace CycleSampler;
+
+using Sampler_T     = Sampler<"<>ds<>",mreal,mint>;
+using SamplerBase_T = SamplerBase<"<>ds<>",mreal,mint>;
+
+using RandomVariable_Ptr = std::shared_ptr<RandomVariable<SamplerBase_T>>;
 
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )
@@ -53,7 +58,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			libData->MTensor_getDimensions(rho)[0]
 	);
 
-	CycleSampler::Sampler<"<>ds<>",mreal,mint> S (
+	Sampler_T S (
 			libData->MTensor_getRealData(r),
 			libData->MTensor_getRealData(rho),
 			edge_count
