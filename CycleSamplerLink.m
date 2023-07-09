@@ -56,7 +56,7 @@ RandomClosedPolygons::usage="RandomClosedPolygons[d_Integer, r_?VectorQ, samplec
 "<>CycleSamplerLink`Private`sphereRadiiUsage;
 
 
-MomentPolytopeSample::usage="MomentPolytopeSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space.";
+ActionAngleSample::usage="ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space.";
 
 
 (*Some error and warning messages.*)
@@ -192,15 +192,15 @@ RandomClosedPolygons[d_Integer, r_?(VectorQ[#,NumericQ]&), samplecount_, Options
 ];
 
 
-Get[FileNameJoin[{$sourceDirectory, "cMomentPolytopeSampler.m"}]];
+Get[FileNameJoin[{$sourceDirectory, "cActionAngleSampler.m"}]];
 
-Options[MomentPolytopeSample] = {
+Options[ActionAngleSample] = {
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
 };
 
-MomentPolytopeSample[edgecount_Integer?Positive, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{p,trials},
+ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{p,trials},
 	p = ConstantArray[0.,{samplecount,edgecount,3}];
-	trials = cMomentPolytopeSampler[p,OptionValue["ThreadCount"]];
+	trials = cActionAngleSampler[p,OptionValue["ThreadCount"]];
 	Association[
 		"ClosedPolygons"->p,
 		"Trials"->trials
