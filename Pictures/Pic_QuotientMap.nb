@@ -1,0 +1,310 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     11070,        302]
+NotebookOptionsPosition[     10123,        281]
+NotebookOutlinePosition[     10560,        298]
+CellTagsIndexPosition[     10517,        295]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData["Exit"], "Input",
+ CellChangeTimes->{{3.873864239407578*^9, 3.8738642403220377`*^9}},
+ CellLabel->
+  "In[141]:=",ExpressionUUID->"e900fb1a-6400-48b5-9ddb-415fcad81665"],
+
+Cell[BoxData[{
+ RowBox[{"Needs", "[", "\"\<MaTeX`\>\"", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SetOptions", "[", 
+   RowBox[{"MaTeX", ",", 
+    RowBox[{"\"\<Preamble\>\"", "->", 
+     RowBox[{"{", "\"\<\\\\usepackage{txfonts}\>\"", "}"}]}], ",", 
+    RowBox[{"FontSize", "->", "16"}]}], "]"}], ";"}]}], "Input",
+ CellLabel->"In[72]:=",ExpressionUUID->"056b79bc-07bd-4ce2-88e1-3b8e23354eec"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Delete", " ", "all", " ", "compiled", " ", "dynamic", " ", "libraries", 
+    " ", "of", " ", "the", " ", "CycleSamplerLink", " ", 
+    RowBox[{"package", "."}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"If", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"FileExistsQ", "[", "#", "]"}], ",", 
+      RowBox[{"DeleteDirectory", "[", 
+       RowBox[{"#", ",", 
+        RowBox[{"DeleteContents", "->", "True"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}], "&"}], "[", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"ParentDirectory", "[", 
+       RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+      "\"\<LibraryResources\>\"", ",", "$SystemID"}], "}"}], "]"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.895710535840643*^9, 3.8957105763631573`*^9}},
+ CellLabel->"In[20]:=",ExpressionUUID->"f0b040da-049f-4848-a45b-2e3142fc9c51"],
+
+Cell[BoxData[
+ RowBox[{"Get", "[", "\[IndentingNewLine]", 
+  RowBox[{"FileNameJoin", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"ParentDirectory", "[", 
+      RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+     "\"\<CycleSamplerLink.m\>\""}], "}"}], "]"}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.8802095908904676`*^9, 3.8802096051713343`*^9}, 
+   3.880210597814003*^9},
+ CellLabel->"In[21]:=",ExpressionUUID->"a14e8661-385b-49e8-846a-93b79486cbef"],
+
+Cell[BoxData[
+ RowBox[{"Darker", "[", "Orange", "]"}]], "Input",
+ CellLabel->
+  "In[106]:=",ExpressionUUID->"9ee8212e-c4a8-4b7b-bec8-f3e687c88369"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"uniblue", "=", 
+   TemplateBox[<|"color" -> RGBColor[0.0745, 0.176, 0.415]|>,
+    "RGBColorSwatchTemplate"]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"orange", "=", 
+   RowBox[{"Darker", "[", "Orange", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"d", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"r", "=", 
+   RowBox[{"ConstantArray", "[", 
+    RowBox[{"1.", ",", "4"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"samplecount", "=", "1000000"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"data1", "=", 
+     RowBox[{"CycleSampleChordLength", "[", 
+      RowBox[{"d", ",", "r", ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "3"}], "}"}], ",", "samplecount", ",", 
+       RowBox[{"\"\<QuotientSpace\>\"", "->", "True"}]}], "]"}]}], ";"}], "//",
+    "AbsoluteTiming"}], "//", "First"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"data2", "=", 
+      RowBox[{"CycleSampleChordLength", "[", 
+       RowBox[{"d", ",", "r", ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "3"}], "}"}], ",", "samplecount", ",", 
+        RowBox[{"\"\<QuotientSpace\>\"", "->", "False"}]}], "]"}]}], ";"}], "//",
+     "AbsoluteTiming"}], "//", "First"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"plot1", "=", 
+  RowBox[{"Histogram", "[", 
+   RowBox[{
+    RowBox[{"{", "data1", "}"}], ",", 
+    RowBox[{"{", "0.02", "}"}], ",", "\"\<CDF\>\"", "\[IndentingNewLine]", 
+    ",", 
+    RowBox[{"PlotRange", "->", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "1"}], "}"}]}], "}"}]}], "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{",", 
+      RowBox[{"ChartStyle", "->", 
+       RowBox[{
+        RowBox[{"ColorData", "[", "97", "]"}], "[", "1", "]"}]}]}], "*)"}], 
+    "\[IndentingNewLine]", ",", 
+    RowBox[{"ChartStyle", "->", 
+     RowBox[{"Directive", "[", 
+      RowBox[{"uniblue", ",", 
+       RowBox[{"Opacity", "[", "0.35", "]"}]}], "]"}]}], 
+    "\[IndentingNewLine]", ",", 
+    RowBox[{"Frame", "->", "True"}], "\[IndentingNewLine]", ",", 
+    RowBox[{"AspectRatio", "->", 
+     RowBox[{"2", "/", "3"}]}], "\[IndentingNewLine]", ",", 
+    RowBox[{"FrameLabel", "->", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"MaTeX", "[", "\"\<\\\\text{length of diagonal}\>\"", "]"}], 
+       ",", 
+       RowBox[{"MaTeX", "[", "\"\<\\\\text{CDF}\>\"", "]"}]}], "}"}]}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{",", 
+     RowBox[{"PlotLabel", "->", 
+      RowBox[{"MaTeX", "[", 
+       RowBox[{"\"\<\\\\text{chord length distribution (empirical)}\>\"", ",", 
+        RowBox[{"FontSize", "->", "18"}]}], "]"}]}]}], "*)"}], 
+   "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"plot2", "=", 
+   RowBox[{"Histogram", "[", 
+    RowBox[{
+     RowBox[{"{", "data2", "}"}], ",", 
+     RowBox[{"{", "0.02", "}"}], ",", "\"\<CDF\>\"", "\[IndentingNewLine]", 
+     ",", 
+     RowBox[{"PlotRange", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "2"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1"}], "}"}]}], "}"}]}], "\[IndentingNewLine]", 
+     ",", 
+     RowBox[{"ChartStyle", "->", 
+      RowBox[{"Directive", "[", 
+       RowBox[{"orange", ",", 
+        RowBox[{"Opacity", "[", "0.35", "]"}]}], "]"}]}], 
+     "\[IndentingNewLine]", ",", 
+     RowBox[{"Frame", "->", "True"}], "\[IndentingNewLine]", ",", 
+     RowBox[{"AspectRatio", "->", 
+      RowBox[{"2", "/", "3"}]}], "\[IndentingNewLine]", ",", 
+     RowBox[{"FrameLabel", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"MaTeX", "[", "\"\<\\\\text{length of diagonal}\>\"", "]"}], 
+        ",", 
+        RowBox[{"MaTeX", "[", "\"\<\\\\text{CDF}\>\"", "]"}]}], "}"}]}]}], 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{",", 
+      RowBox[{"PlotLabel", "->", 
+       RowBox[{"MaTeX", "[", 
+        RowBox[{
+        "\"\<\\\\text{\\\\textbf{chord length distribution \
+(theoretical)}}\>\"", ",", 
+         RowBox[{"FontSize", "->", "18"}]}], "]"}]}]}], "*)"}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"plot12", "=", 
+  RowBox[{"Histogram", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"data1", ",", "data2"}], "}"}], ",", 
+    RowBox[{"{", "0.02", "}"}], ",", "\"\<CDF\>\"", "\[IndentingNewLine]", 
+    ",", 
+    RowBox[{"PlotRange", "->", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "1"}], "}"}]}], "}"}]}], "\[IndentingNewLine]", ",", 
+    RowBox[{"ChartStyle", "->", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Directive", "[", 
+        RowBox[{"uniblue", ",", 
+         RowBox[{"Opacity", "[", "0.35", "]"}]}], "]"}], ",", 
+       RowBox[{"Directive", "[", 
+        RowBox[{"orange", ",", 
+         RowBox[{"Opacity", "[", "0.35", "]"}]}], "]"}]}], "}"}]}], 
+    "\[IndentingNewLine]", ",", 
+    RowBox[{"Frame", "->", "True"}], "\[IndentingNewLine]", ",", 
+    RowBox[{"AspectRatio", "->", 
+     RowBox[{"2", "/", "3"}]}], "\[IndentingNewLine]", ",", 
+    RowBox[{"FrameLabel", "->", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"MaTeX", "[", "\"\<\\\\text{length of diagonal}\>\"", "]"}], 
+       ",", 
+       RowBox[{"MaTeX", "[", "\"\<\\\\text{CDF}\>\"", "]"}]}], "}"}]}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{",", 
+     RowBox[{"PlotLabel", "->", 
+      RowBox[{"MaTeX", "[", 
+       RowBox[{
+       "\"\<\\\\text{\\\\textbf{chord length distribution \
+(theoretical)}}\>\"", ",", 
+        RowBox[{"FontSize", "->", "18"}]}], "]"}]}]}], "*)"}], 
+   "\[IndentingNewLine]", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.8974757761229687`*^9, 3.897475780281798*^9}, {
+  3.89747597606959*^9, 3.897476354364056*^9}, {3.897476396675671*^9, 
+  3.897476412107952*^9}, {3.897476729396946*^9, 3.897476735200441*^9}, {
+  3.898008952000388*^9, 3.898008961306362*^9}, {3.898009077112369*^9, 
+  3.898009110644782*^9}, {3.8980091992546263`*^9, 3.898009220075281*^9}, {
+  3.898009293694042*^9, 3.898009319864234*^9}},
+ CellLabel->
+  "In[133]:=",ExpressionUUID->"13c1cffb-eedc-4f4b-9025-db65a9986ca4"],
+
+Cell[BoxData[{
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      "\"\<ChordLength_4_QuotientSpace.pdf\>\""}], "}"}], "]"}], ",", 
+   "plot1"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      "\"\<ChordLength_4_TotalSpace.pdf\>\""}], "}"}], "]"}], ",", "plot2"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      "\"\<ChordLength_4_Both.pdf\>\""}], "}"}], "]"}], ",", "plot12"}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.897476540512044*^9, 3.8974765869524183`*^9}},
+ CellLabel->
+  "In[143]:=",ExpressionUUID->"b5fccd26-6ce8-49ad-99c4-9fdb95e5cdf2"]
+},
+WindowSize->{1496, 905},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+TaggingRules-><|"TryRealOnly" -> False|>,
+FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"fd6a2493-5652-437c-ac4a-b0fd67ec4126"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 181, 3, 41, "Input",ExpressionUUID->"e900fb1a-6400-48b5-9ddb-415fcad81665"],
+Cell[742, 25, 403, 8, 67, "Input",ExpressionUUID->"056b79bc-07bd-4ce2-88e1-3b8e23354eec"],
+Cell[1148, 35, 965, 24, 117, "Input",ExpressionUUID->"f0b040da-049f-4848-a45b-2e3142fc9c51"],
+Cell[2116, 61, 487, 11, 92, "Input",ExpressionUUID->"a14e8661-385b-49e8-846a-93b79486cbef"],
+Cell[2606, 74, 147, 3, 41, "Input",ExpressionUUID->"9ee8212e-c4a8-4b7b-bec8-f3e687c88369"],
+Cell[2756, 79, 6411, 171, 892, "Input",ExpressionUUID->"13c1cffb-eedc-4f4b-9025-db65a9986ca4"],
+Cell[9170, 252, 949, 27, 92, "Input",ExpressionUUID->"b5fccd26-6ce8-49ad-99c4-9fdb95e5cdf2"]
+}
+]
+*)
+
