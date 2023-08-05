@@ -59,6 +59,9 @@ RandomClosedPolygons::usage="RandomClosedPolygons[d_Integer, r_?VectorQ, samplec
 ActionAngleSample::usage="ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space.";
 
 
+RectangleConvolutionPower::usage="";
+
+
 (*Some error and warning messages.*)
 
 CycleSamplerLink::badedgelengths = "One edge has more than half the total length of the polygon. No closed polygons with these edgelengths exist.";
@@ -89,6 +92,8 @@ LogFile[] := Import[$logFile,"Text"];
 
 (* Add $libraryDirectory to $LibraryPath in case the package is not installed in $UserBaseDirectory/Applications. *)
 If[Not@MemberQ[$LibraryPath, $libraryDirectory],AppendTo[$LibraryPath, $libraryDirectory]];
+
+$compilationOptions := $compilationOptions = Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]];
 
 
 Get[FileNameJoin[{$sourceDirectory, "cSampleRandomVariable.m"}]];
@@ -238,6 +243,24 @@ processSphereRadii[r_?VectorQ, \[Rho]_]:=If[
 			_, (Message[CycleSamplerLink::badsphereradii3,\[Rho]];Return[$Failed];)
 		];
 	];
+];
+
+
+Get[FileNameJoin[{$sourceDirectory, "cRectangleConvolutionPower.m"}]];
+
+RectangleConvolutionPower[x_,n_Integer?Positive]:=cppRectangleConvolutionPower[x,n];
+
+
+RectangleConvolutionPower[x_?VectorQ,n_Integer?Positive]:=Module[{threadCount},
+	threadCount = "ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]);
+	cppRectangleConvolutionPowerMany[x, n, threadCount]
+];
+
+RectangleConvolutionPower'[x_,n_Integer?Positive]:=cppDRectangleConvolutionPower[x,n];
+
+RectangleConvolutionPower'[x_?VectorQ,n_Integer?Positive]:=Module[{threadCount},
+	threadCount = "ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]);
+	cppDRectangleConvolutionPowerMany[x, n, threadCount]
 ];
 
 

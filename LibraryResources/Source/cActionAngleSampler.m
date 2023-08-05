@@ -62,7 +62,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 				"TargetDirectory"-> $libraryDirectory,
 				(*"ShellCommandFunction"\[Rule]Print,*)
 				(*"ShellOutputFunction"\[Rule]Print,*)
-				Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]]
+				$compilationOptions
 			]
 		][[1]];
 		Print["Compilation done. Time elapsed = ", t, " s.\n"];

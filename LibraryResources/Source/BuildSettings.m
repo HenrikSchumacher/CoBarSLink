@@ -1,7 +1,6 @@
 (* ::Package:: *)
 
-Print[DirectoryName[$InputFileName]];
-Print[FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]];
+Print["Reading build settings from ",FileNameJoin[{DirectoryName[$InputFileName],"BuildSettings.m"}]];
 Switch[ $OperatingSystem
 	
 	,"MacOSX", 
@@ -15,8 +14,8 @@ Switch[ $OperatingSystem
 			,"-gcolumn-info"
 			,"-mmacosx-version-min="<>StringSplit[Import["!sw_vers &2>1","Text"]][[4]]
 			,"-std=c++20"
-			,"-fno-math-errno"
 			,"-Ofast"
+			,"-fno-math-errno"
 			,"-flto"
 			,"-pthread"
 			,"-framework Accelerate"
