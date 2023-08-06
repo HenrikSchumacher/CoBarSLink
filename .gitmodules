@@ -1,3 +1,5 @@
 [submodule "LibraryResources/Source/CycleSampler"]
 	path = LibraryResources/Source/CycleSampler
 	url = git@github.com:HenrikSchumacher/CycleSampler.git
+	branch = main
+	update = merge

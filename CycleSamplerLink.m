@@ -250,11 +250,11 @@ Get[FileNameJoin[{$sourceDirectory, "cRectangleConvolutionPower.m"}]];
 
 RectangleConvolutionPower[x_,n_Integer?Positive]:=cppRectangleConvolutionPower[x,n];
 
-
 RectangleConvolutionPower[x_?VectorQ,n_Integer?Positive]:=Module[{threadCount},
 	threadCount = "ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]);
 	cppRectangleConvolutionPowerMany[x, n, threadCount]
 ];
+
 
 RectangleConvolutionPower'[x_,n_Integer?Positive]:=cppDRectangleConvolutionPower[x,n];
 
@@ -262,6 +262,9 @@ RectangleConvolutionPower'[x_?VectorQ,n_Integer?Positive]:=Module[{threadCount},
 	threadCount = "ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]);
 	cppDRectangleConvolutionPowerMany[x, n, threadCount]
 ];
+
+
+RandomFlightPDF[r_,n_Integer?Positive]:=(-Sqrt[2/Pi]r) RectangleConvolutionPower'[r,n];
 
 
 clearLibraries[]:=(
