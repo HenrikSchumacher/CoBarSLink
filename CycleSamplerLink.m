@@ -33,18 +33,33 @@ TraditionalForm]\) separately.
 End[];
 
 
-CycleSample::usage = "CycleSample[d_Integer, r_?VectorQ, samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
+CycleSample::usage = "CycleSample[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
 The vector r contains the length of each edge of the polygon. As option one can set:
 
 "<>CycleSamplerLink`Private`sphereRadiiUsage;
 
 
-CycleSampleChordLength::usage = "CycleSampleChordLength[d_Integer, r_?VectorQ, \[Rho]_?VectorQ, {i_Integer, j_Integer}, samplecount_Integer] draws samplecount samples of closed polygons of edge lengths r in d-dimensional Euclidean space. Then it evaluates the chord length between vertices i and j. As option one can set:
+CycleSampleChordLength::usage = "CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), \[Rho]_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer] draws samplecount samples of closed polygons of edge lengths r in d-dimensional Euclidean space. Then it evaluates the chord length between vertices i and j. As option one can set:
 
 "<>CycleSamplerLink`Private`sphereRadiiUsage;
 
 
-RandomClosedPolygons::usage="RandomClosedPolygons[d_Integer, r_?VectorQ, samplecount_Integer] generates samplecount open Length[r]-gons in d dimensional Euclidean space, closes them via the conformal barycenter method. Then it returns: 
+RandomOpenPolygons::usage="RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space. The result is equivalent to - but significantly faster to obtain than - RandomPoint[Sphere[ConstantArray[0.,d]],{samplecount,edgecount}].";
+
+
+RandomClosedPolygons::usage="RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space, closes them via the conformal barycenter method. Then it returns: 
+	(i)   the open polygons' unit edge vectors;
+	(ii)  the conformal shift vectors; 
+	(iii) the closed polygons' unit edge vectors;
+	(iv)  the sampling weights for the edge space; and
+	(v)   the sampling weights for the quotient space of the edge space by the action of SO(d).
+
+	 As option one can set:
+
+"<>CycleSamplerLink`Private`sphereRadiiUsage;
+
+
+ConformalClosures::usage="ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))&)] closes the Length[r]-gons stored in the 3-tensor x via the conformal barycenter method. Then it returns: 
 	(i)   the open polygons' unit edge vectors;
 	(ii)  the conformal shift vectors; 
 	(iii) the closed polygons' unit edge vectors;
@@ -57,9 +72,6 @@ RandomClosedPolygons::usage="RandomClosedPolygons[d_Integer, r_?VectorQ, samplec
 
 
 ActionAngleSample::usage="ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space.";
-
-
-RectangleConvolutionPower::usage="";
 
 
 (*Some error and warning messages.*)
@@ -106,7 +118,7 @@ Options[CycleSample] = {
 
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
-CycleSample[fun_String, d_Integer, r_?(VectorQ[#,NumericQ]&), samplecount_Integer, OptionsPattern[]]:=Module[{\[Rho], err, values, weights}, 
+CycleSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{\[Rho], err, values, weights}, 
 	
 	(* Allocation. *)
 	values  = ConstantArray[0., {samplecount}]; 
@@ -138,7 +150,7 @@ Options[CycleSampleChordLength] = {
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
 };
 
-CycleSampleChordLength[d_Integer, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_, OptionsPattern[]]:=Module[{\[Rho], err, values, weights}, 
+CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{\[Rho], err, values, weights}, 
 
 	If[2 Max[r] > Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
 		
@@ -158,6 +170,22 @@ CycleSampleChordLength[d_Integer, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integ
 ];
 
 
+Get[FileNameJoin[{$sourceDirectory, "cRandomOpenPolygons.m"}]];
+
+Options[RandomOpenPolygons ]= {
+	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
+};
+
+RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{x},
+
+	x = ConstantArray[0.,{samplecount,edgecount,d}];
+
+	cRandomOpenPolygons[d][x,Min[samplecount,OptionValue["ThreadCount"]]];
+
+	x
+];
+
+
 Get[FileNameJoin[{$sourceDirectory, "cRandomClosedPolygons.m"}]];
 
 RandomClosedPolygons::len="Lengths of the input vectors in the second and third argument are expected to coincide.";
@@ -165,9 +193,9 @@ RandomClosedPolygons::len="Lengths of the input vectors in the second and third 
 Options[RandomClosedPolygons ]= {
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
 	"SphereRadii" -> "EdgeLengths"
-}
+};
 
-RandomClosedPolygons[d_Integer, r_?(VectorQ[#,NumericQ]&), samplecount_, OptionsPattern[]]:=Module[{W,edgecount,x,w,y,Klist,Kquotlist,\[Rho]},
+RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{W,edgecount,x,w,y,Klist,Kquotlist,\[Rho]},
 
 	If[2 Max[r]>Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
 		
@@ -183,7 +211,50 @@ RandomClosedPolygons[d_Integer, r_?(VectorQ[#,NumericQ]&), samplecount_, Options
 	Klist     = ConstantArray[0.,{samplecount}];
 	Kquotlist = ConstantArray[0.,{samplecount}];
 
-	cRandomClosedPolygons[d][r,\[Rho],x,w,y,Klist,Kquotlist,OptionValue["ThreadCount"]];
+	cRandomClosedPolygons[d][r,\[Rho],x,w,y,Klist,Kquotlist,Min[samplecount,OptionValue["ThreadCount"]]];
+
+	Association[
+		"OpenPolygonUnitEdgeVectors"->x,
+		"ShiftVectors"->w,
+		"ClosedPolygonUnitEdgeVectors"->y,
+		"EdgeSpaceSamplingWeights"->Klist,
+		"EdgeQuotientSpaceSamplingWeights"->Kquotlist,
+		"EdgeLengths"->r,
+		"SphereRadii"->\[Rho]
+	]
+];
+
+
+Get[FileNameJoin[{$sourceDirectory, "cConformalClosures.m"}]];
+
+ConformalClosures::len="Length of the first input does coincide with second dimension of second input.";
+
+Options[ConformalClosures ]= {
+	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
+	"SphereRadii" -> "EdgeLengths"
+};
+
+ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))&), OptionsPattern[]]:=Module[{W,edgecount,samplecount,d,w,y,Klist,Kquotlist,\[Rho]},
+
+	If[2 Max[r]>Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+		
+	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
+	If[\[Rho]===$Failed, Return[$Failed]];
+
+	{samplecount, edgecount, d}= Dimensions[x];
+	
+	If[ Length[r] != edgecount,
+		Message[ConformalClosures::len];
+		Return[$Failed];
+	];
+	
+	w = ConstantArray[0.,{samplecount,          d}];
+	y = ConstantArray[0.,{samplecount,edgecount,d}];
+
+	Klist     = ConstantArray[0.,{samplecount}];
+	Kquotlist = ConstantArray[0.,{samplecount}];
+
+	cConformalClosures[d][r,\[Rho],x,w,y,Klist,Kquotlist,Min[samplecount,OptionValue["ThreadCount"]]];
 
 	Association[
 		"OpenPolygonUnitEdgeVectors"->x,
@@ -213,7 +284,7 @@ ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive, Opti
 ]
 
 
-processSphereRadii[r_?VectorQ, \[Rho]_]:=If[
+processSphereRadii[r_?(VectorQ[#,NumericQ]&), \[Rho]_]:=If[
 	VectorQ[\[Rho],NumericQ]
 ,
 	If[
@@ -244,27 +315,6 @@ processSphereRadii[r_?VectorQ, \[Rho]_]:=If[
 		];
 	];
 ];
-
-
-Get[FileNameJoin[{$sourceDirectory, "cRectangleConvolutionPower.m"}]];
-
-RectangleConvolutionPower[x_,n_Integer?Positive]:=cppRectangleConvolutionPower[x,n];
-
-RectangleConvolutionPower[x_?VectorQ,n_Integer?Positive]:=Module[{threadCount},
-	threadCount = "ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]);
-	cppRectangleConvolutionPowerMany[x, n, threadCount]
-];
-
-
-RectangleConvolutionPower'[x_,n_Integer?Positive]:=cppDRectangleConvolutionPower[x,n];
-
-RectangleConvolutionPower'[x_?VectorQ,n_Integer?Positive]:=Module[{threadCount},
-	threadCount = "ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]);
-	cppDRectangleConvolutionPowerMany[x, n, threadCount]
-];
-
-
-RandomFlightPDF[r_,n_Integer?Positive]:=(-Sqrt[2/Pi]r) RectangleConvolutionPower'[r,n];
 
 
 clearLibraries[]:=(
