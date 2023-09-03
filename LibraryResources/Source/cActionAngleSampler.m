@@ -26,25 +26,48 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 {
 	MTensor p = MArgument_getMTensor(Args[0]);
 	const mint thread_count = MArgument_getInteger(Args[1]);
+	const bool iterative_Q  = MArgument_getInteger(Args[2])>0;
 
 	const mint sample_count = libData->MTensor_getDimensions(p)[0];
 	const mint edge_count   = libData->MTensor_getDimensions(p)[1];
+	
+	mint trials;
 
-	CycleSampler::ActionAngleSampler<mreal,mint> M ( edge_count );
+	std::string class_name;
 
 	Tools::Time start_time = Tools::Clock::now();
 
-	const mint trials = M.RandomClosedPolygons(
-		libData->MTensor_getRealData(p),
-		sample_count,
-		thread_count
-	);
+	
+	if ( iterative_Q ) 
+	{
+		CycleSampler::ActionAngleSampler<mreal,mint,CycleSampler::Xoshiro256Plus,true> M ( edge_count );
+		
+		trials = M.RandomClosedPolygons(
+			libData->MTensor_getRealData(p),
+			sample_count,
+			thread_count
+		);
+
+		class_name = M.ClassName();
+	}
+	else
+	{
+		CycleSampler::ActionAngleSampler<mreal,mint,CycleSampler::Xoshiro256Plus,false> M ( edge_count );
+		
+		trials = M.RandomClosedPolygons(
+			libData->MTensor_getRealData(p),
+			sample_count,
+			thread_count
+		);
+
+		class_name = M.ClassName();
+	}
 
 	Tools::Time stop_time = Tools::Clock::now();
 
 	std::ofstream file ( \""<>$logFile<>"\" , std::ofstream::app );
 
-	file << M.ClassName() << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in 3 D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
+	file << class_name << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in 3 D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
 
 	MArgument_setInteger(Res, trials);
 
@@ -72,7 +95,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		lib, 
 		name,
 		{
-			{Real,3,"Shared"}, Integer
+			{Real,3,"Shared"}, Integer, Integer
 		},
 		Integer
 	]

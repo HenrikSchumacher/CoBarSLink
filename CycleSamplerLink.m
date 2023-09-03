@@ -271,12 +271,13 @@ ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))
 Get[FileNameJoin[{$sourceDirectory, "cActionAngleSampler.m"}]];
 
 Options[ActionAngleSample] = {
-	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
+	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
+	"Iterative"->True
 };
 
 ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{p,trials},
 	p = ConstantArray[0.,{samplecount,edgecount,3}];
-	trials = cActionAngleSampler[p,OptionValue["ThreadCount"]];
+	trials = cActionAngleSampler[p,OptionValue["ThreadCount"],Boole[OptionValue["Iterative"]]];
 	Association[
 		"ClosedPolygons"->p,
 		"Trials"->trials
@@ -321,6 +322,72 @@ clearLibraries[]:=(
 	Scan[DeleteFile,FileNames["*"<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension,$libraryDirectory]];
 	Get[$packageFile];
 );
+
+
+ClearAll[cf];
+cf[d_Integer?Positive]:=Module[{lib, libname, file, code, ds, name, t},
+
+	name = "f";
+
+	ds = IntegerString[d];
+	
+	libname = name<>"_"<>ds<>"D";
+	
+	lib = FileNameJoin[{$libraryDirectory, libname<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension}];
+	
+	If[Not[FileExistsQ[lib]],
+
+		Print["Compiling c"<>name<>"["<>ds<>"]..."];
+
+		code = StringJoin["
+
+#define NDEBUG
+
+#include \"WolframLibrary.h\"
+#include \"MMA.h\"
+
+#include \"CycleSampler.hpp\"
+
+using namespace CycleSampler;
+
+using Scal = std::complex<mreal>;
+using Int  = int_fast32_t;
+
+EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
+{
+	MTensor A_ = MArgument_getMTensor(Args[0]);
+
+	Tiny::SelfAdjointMatrix<"<>ds<>",Scal,Int> A;
+
+	A.Read( reinterpret_cast<const Scal *>( libData->MTensor_getComplexData(A_) ) );
+	
+	MArgument_setReal(Res, A.SmallestEigenvalue());
+
+	return LIBRARY_NO_ERROR;
+}"];
+
+		(* Invoke CreateLibrary to compile the C++ code. *)
+		t = AbsoluteTiming[
+			lib=CreateLibrary[
+				code,
+				libname,
+				"Language"->"C++",
+				"TargetDirectory"-> $libraryDirectory,
+				(*"ShellCommandFunction"\[Rule]Print,*)
+				"ShellOutputFunction"->Print,
+				$compilationOptions
+			]
+		][[1]];
+		Print["Compilation done. Time elapsed = ", t, " s.\n"];
+	];
+
+	cf[d] = LibraryFunctionLoad[lib,name,
+		{
+			{Complex,2,"Constant"}
+		},
+		Real
+	]
+];
 
 
 End[];
