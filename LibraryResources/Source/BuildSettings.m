@@ -19,11 +19,8 @@ Switch[ $OperatingSystem
 			,"-flto"
 			,"-pthread"
 			,"-framework Accelerate"
-			,Switch[$SystemID
-				,"MacOSX-ARM64","-mcpu=apple-m1","-mtune=native"
-				,"MacOSX-x86-64","-march=native","-mtune=native"
-				,_,$Failed
-			]
+			,"-march=native"
+			,"-mtune=native"
 		}
 		,"LinkerOptions"->Switch[
 			$SystemID
