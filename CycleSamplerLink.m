@@ -39,7 +39,7 @@ The vector r contains the length of each edge of the polygon. As option one can 
 "<>CycleSamplerLink`Private`sphereRadiiUsage;
 
 
-CycleSampleChordLength::usage = "CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), \[Rho]_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer] draws samplecount samples of closed polygons of edge lengths r in d-dimensional Euclidean space. Then it evaluates the chord length between vertices i and j. As option one can set:
+CycleSampleChordLength::usage = "CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer?Positive] draws samplecount samples of closed polygons of edge lengths r in d-dimensional Euclidean space. Then it evaluates the chord length between vertices i and j. As option one can set:
 
 "<>CycleSamplerLink`Private`sphereRadiiUsage;
 
