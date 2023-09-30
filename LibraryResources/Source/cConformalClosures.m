@@ -95,8 +95,8 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	libData->MTensor_disown(w);
 	libData->MTensor_disown(y);
-	libData->MTensor_getRealData(K);
-	libData->MTensor_getRealData(K_quot);
+	libData->MTensor_disown(K);
+	libData->MTensor_disown(K_quot);
 
 	return LIBRARY_NO_ERROR;
 }"];
