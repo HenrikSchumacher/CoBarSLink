@@ -3,7 +3,7 @@
 (* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time. Afterwards it is memoized. *)
 
 ClearAll[cSampleChordLength];
-cSampleChordLength[d_Integer?Positive]:=Module[{lib, libname, code, ds, class, name, t},
+cSampleChordLength[d_Integer?Positive] := cSampleChordLength[d] = Module[{lib, libname, code, ds, class, name, t},
 
 	name = "SampleChordLength";
 
@@ -114,7 +114,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	];
 	
 	(* Load the resulting dynamic libary into the Mathematica session; use memoization to quickly look up already loaded libraries.*)
-	cSampleChordLength[d] = LibraryFunctionLoad[
+	LibraryFunctionLoad[
 		lib, 
 		name,
 		{

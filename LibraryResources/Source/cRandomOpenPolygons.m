@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 ClearAll[cRandomOpenPolygons];
-cRandomOpenPolygons[d_Integer?Positive]:=Module[{lib, libname, file, code,ds, name, t},
+cRandomOpenPolygons[d_Integer?Positive] := cRandomOpenPolygons[d] =  Module[{lib, libname, file, code,ds, name, t},
 
 	name = "RandomOpenPolygons";
 
@@ -76,7 +76,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		Print["Compilation done. Time elapsed = ", t, " s.\n"];
 	];
 
-	cRandomOpenPolygons[d] = LibraryFunctionLoad[lib,name,
+	LibraryFunctionLoad[lib,name,
 		{
 			{Real,3,"Shared"},
 			Integer

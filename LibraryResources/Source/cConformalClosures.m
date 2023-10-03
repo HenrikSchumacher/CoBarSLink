@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 ClearAll[cConformalClosures];
-cConformalClosures[d_Integer?Positive]:=Module[{lib, libname, file, code,ds, name, t},
+cConformalClosures[d_Integer?Positive] := cConformalClosures[d] = Module[{lib, libname, file, code,ds, name, t},
 
 	name = "ConformalClosures";
 
@@ -116,7 +116,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		Print["Compilation done. Time elapsed = ", t, " s.\n"];
 	];
 
-	cConformalClosures[d] = LibraryFunctionLoad[lib,name,
+	LibraryFunctionLoad[lib,name,
 		{
 			{Real,1,"Constant"},
 			{Real,1,"Constant"},

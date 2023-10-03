@@ -33,7 +33,7 @@ TraditionalForm]\) separately.
 End[];
 
 
-CycleSample::usage = "CycleSample[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
+CycleSample::usage = "CycleSample[randomvariable_String,d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
 The vector r contains the length of each edge of the polygon. As option one can set:
 
 "<>CycleSamplerLink`Private`sphereRadiiUsage;
@@ -42,6 +42,9 @@ The vector r contains the length of each edge of the polygon. As option one can 
 CycleSampleChordLength::usage = "CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer?Positive] draws samplecount samples of closed polygons of edge lengths r in d-dimensional Euclidean space. Then it evaluates the chord length between vertices i and j. As option one can set:
 
 "<>CycleSamplerLink`Private`sphereRadiiUsage;
+
+
+CycleConfidenceSample::usage = "";
 
 
 RandomOpenPolygons::usage="RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space. The result is equivalent to - but significantly faster to obtain than - RandomPoint[Sphere[ConstantArray[0.,d]],{samplecount,edgecount}].";
@@ -166,6 +169,66 @@ CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer
 		WeightedData[values,weights]
 	,
 		$Failed
+	]
+];
+
+
+Get[FileNameJoin[{$sourceDirectory, "cConfidenceSampleRandomVariable.m"}]];
+
+Options[CycleConfidenceSample] = {
+	"SphereRadii" -> "EdgeLengths",
+	"QuotientSpace" -> True,
+	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
+	"ChunkSize"->1000000,
+	"MaxSamples"->10000000,
+	"ConfidenceLevel"->0.95
+};
+
+(* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
+sends them to the dynamic library, and postprocesses the outputs.*)
+CycleConfidenceSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, OptionsPattern[]]:=Module[{\[Rho], means, errors,radii,samplecount,time,cf}, 
+	
+	(* Allocation. *)
+	means  = ConstantArray[0., {1}]; 
+	errors = ConstantArray[0., {1}];
+	radii = ConstantArray[confidenceradius, {1}];
+	
+	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
+	If[\[Rho]===$Failed,Return[$Failed]];
+	
+	If[2 Max[r] > Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+	
+	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
+	
+	cf = cConfidenceSampleRandomVariable[d];
+	
+	time = AbsoluteTiming[
+		samplecount = cf[
+			fun, r, \[Rho], means, errors, radii, 
+			OptionValue["MaxSamples"], 
+			If[OptionValue["QuotientSpace"]=!=False,1,0], 
+			OptionValue["ThreadCount"],
+			OptionValue["ConfidenceLevel"],
+			OptionValue["ChunkSize"]
+		];
+	][[1]];
+	
+	Association[
+		"RandomVariable" -> fun,
+		"SampledMean" -> means[[1]],
+		"Error" -> errors[[1]],
+		"ConfidenceLevel" -> OptionValue["ConfidenceLevel"],
+		"AmbientDimension" -> d,
+		"r" -> r,
+		"\[Rho]" -> \[Rho],
+		"PrescribedError" -> radii[[1]],
+		"SampleCount" -> samplecount,
+		"MaxSamples" -> OptionValue["MaxSamples"],
+		"QuotientSpace" -> OptionValue["QuotientSpace"],
+		"ThreadCount" -> OptionValue["ThreadCount"],
+		"ChunkSize" -> OptionValue["ChunkSize"],
+		"Chunks" -> samplecount/OptionValue["ChunkSize"],
+		"Timing" -> time
 	]
 ];
 
@@ -322,72 +385,6 @@ clearLibraries[]:=(
 	Scan[DeleteFile,FileNames["*"<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension,$libraryDirectory]];
 	Get[$packageFile];
 );
-
-
-ClearAll[cf];
-cf[d_Integer?Positive]:=Module[{lib, libname, file, code, ds, name, t},
-
-	name = "f";
-
-	ds = IntegerString[d];
-	
-	libname = name<>"_"<>ds<>"D";
-	
-	lib = FileNameJoin[{$libraryDirectory, libname<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension}];
-	
-	If[Not[FileExistsQ[lib]],
-
-		Print["Compiling c"<>name<>"["<>ds<>"]..."];
-
-		code = StringJoin["
-
-#define NDEBUG
-
-#include \"WolframLibrary.h\"
-#include \"MMA.h\"
-
-#include \"CycleSampler.hpp\"
-
-using namespace CycleSampler;
-
-using Scal = std::complex<mreal>;
-using Int  = int_fast32_t;
-
-EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
-{
-	MTensor A_ = MArgument_getMTensor(Args[0]);
-
-	Tiny::SelfAdjointMatrix<"<>ds<>",Scal,Int> A;
-
-	A.Read( reinterpret_cast<const Scal *>( libData->MTensor_getComplexData(A_) ) );
-	
-	MArgument_setReal(Res, A.SmallestEigenvalue());
-
-	return LIBRARY_NO_ERROR;
-}"];
-
-		(* Invoke CreateLibrary to compile the C++ code. *)
-		t = AbsoluteTiming[
-			lib=CreateLibrary[
-				code,
-				libname,
-				"Language"->"C++",
-				"TargetDirectory"-> $libraryDirectory,
-				(*"ShellCommandFunction"\[Rule]Print,*)
-				"ShellOutputFunction"->Print,
-				$compilationOptions
-			]
-		][[1]];
-		Print["Compilation done. Time elapsed = ", t, " s.\n"];
-	];
-
-	cf[d] = LibraryFunctionLoad[lib,name,
-		{
-			{Complex,2,"Constant"}
-		},
-		Real
-	]
-];
 
 
 End[];

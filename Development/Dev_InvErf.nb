@@ -1,0 +1,247 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9890,        239]
+NotebookOptionsPosition[      8729,        215]
+NotebookOutlinePosition[      9166,        232]
+CellTagsIndexPosition[      9123,        229]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData["Exit"], "Input",
+ CellChangeTimes->{{3.873864239407578*^9, 3.8738642403220377`*^9}},
+ CellLabel->"In[42]:=",ExpressionUUID->"e900fb1a-6400-48b5-9ddb-415fcad81665"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Delete", " ", "all", " ", "compiled", " ", "dynamic", " ", "libraries", 
+    " ", "of", " ", "the", " ", "CycleSamplerLink", " ", 
+    RowBox[{"package", "."}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"If", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"FileExistsQ", "[", "#", "]"}], ",", 
+      RowBox[{"DeleteDirectory", "[", 
+       RowBox[{"#", ",", 
+        RowBox[{"DeleteContents", "->", "True"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}], "&"}], "[", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"ParentDirectory", "[", 
+       RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+      "\"\<LibraryResources\>\"", ",", "$SystemID"}], "}"}], "]"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.895710535840643*^9, 3.8957105763631573`*^9}},
+ CellLabel->"In[75]:=",ExpressionUUID->"f0b040da-049f-4848-a45b-2e3142fc9c51"],
+
+Cell[BoxData[
+ RowBox[{"Get", "[", "\[IndentingNewLine]", 
+  RowBox[{"FileNameJoin", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"ParentDirectory", "[", 
+      RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+     "\"\<CycleSamplerLink.m\>\""}], "}"}], "]"}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.8802095908904676`*^9, 3.8802096051713343`*^9}, 
+   3.880210597814003*^9},
+ CellLabel->"In[76]:=",ExpressionUUID->"a14e8661-385b-49e8-846a-93b79486cbef"],
+
+Cell[BoxData[
+ RowBox[{"LibraryFunctionUnload", "[", "cInvErf", "]"}]], "Input",
+ CellLabel->"In[34]:=",ExpressionUUID->"eb4ada1c-8adf-424d-b73f-baa59df16693"],
+
+Cell[BoxData[
+ RowBox[{"LibraryFunctionUnload", "[", "cInvErf", "]"}]], "Input",
+ CellLabel->"In[35]:=",ExpressionUUID->"9505e249-4044-4bef-90ef-6eee4358d7bd"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "The", " ", "backend", " ", "routine", " ", "is", " ", "a", " ", "dynamic",
+     " ", "library", " ", "that", " ", "is", " ", "compiled", " ", "on", " ", 
+    "the", " ", "fly", " ", "when", " ", "it", " ", "is", " ", "called", " ", 
+    "for", " ", "the", " ", "first", " ", 
+    RowBox[{"time", ".", " ", "Afterwards"}], " ", "it", " ", "is", " ", 
+    RowBox[{"memoized", "."}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"Needs", "[", "\"\<CCompilerDriver`\>\"", "]"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+    "$libraryDirectory", "=", 
+     "\"\</Users/Henrik/github/CycleSamplerLink/LibraryResources/MacOSX-ARM64\
+\>\""}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"Quiet", "[", 
+     RowBox[{"LibraryFunctionUnload", "[", "cInvErf", "]"}], "]"}], ";"}], 
+   "\n", "\n", 
+   RowBox[{
+    RowBox[{"ClearAll", "[", "cInvErf", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"cInvErf", "=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"lib", ",", " ", "code", ",", " ", "name", ",", " ", "t"}], 
+        "}"}], ",", "\n", "\n", "\t", 
+       RowBox[{
+        RowBox[{"name", " ", "=", " ", "\"\<cInvErf\>\""}], ";", "\n", "\t", 
+        "\n", "\t", 
+        RowBox[{"lib", " ", "=", " ", 
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"$libraryDirectory", ",", " ", 
+            RowBox[{
+            "name", "<>", 
+             "CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension"}]}], 
+           "}"}], "]"}]}], ";", "\n", "\n", "\t", 
+        RowBox[{"If", "[", 
+         RowBox[{"(*", 
+          RowBox[{"Not", "[", 
+           RowBox[{"FileExistsQ", "[", "lib", "]"}], "]"}], "*)"}], 
+         RowBox[{"True", ",", "\n", "\n", "\t\t", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<Compiling c\>\"", "<>", "name", "<>", "\"\<...\>\""}], "]"}],
+            ";", "\n", "\n", "\t\t", 
+           RowBox[{"code", "=", 
+            RowBox[{"StringJoin", "[", "\n", 
+             RowBox[{
+             "\"\<\n#define NDEBUG\n\n#include \\\"WolframLibrary.h\\\"\n\
+#include \\\"MMA.h\\\"\n\n#include \\\"CycleSampler.hpp\\\"\n#include \
+\\\"/Users/Henrik/github/CycleSamplerLink/LibraryResources/Source/\
+CycleSampler/submodules/erfinv/erfinv.c\\\"\n#include \
+\\\"/Users/Henrik/github/CycleSamplerLink/LibraryResources/Source/\
+CycleSampler/submodules/erfinv/erfinv.h\\\"\n\n\nusing namespace Tools;\n\n\
+EXTERN_C DLLEXPORT int \>\"", "<>", "name", "<>", 
+              "\"\<(WolframLibraryData libData, mint Argc, MArgument *Args, \
+MArgument Res)\n{\n\tdouble x = MArgument_getReal(Args[0]);\n\n\tdouble \
+result = erfinv( x );\n\n\tMArgument_setReal(Res, result );\n\n\treturn \
+LIBRARY_NO_ERROR;\n}\>\""}], "]"}]}], ";", "\n", "\n", "\t\t", 
+           RowBox[{"(*", " ", 
+            RowBox[{
+            "Invoke", " ", "CreateLibrary", " ", "to", " ", "compile", " ", 
+             "the", " ", 
+             RowBox[{"C", "++"}], " ", 
+             RowBox[{"code", "."}]}], " ", "*)"}], "\n", "\t\t", 
+           RowBox[{"t", " ", "=", " ", 
+            RowBox[{
+             RowBox[{"AbsoluteTiming", "[", "\n", "\t\t\t", 
+              RowBox[{"lib", "=", 
+               RowBox[{"CreateLibrary", "[", "\n", "\t\t\t\t", 
+                RowBox[{
+                "code", ",", "\n", "\t\t\t\t", "name", ",", "\n", "\t\t\t\t", 
+                 
+                 RowBox[{"\"\<Language\>\"", "->", "\"\<C++\>\""}], ",", "\n",
+                  "\t\t\t\t", 
+                 RowBox[{
+                 "\"\<TargetDirectory\>\"", "->", " ", "$libraryDirectory"}], 
+                 ",", "\n", "\t\t\t\t", 
+                 RowBox[{"(*", 
+                  RowBox[{
+                   RowBox[{
+                   "\"\<ShellCommandFunction\>\"", "\[Rule]", "Print"}], 
+                   ","}], "*)"}], "\n", "\t\t\t\t", 
+                 RowBox[{"(*", 
+                  RowBox[{
+                   RowBox[{
+                   "\"\<ShellOutputFunction\>\"", "\[Rule]", "Print"}], ","}],
+                   "*)"}], "\n", "\t\t\t\t", 
+                 RowBox[{
+                 "Get", "[", 
+                  "\"\</Users/Henrik/github/CycleSamplerLink/LibraryResources/\
+Source/BuildSettings.m\>\"", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+              "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], ";", "\n", "\t\t", 
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<Compilation done. Time elapsed = \>\"", ",", " ", "t", ",", 
+             " ", "\"\< s.\\n\>\""}], "]"}], ";"}]}], "\n", "\t", "]"}], ";", 
+        "\n", "\n", "\t", 
+        RowBox[{"LibraryFunctionLoad", "[", 
+         RowBox[{"lib", ",", " ", "name", ",", 
+          RowBox[{"{", "Real", "}"}], ",", "Real"}], "]"}]}]}], "\n", "]"}]}],
+     ";"}]}]}]], "Code",
+ InitializationCell->False,
+ CellChangeTimes->{{3.905186253304501*^9, 3.905186455030795*^9}, {
+  3.905186503454652*^9, 3.905186518320923*^9}, {3.90518654870887*^9, 
+  3.9051866165993347`*^9}, {3.905186665176455*^9, 3.905186744918065*^9}},
+ CellLabel->"In[35]:=",ExpressionUUID->"c8c34daa-e6e4-4858-82ac-4dedcb8358b7"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"cInvErf", "[", "0.5", "]"}], ";"}], "//", 
+  "AbsoluteTiming"}]], "Input",
+ CellChangeTimes->{{3.905186660394573*^9, 3.905186661304076*^9}, {
+  3.905186772762389*^9, 3.9051867743684483`*^9}},
+ CellLabel->"In[46]:=",ExpressionUUID->"1c8251ff-29ba-4d23-8f60-b1e43a209a01"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.9051864576188097`*^9, 
+  3.905186490065933*^9}},ExpressionUUID->"2dfe9f0a-eee8-4133-a349-\
+6879d8e15e19"],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"Abs", "[", 
+     RowBox[{
+      RowBox[{"InverseErf", "[", "x", "]"}], "-", 
+      RowBox[{"cInvErf", "[", "x", "]"}]}], "]"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"PlotRange", "->", "All"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.905186474360258*^9, 3.905186494219356*^9}, {
+  3.9051867553779373`*^9, 3.905186768820696*^9}},
+ CellLabel->"In[45]:=",ExpressionUUID->"92adac84-85f9-4ae7-b64e-9370ea082870"]
+},
+WindowSize->{1496, 905},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+TaggingRules-><|"TryRealOnly" -> False|>,
+FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"73625570-1f10-4484-a975-174cf3ce5425"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 177, 2, 41, "Input",ExpressionUUID->"e900fb1a-6400-48b5-9ddb-415fcad81665"],
+Cell[738, 24, 965, 24, 117, "Input",ExpressionUUID->"f0b040da-049f-4848-a45b-2e3142fc9c51"],
+Cell[1706, 50, 487, 11, 92, "Input",ExpressionUUID->"a14e8661-385b-49e8-846a-93b79486cbef"],
+Cell[2196, 63, 159, 2, 41, "Input",ExpressionUUID->"eb4ada1c-8adf-424d-b73f-baa59df16693"],
+Cell[2358, 67, 159, 2, 41, "Input",ExpressionUUID->"9505e249-4044-4bef-90ef-6eee4358d7bd"],
+Cell[2520, 71, 5184, 113, 1406, "Code",ExpressionUUID->"c8c34daa-e6e4-4858-82ac-4dedcb8358b7",
+ InitializationCell->False],
+Cell[7707, 186, 317, 7, 41, "Input",ExpressionUUID->"1c8251ff-29ba-4d23-8f60-b1e43a209a01"],
+Cell[8027, 195, 154, 3, 41, "Input",ExpressionUUID->"2dfe9f0a-eee8-4133-a349-6879d8e15e19"],
+Cell[8184, 200, 541, 13, 41, "Input",ExpressionUUID->"92adac84-85f9-4ae7-b64e-9370ea082870"]
+}
+]
+*)
+

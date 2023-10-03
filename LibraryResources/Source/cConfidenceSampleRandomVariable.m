@@ -2,10 +2,10 @@
 
 (* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time. Afterwards it is memoized. *)
 
-ClearAll[cSampleRandomVariable];
-cSampleRandomVariable[d_Integer?Positive] := cSampleRandomVariable[d] = Module[{lib, libname, code, ds, class, name, t},
+ClearAll[cConfidenceSampleRandomVariable];
+cConfidenceSampleRandomVariable[d_Integer?Positive] := cConfidenceSampleRandomVariable[d] = Module[{lib, libname, code, ds, class, name, t},
 
-	name = "SampleRandomVariable";
+	name = "ConfidenceSampleRandomVariable";
 
 	ds = IntegerString[d];
 	
@@ -25,11 +25,14 @@ cSampleRandomVariable[d_Integer?Positive] := cSampleRandomVariable[d] = Module[{
 
 #define NDEBUG
 
+//#define TOOLS_ENABLE_PROFILER
+
 #include \"WolframLibrary.h\"
 #include \"MMA.h\"
 #include <unordered_map>
 #include \"CycleSampler.hpp\"
 
+using namespace Tools;
 using namespace Tensors;
 using namespace CycleSampler;
 
@@ -40,17 +43,23 @@ using RandomVariable_Ptr = std::shared_ptr<RandomVariable<SamplerBase_T>>;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )
 {
+	//Profiler::Clear(\""<>$HomeDirectory<>"\");
+
 	std::string key ( MArgument_getUTF8String(Args[0]) );
 
 	MTensor r       = MArgument_getMTensor(Args[1]);
 	MTensor rho     = MArgument_getMTensor(Args[2]);
 
-	MTensor values  = MArgument_getMTensor(Args[3]);
-	MTensor weights = MArgument_getMTensor(Args[4]);
+	MTensor means   = MArgument_getMTensor(Args[3]);
+	MTensor errors  = MArgument_getMTensor(Args[4]);
 
-	const mint space_flag   = MArgument_getInteger(Args[5]);
-	const mint sample_count = MArgument_getInteger(Args[6]);
-	const mint thread_count = MArgument_getInteger(Args[7]);
+	MTensor radii   = MArgument_getMTensor(Args[5]);
+
+	const mint  max_sample_count = MArgument_getInteger(Args[6]);
+	const mint  space_flag       = MArgument_getInteger(Args[7]);
+	const mint  thread_count     = MArgument_getInteger(Args[8]);
+	const mreal confidence       = MArgument_getReal   (Args[9]);
+	const mint  chunk_size       = MArgument_getInteger(Args[10]);
 
 	std::unordered_map<std::string,RandomVariable_Ptr> function_lookup;
 	function_lookup.insert( {\"DiagonalLength\",                  "<>class["DiagonalLength"]<>"()                  } );
@@ -79,42 +88,32 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			edge_count
 		);
 	
-		RandomVariable_Ptr F = iter->second->Clone();
+		std::vector<RandomVariable_Ptr> F_list;
+		F_list.push_back( iter->second->Clone() );
 
-		// Start the sampling process.
-		if( space_flag == 0 )
-		{
-			S.Sample(
-				libData->MTensor_getRealData(values),
-				libData->MTensor_getRealData(weights),
-				nullptr,
-				F,
-				sample_count,
-				thread_count
-			);
-		}
-		else
-		{
-			S.Sample(
-				libData->MTensor_getRealData(values),
-				nullptr,
-				libData->MTensor_getRealData(weights),
-				F,
-				sample_count,
-				thread_count
-			);
-		}
+		mint N = S.ConfidenceSample(
+	        F_list,
+	        libData->MTensor_getRealData(means),
+	        libData->MTensor_getRealData(errors),
+	        libData->MTensor_getRealData(radii),
+	        max_sample_count,
+	        static_cast<bool>(space_flag),
+	        thread_count,
+	        confidence,
+	        chunk_size
+	    );
 
-		MArgument_setInteger(Res, 0);
+
+		MArgument_setInteger(Res, N);
 	}
     else
 	{
 		eprint(\"cSampleRandomVariable: Random variable with tag \\\"\"+key+\"\\\" not found. Aborting.\");
-		MArgument_setInteger(Res, 1);
+		MArgument_setInteger(Res, -1);
 	}
 
-	libData->MTensor_disown(values);
-	libData->MTensor_disown(weights);
+	libData->MTensor_disown(means);
+	libData->MTensor_disown(errors);
 
 	return LIBRARY_NO_ERROR;
 }"];
@@ -142,12 +141,15 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			"UTF8String",        (* tag of random variable *)
 			{Real,1,"Constant"}, (* r *)
 			{Real,1,"Constant"}, (* \[Rho] *)
-			{Real,1,"Shared"},   (* sampled values *)
-			{Real,1,"Shared"},   (* weights *)
+			{Real,1,"Shared"},   (* means *)
+			{Real,1,"Shared"},   (* errors *)
+			{Real,1,"Constant"}, (* confidence radii *)
+			Integer,             (* max_sample_count *)
 			Integer,             (* flag for specifying the space: values 0 means total space metric, all other values mean quotient space metric *)
-			Integer,             (* number of samples to take *)
-			Integer              (* number of threads *)
+			Integer,             (* number of threads *)
+			Real,                (* confidence level *)
+			Integer              (* chunk_size *)
 		},
-		(*return*) Integer  (* error flag; ==0 if succeeded. *)
+		(*return*) Integer  (* If positive: succeed and number of samples taken is returned. If negative: Error occured. *)
 	]
 ];
