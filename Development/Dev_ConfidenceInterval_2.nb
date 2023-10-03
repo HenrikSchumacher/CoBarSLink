@@ -10,17 +10,17 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      5468,        126]
-NotebookOptionsPosition[      4934,        110]
-NotebookOutlinePosition[      5329,        126]
-CellTagsIndexPosition[      5286,        123]
+NotebookDataLength[      5789,        134]
+NotebookOptionsPosition[      5213,        117]
+NotebookOutlinePosition[      5650,        134]
+CellTagsIndexPosition[      5607,        131]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData["Exit"], "Input",
  CellChangeTimes->{{3.9052502925206537`*^9, 3.905250293008569*^9}},
- CellLabel->"In[13]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
+ CellLabel->"In[29]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
 
 Cell[BoxData[
  RowBox[{
@@ -65,9 +65,11 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"d", "=", "3"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"r", "=", 
-   RowBox[{"ConstantArray", "[", 
-    RowBox[{"1.", ",", "16"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"r", "=", 
+    RowBox[{"ConstantArray", "[", 
+     RowBox[{"1.", ",", "16"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"data", "=", 
@@ -75,11 +77,14 @@ Cell[BoxData[{
      RowBox[{
      "\"\<Gyradius\>\"", ",", "d", ",", "r", ",", "0.01", ",", 
       "\[IndentingNewLine]", 
+      RowBox[{
+      "\"\<SphereRadii\>\"", "\[Rule]", "\"\<SymplecticQuotient\>\""}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<QuotientSpace\>\"", "\[Rule]", "True"}], ",", 
+      "\[IndentingNewLine]", 
       RowBox[{"\"\<ConfidenceLevel\>\"", "->", "0.99"}], ",", 
       "\[IndentingNewLine]", 
-      RowBox[{"\"\<ThreadCount\>\"", "->", "8"}], ",", "\[IndentingNewLine]", 
-      
-      RowBox[{"\"\<MaxSamples\>\"", "->", "100000000"}], ",", 
+      RowBox[{"\"\<MaxSamples\>\"", "->", "1000000000"}], ",", 
       "\[IndentingNewLine]", 
       RowBox[{"\"\<ChunkSize\>\"", "->", "1000000"}]}], "\[IndentingNewLine]",
       "]"}]}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
@@ -105,11 +110,14 @@ Cell[BoxData[{
    3.905286721352767*^9, 3.905286768222348*^9, {3.905286801041795*^9, 
    3.905286803983028*^9}, {3.9053194545725183`*^9, 3.90531945765294*^9}, {
    3.90531951603929*^9, 3.905319516483526*^9}, {3.905320065072371*^9, 
-   3.905320082477352*^9}, {3.905320220200553*^9, 3.905320220508356*^9}},
+   3.905320082477352*^9}, {3.905320220200553*^9, 3.905320220508356*^9}, {
+   3.9053208391344233`*^9, 3.9053209392418957`*^9}, {3.90532098904077*^9, 
+   3.905320989351532*^9}},
  CellLabel->"In[7]:=",ExpressionUUID->"0500f23d-1464-47bf-affe-b28ad0bc5524"]
 },
 WindowSize->{1496, 905},
 WindowMargins->{{1, Automatic}, {Automatic, 0}},
+TaggingRules-><|"TryRealOnly" -> False|>,
 FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"be48836e-9f73-4191-b5bb-a6c7f14c4c53"
@@ -127,7 +135,7 @@ CellTagsIndex->{}
 Notebook[{
 Cell[558, 20, 177, 2, 41, "Input",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
 Cell[738, 24, 1612, 37, 217, "Input",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
-Cell[2353, 63, 2577, 45, 267, "Input",ExpressionUUID->"0500f23d-1464-47bf-affe-b28ad0bc5524"]
+Cell[2353, 63, 2856, 52, 317, "Input",ExpressionUUID->"0500f23d-1464-47bf-affe-b28ad0bc5524"]
 }
 ]
 *)
