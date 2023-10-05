@@ -1,0 +1,352 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     15175,        344]
+NotebookOptionsPosition[     14473,        325]
+NotebookOutlinePosition[     14910,        342]
+CellTagsIndexPosition[     14867,        339]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData["Exit"], "Input",
+ CellChangeTimes->{{3.9052502925206537`*^9, 3.905250293008569*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Delete", " ", "all", " ", "compiled", " ", "dynamic", " ", "libraries", 
+    " ", "of", " ", "the", " ", "CycleSamplerLink", " ", 
+    RowBox[{"package", "."}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"If", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"FileExistsQ", "[", "#", "]"}], ",", 
+       RowBox[{"DeleteDirectory", "[", 
+        RowBox[{"#", ",", 
+         RowBox[{"DeleteContents", "->", "True"}]}], "]"}]}], 
+      "\[IndentingNewLine]", "]"}], "&"}], "[", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"ParentDirectory", "[", 
+        RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+       "\"\<LibraryResources\>\"", ",", "$SystemID"}], "}"}], "]"}], "]"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Get", "[", "\[IndentingNewLine]", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"ParentDirectory", "[", 
+        RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+       "\"\<CycleSamplerLink.m\>\""}], "}"}], "]"}], "\[IndentingNewLine]", 
+    "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.8802095908904676`*^9, 3.8802096051713343`*^9}, 
+   3.880210597814003*^9, {3.905279022848572*^9, 3.90527902533095*^9}, {
+   3.905279163987751*^9, 3.90527916429506*^9}, {3.905319847584572*^9, 
+   3.905319850790804*^9}, {3.905320184201621*^9, 3.905320186377838*^9}, {
+   3.905320479912788*^9, 3.905320483633527*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Quiet", "[", 
+   RowBox[{"LibraryFunctionUnload", "[", "cGearyTransform", "]"}], "]"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", "cGearyTransform", "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"cGearyTransform", " ", "=", " ", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "lib", ",", " ", "libname", ",", " ", "name", ",", " ", "code", ",", 
+       " ", "t"}], "}"}], ",", "\n", "\n", "\t", 
+     RowBox[{
+      RowBox[{"libname", " ", "=", " ", 
+       RowBox[{"name", " ", "=", " ", "\"\<cGearyTransform\>\""}]}], ";", 
+      "\n", "\n", "\t", 
+      RowBox[{"lib", " ", "=", " ", 
+       RowBox[{"FileNameJoin", "[", 
+        RowBox[{"{", 
+         RowBox[{"CycleSamplerLink`Private`$libraryDirectory", ",", " ", 
+          RowBox[{
+          "libname", "<>", 
+           "CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension"}]}], 
+         "}"}], "]"}]}], ";", "\n", "\t", "\n", "\t", 
+      RowBox[{"If", "[", 
+       RowBox[{"True", ",", "\n", "\n", "\t\t", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{
+           RowBox[{"\"\<Compiling c\>\"", "<>", "name"}], "\"\<...\>\""}], 
+          "]"}], ";", "\n", "\n", "\t\t", 
+         RowBox[{"code", " ", "=", " ", 
+          RowBox[{"StringJoin", "[", "\n", 
+           RowBox[{
+           "\"\<\n// This is the actual C++ code.\n\n#define NDEBUG\n\n\
+//#define TOOLS_ENABLE_PROFILER\n\n#include \\\"WolframLibrary.h\\\"\n\
+#include \\\"MMA.h\\\"\n\n#include \\\"CycleSampler.hpp\\\"\n\nusing \
+namespace Tools;\nusing namespace Tensors;\nusing namespace CycleSampler;\n\n\
+using Real = mreal;\nusing Int  = mint;\n\nEXTERN_C DLLEXPORT int \>\"", "<>",
+             "name", "<>", 
+            "\"\<(WolframLibraryData libData, mint Argc, MArgument *Args, \
+MArgument Res )\n{\n\t//Profiler::Clear(\\\"\>\"", "<>", "$HomeDirectory", 
+            "<>", "\"\<\\\");\n\n\tMTensor X_   = \
+MArgument_getMTensor(Args[0]);\n\tMTensor Y_   = \
+MArgument_getMTensor(Args[1]);\n\t\n\tReal mean_X  = \
+MArgument_getReal(Args[2]);\n\tReal mean_Y  = MArgument_getReal(Args[3]);\n\t\
+Real var_X   = MArgument_getReal(Args[4]);\n\tReal cov_X_Y = \
+MArgument_getReal(Args[5]);\n\tReal var_Y   = MArgument_getReal(Args[6]);\n\n\
+\tInt thread_count   = MArgument_getInteger(Args[7]);\n\n\tconst Int n = \
+std::min( libData->MTensor_getDimensions(X_)[0], \
+libData->MTensor_getDimensions(Y_)[0] );\n\n\tMTensor t_;\n\t\
+(void)libData->MTensor_new(MType_Real, 1, &n, &t_);\n\n\tcptr<Real> X = \
+libData->MTensor_getRealData(X_);\n\tcptr<Real> Y = \
+libData->MTensor_getRealData(Y_);\n\tmptr<Real> t = \
+libData->MTensor_getRealData(t_);\n\n    ParallelDo(\n\t\t[&,X,Y,t]( const \
+Int thread )\n\t\t{\n\t\t\tGearyTransform<Real> G ( mean_X, mean_Y, var_X, \
+cov_X_Y, var_Y );\n\n\t\t\tconst Int i_begin = JobPointer( n, thread_count, \
+thread     );\n\t\t\tconst Int i_end   = JobPointer( n, thread_count, thread \
++ 1 );\n\n\t\t\tfor( Int i = i_begin; i < i_end; ++i )\n\t\t\t{\n\t\t\t\tt[i] \
+= G( X[i] / Y[i] );\n\t\t\t}\n\t\t},\n\t\tthread_count\n\t);\n\n\t\
+MArgument_setMTensor(Res, t_);\n\n\treturn LIBRARY_NO_ERROR;\n}\>\""}], 
+           "]"}]}], ";", "\n", "\t\t", "\n", "\t\t", 
+         RowBox[{"(*", " ", 
+          RowBox[{
+          "Invoke", " ", "CreateLibrary", " ", "to", " ", "compile", " ", 
+           "the", " ", 
+           RowBox[{"C", "++"}], " ", 
+           RowBox[{"code", "."}]}], " ", "*)"}], "\n", "\t\t", 
+         RowBox[{"t", " ", "=", " ", 
+          RowBox[{
+           RowBox[{"AbsoluteTiming", "[", "\n", "\t\t\t", 
+            RowBox[{"lib", " ", "=", " ", 
+             RowBox[{"CreateLibrary", "[", "\n", "\t\t\t\t", 
+              RowBox[{
+              "code", ",", "\n", "\t\t\t\t", "libname", ",", "\n", "\t\t\t\t", 
+               RowBox[{"\"\<Language\>\"", "->", "\"\<C++\>\""}], ",", "\n", 
+               "\t\t\t\t", 
+               RowBox[{
+               "\"\<TargetDirectory\>\"", "->", " ", 
+                "CycleSamplerLink`Private`$libraryDirectory"}], ",", "\n", 
+               "\t\t\t\t", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"\"\<ShellCommandFunction\>\"", "\[Rule]", "Print"}],
+                  ","}], "*)"}], "\n", "\t\t\t\t", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"\"\<ShellOutputFunction\>\"", "\[Rule]", "Print"}], 
+                 ","}], "*)"}], "\n", "\t\t\t\t", 
+               "CycleSamplerLink`Private`$compilationOptions"}], "\n", 
+              "\t\t\t", "]"}]}], "\n", "\t\t", "]"}], "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ";", "\n", "\t\t", 
+         RowBox[{"Print", "[", 
+          RowBox[{
+          "\"\<Compilation done. Time elapsed = \>\"", ",", " ", "t", ",", 
+           " ", "\"\< s.\\n\>\""}], "]"}], ";"}]}], "\n", "\t", "]"}], ";", 
+      "\n", "\t", "\n", "\t", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{
+        "Load", " ", "the", " ", "resulting", " ", "dynamic", " ", "libary", 
+         " ", "into", " ", "the", " ", "Mathematica", " ", "session"}], ";", 
+        " ", 
+        RowBox[{
+        "use", " ", "memoization", " ", "to", " ", "quickly", " ", "look", 
+         " ", "up", " ", "already", " ", "loaded", " ", 
+         RowBox[{"libraries", "."}]}]}], "*)"}], "\n", "\t", 
+      RowBox[{"LibraryFunctionLoad", "[", 
+       RowBox[{"lib", ",", "name", ",", "\n", "\t\t", 
+        RowBox[{"{", "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"Real", ",", "1", ",", "\"\<Constant\>\""}], "}"}], ",", 
+          "\n", "\t\t\t", 
+          RowBox[{"{", 
+           RowBox[{"Real", ",", "1", ",", "\"\<Constant\>\""}], "}"}], ",", 
+          "\n", "\t\t\t", "Real", ",", "Real", ",", "Real", ",", "Real", ",", 
+          "Real", ",", "\n", "\t\t\t", "Integer"}], "\n", "\t\t", "}"}], ",", 
+        "\n", "\t\t", 
+        RowBox[{"{", 
+         RowBox[{"Real", ",", "1"}], "}"}]}], "\n", "\t", "]"}]}]}], "\n", 
+    "]"}]}], ";"}]}], "Code",
+ InitializationCell->False,
+ CellChangeTimes->{{3.905501884018005*^9, 3.905502102137062*^9}, {
+  3.905502132443536*^9, 3.905502583161292*^9}, {3.905503151066325*^9, 
+  3.905503175309259*^9}, {3.905503265953223*^9, 3.9055032888152246`*^9}, {
+  3.905503380539662*^9, 3.905503390120139*^9}, {3.905503428536756*^9, 
+  3.905503432256806*^9}, {3.905503702610094*^9, 3.905503826583572*^9}, {
+  3.905503929723792*^9, 3.9055039433131733`*^9}, {3.905504246162998*^9, 
+  3.905504257566847*^9}, {3.905504303137576*^9, 3.905504307187879*^9}, {
+  3.90550434114566*^9, 3.9055043461168823`*^9}, {3.905504378877021*^9, 
+  3.905504424452869*^9}, {3.905504485086441*^9, 3.905504487113969*^9}, {
+  3.905505017694763*^9, 3.905505017907127*^9}},
+ CellLabel->"In[3]:=",ExpressionUUID->"f8890398-13ad-4df5-b63e-509a9b4877e6"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"GearyFactor", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"GearyFactor", "=", "10000"}], ";"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Do", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"meanX", "=", 
+       RowBox[{"RandomVariate", "[", 
+        RowBox[{"ExponentialDistribution", "[", "1", "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"varX", "=", 
+       RowBox[{"RandomVariate", "[", 
+        RowBox[{"ExponentialDistribution", "[", "1", "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"meanY", "=", 
+       RowBox[{"RandomVariate", "[", 
+        RowBox[{"ExponentialDistribution", "[", "1", "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"varY", "=", 
+       RowBox[{"RandomReal", "[", 
+        RowBox[{"{", 
+         RowBox[{"0.", ",", 
+          RowBox[{
+           RowBox[{"1", "/", 
+            RowBox[{"GearyFactor", "^", "2"}]}], " ", 
+           RowBox[{"meanY", "^", "2"}]}]}], "}"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"covXY", "=", 
+       RowBox[{
+        RowBox[{"RandomReal", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "1."}], ",", "1."}], "}"}], "]"}], 
+        RowBox[{"Sqrt", "[", 
+         RowBox[{"varX", " ", "varY"}], "]"}]}]}], ";", "\[IndentingNewLine]",
+       "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<GearyCondition\>\"", "->", 
+        RowBox[{"meanY", ">", 
+         RowBox[{"GearyFactor", " ", 
+          RowBox[{"Sqrt", "[", "varY", "]"}]}]}]}], "]"}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"n", "=", "1000000"}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"X", ",", "Y"}], "}"}], "=", 
+       RowBox[{"Transpose", "@", 
+        RowBox[{"RandomVariate", "[", 
+         RowBox[{
+          RowBox[{"MultinormalDistribution", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"meanX", ",", "meanY"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"varX", ",", "covXY"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"covXY", ",", "varY"}], "}"}]}], "}"}]}], "]"}], ",", 
+          "n"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"Mean", "[", "X", "]"}], "\[IndentingNewLine]", 
+        RowBox[{"Mean", "[", "Y", "]"}], "\[IndentingNewLine]", 
+        RowBox[{"Variance", "[", "X", "]"}], "\[IndentingNewLine]", 
+        RowBox[{"Variance", "[", "Y", "]"}], "\[IndentingNewLine]", 
+        RowBox[{"Covariance", "[", 
+         RowBox[{"X", ",", "Y"}], "]"}], "\[IndentingNewLine]", 
+        RowBox[{"Correlation", "[", 
+         RowBox[{"X", ",", "Y"}], "]"}]}], "*)"}], "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"t", "=", 
+       RowBox[{"cGearyTransform", "[", 
+        RowBox[{"X", ",", "Y", ",", 
+         RowBox[{"Mean", "[", "X", "]"}], ",", 
+         RowBox[{"Mean", "[", "Y", "]"}], ",", 
+         RowBox[{"Variance", "[", "X", "]"}], ",", 
+         RowBox[{"Covariance", "[", 
+          RowBox[{"X", ",", "Y"}], "]"}], ",", 
+         RowBox[{"Variance", "[", "Y", "]"}], ",", "8"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<Mean[t]\>\"", "->", 
+        RowBox[{"Mean", "[", "t", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<Variance[t]\>\"", "->", 
+        RowBox[{"Variance", "[", "t", "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"Show", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Histogram", "[", 
+          RowBox[{"t", ",", "\"\<Wand\>\"", ",", "\"\<PDF\>\""}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Plot", "[", 
+          RowBox[{
+           RowBox[{"PDF", "[", 
+            RowBox[{
+             RowBox[{"NormalDistribution", "[", 
+              RowBox[{"0", ",", "1"}], "]"}], ",", "x"}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"x", ",", 
+             RowBox[{"-", "4"}], ",", "4"}], "}"}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"PlotRange", "->", "All"}]}], "\[IndentingNewLine]", "]"}], 
+       "]"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", "100", "}"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.905502729633511*^9, 3.905502761076634*^9}, {
+   3.905503064207789*^9, 3.905503069271967*^9}, 3.905503872070327*^9, {
+   3.905504508635723*^9, 3.905504508831086*^9}, {3.905504547392071*^9, 
+   3.9055045496289883`*^9}, {3.905505677581983*^9, 3.9055056827017508`*^9}, {
+   3.905505856469262*^9, 3.905505963173903*^9}, {3.9055060344618196`*^9, 
+   3.905506050501223*^9}, {3.905506211838204*^9, 3.905506212852374*^9}, 
+   3.905506889813971*^9, {3.9055070620794277`*^9, 3.905507082058317*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"3054479e-3144-49ed-ac1b-629f391e9a2d"]
+},
+WindowSize->{1496, 905},
+WindowMargins->{{1, Automatic}, {Automatic, 0}},
+TaggingRules-><|"TryRealOnly" -> False|>,
+FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"1c6eb3cc-0e3d-4f74-944b-ee1c33303865"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 176, 2, 41, "Input",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
+Cell[737, 24, 1612, 37, 217, "Input",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
+Cell[2352, 63, 6832, 136, 2395, "Code",ExpressionUUID->"f8890398-13ad-4df5-b63e-509a9b4877e6",
+ InitializationCell->False],
+Cell[9187, 201, 5282, 122, 917, "Input",ExpressionUUID->"3054479e-3144-49ed-ac1b-629f391e9a2d"]
+}
+]
+*)
+
