@@ -111,7 +111,7 @@ If[Not@MemberQ[$LibraryPath, $libraryDirectory],AppendTo[$LibraryPath, $libraryD
 $compilationOptions := $compilationOptions = Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]];
 
 
-Get[FileNameJoin[{$sourceDirectory, "cSampleRandomVariable.m"}]];
+Get[FileNameJoin[{$sourceDirectory, "cSampleRandomVariables.m"}]];
 
 Options[CycleSample] = {
 	"SphereRadii" -> "EdgeLengths",
@@ -121,10 +121,14 @@ Options[CycleSample] = {
 
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
-CycleSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{\[Rho], err, values, weights}, 
+CycleSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, opts_] := CycleSample[{fun}, d, r, samplecount, opts];
+
+CycleSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{funcount,\[Rho], err, values, weights}, 
+	
+	funcount = Length[funs];
 	
 	(* Allocation. *)
-	values  = ConstantArray[0., {samplecount}]; 
+	values  = ConstantArray[0., {samplecount,funcount}]; 
 	weights = ConstantArray[0., {samplecount}];
 	
 	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
@@ -133,12 +137,15 @@ CycleSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecou
 	If[2 Max[r] > Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
 	
 	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
-	err = cSampleRandomVariable[d][
-		fun, r, \[Rho], values, weights, If[OptionValue["QuotientSpace"]=!=False,1,0], samplecount, OptionValue["ThreadCount"]
+	err = cSampleRandomVariables[d][
+		StringRiffle[funs," "], r, \[Rho], values, weights, If[OptionValue["QuotientSpace"]=!=False,1,0], samplecount, OptionValue["ThreadCount"]
 	];
 	
+	values = Transpose[values];
+	
 	If[err===0,
-		WeightedData[values,weights]
+		
+		Association[Table[funs[[i]]->WeightedData[values[[i]],weights],{i,1,funcount}]]
 	,
 		$Failed
 	]
@@ -173,7 +180,7 @@ CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer
 ];
 
 
-Get[FileNameJoin[{$sourceDirectory, "cConfidenceSampleRandomVariable.m"}]];
+Get[FileNameJoin[{$sourceDirectory, "cConfidenceSampleRandomVariables.m"}]];
 
 Options[CycleConfidenceSample] = {
 	"SphereRadii" -> "EdgeLengths",
@@ -186,12 +193,16 @@ Options[CycleConfidenceSample] = {
 
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
-CycleConfidenceSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, OptionsPattern[]]:=Module[{\[Rho], means, errors,radii,samplecount,time,cf}, 
+
+CycleConfidenceSample[fun__String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, opts_]:=CycleConfidenceSample[{fun}, d, r, {confidenceradius}, opts]
+
+CycleConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, OptionsPattern[]]:=Module[{funcount,\[Rho], means, errors, samplecount, time, cf}, 
+	
+	funcount = Min[Length[funs],Length[confidenceradii]];
 	
 	(* Allocation. *)
-	means  = ConstantArray[0., {1}]; 
-	errors = ConstantArray[0., {1}];
-	radii = ConstantArray[confidenceradius, {1}];
+	means  = ConstantArray[0., {funcount}]; 
+	errors = ConstantArray[0., {funcount}];
 	
 	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed,Return[$Failed]];
@@ -200,11 +211,11 @@ CycleConfidenceSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&),
 	
 	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
 	
-	cf = cConfidenceSampleRandomVariable[d];
+	cf = cConfidenceSampleRandomVariables[d];
 	
 	time = AbsoluteTiming[
 		samplecount = cf[
-			fun, r, \[Rho], means, errors, radii, 
+			StringRiffle[funs," "], r, \[Rho], means, errors, confidenceradii, 
 			OptionValue["MaxSamples"], 
 			If[OptionValue["QuotientSpace"]=!=False,1,0], 
 			OptionValue["ThreadCount"],
@@ -214,14 +225,17 @@ CycleConfidenceSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&),
 	][[1]];
 	
 	Association[
-		"RandomVariable" -> fun,
-		"SampledMean" -> means[[1]],
-		"Error" -> errors[[1]],
+		Sequence@@Table[
+			funs[[i]] -> Association[
+				"SampledMean" -> means[[i]],
+				"ConfidenceRadius" -> errors[[i]],
+				"PrescribedError" -> confidenceradii[[i]]
+			]
+		,{i,1,funcount}],
 		"ConfidenceLevel" -> OptionValue["ConfidenceLevel"],
 		"AmbientDimension" -> d,
 		"r" -> r,
 		"\[Rho]" -> \[Rho],
-		"PrescribedError" -> radii[[1]],
 		"SampleCount" -> samplecount,
 		"MaxSamples" -> OptionValue["MaxSamples"],
 		"QuotientSpace" -> OptionValue["QuotientSpace"],
