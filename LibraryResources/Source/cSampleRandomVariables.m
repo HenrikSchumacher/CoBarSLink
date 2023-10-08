@@ -30,27 +30,31 @@ cSampleRandomVariables[d_Integer?Positive] := cSampleRandomVariables[d] = Module
 #include <unordered_map>
 #include \"CycleSampler.hpp\"
 
+using namespace Tools;
 using namespace Tensors;
 using namespace CycleSampler;
+using namespace mma;
 
-using Sampler_T     = Sampler<"<>ds<>",mreal,mint>;
-using SamplerBase_T = SamplerBase<"<>ds<>",mreal,mint>;
+using Int  = mint;
+using Real = mreal;
+
+using Sampler_T     = Sampler<"<>ds<>",Real,Int>;
+using SamplerBase_T = SamplerBase<"<>ds<>",Real,Int>;
 
 using RandomVariable_Ptr = std::shared_ptr<RandomVariable<SamplerBase_T>>;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )
 {
-	std::string key_string ( MArgument_getUTF8String(Args[0]) );
+	std::string key_string ( get<char *>(Args[0]) );
 
-	MTensor r       = MArgument_getMTensor(Args[1]);
-	MTensor rho     = MArgument_getMTensor(Args[2]);
+	MTensor r       = get<MTensor>(Args[1]);
+	MTensor rho     = get<MTensor>(Args[2]);
+	MTensor values  = get<MTensor>(Args[3]);
+	MTensor weights = get<MTensor>(Args[4]);
 
-	MTensor values  = MArgument_getMTensor(Args[3]);
-	MTensor weights = MArgument_getMTensor(Args[4]);
-
-	const mint space_flag   = MArgument_getInteger(Args[5]);
-	const mint sample_count = MArgument_getInteger(Args[6]);
-	const mint thread_count = MArgument_getInteger(Args[7]);
+	const Int space_flag   = get<Int>(Args[5]);
+	const Int sample_count = get<Int>(Args[6]);
+	const Int thread_count = get<Int>(Args[7]);
 
 	std::unordered_map<std::string,RandomVariable_Ptr> function_lookup;
 	function_lookup.insert( {\"DiagonalLength\",                  "<>class["DiagonalLength"]<>"()                  } );
@@ -92,11 +96,10 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			else
 			{
 				eprint(\"cSampleRandomVariables: Random variable with tag \\\"\"+key+\"\\\" not found. Aborting.\");
-				MArgument_setInteger(Res, -1);
 
-				libData->MTensor_disown(values);
-				libData->MTensor_disown(weights);
-
+				get<Int>(Res) = -1;
+				disown(values);
+				disown(weights);
 				return LIBRARY_NO_ERROR;
 			}
 
@@ -108,47 +111,24 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
         }
     }
 
-	const mint edge_count = std::min(
-			libData->MTensor_getDimensions(r)[0],
-			libData->MTensor_getDimensions(rho)[0]
-	);
+	const Int edge_count = std::min( dimensions(r)[0], dimensions(rho)[0] );
 	
 	// This creates an instance S of the Sampler class.
-	Sampler_T S (
-		libData->MTensor_getRealData(r),
-		libData->MTensor_getRealData(rho),
-		edge_count
-	);
+	Sampler_T S ( data<Real>(r), data<Real>(rho), edge_count );
 
 	// Start the sampling process.
 	if( space_flag == 0 )
 	{
-		S.Sample(
-			libData->MTensor_getRealData(values),
-			libData->MTensor_getRealData(weights),
-			nullptr,
-			F_list,
-			sample_count,
-			thread_count
-		);
+		S.Sample( data<Real>(values), data<Real>(weights), nullptr, F_list, sample_count, thread_count );
 	}
 	else
 	{
-		S.Sample(
-			libData->MTensor_getRealData(values),
-			nullptr,
-			libData->MTensor_getRealData(weights),
-			F_list,
-			sample_count,
-			thread_count
-		);
+		S.Sample( data<Real>(values), nullptr, data<Real>(weights), F_list, sample_count, thread_count );
 	}
 
-	MArgument_setInteger(Res, 0);
-
-	libData->MTensor_disown(values);
-	libData->MTensor_disown(weights);
-
+	get<Int>(Res) = 0;
+	disown(values);
+	disown(weights);
 	return LIBRARY_NO_ERROR;
 }"];
 		

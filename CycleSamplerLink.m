@@ -121,7 +121,7 @@ Options[CycleSample] = {
 
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
-CycleSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, opts_] := CycleSample[{fun}, d, r, samplecount, opts];
+CycleSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, opts___] := CycleSample[{fun}, d, r, samplecount, opts];
 
 CycleSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{funcount,\[Rho], err, values, weights}, 
 	
@@ -194,7 +194,7 @@ Options[CycleConfidenceSample] = {
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
 
-CycleConfidenceSample[fun__String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, opts_]:=CycleConfidenceSample[{fun}, d, r, {confidenceradius}, opts]
+CycleConfidenceSample[fun__String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, opts___]:=CycleConfidenceSample[{fun}, d, r, {confidenceradius}, opts]
 
 CycleConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, OptionsPattern[]]:=Module[{funcount,\[Rho], means, errors, samplecount, time, cf}, 
 	

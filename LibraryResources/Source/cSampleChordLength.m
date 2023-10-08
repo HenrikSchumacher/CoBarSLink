@@ -31,70 +31,51 @@ cSampleChordLength[d_Integer?Positive] := cSampleChordLength[d] = Module[{lib, l
 #include \"CycleSampler.hpp\"
 
 using namespace CycleSampler;
+using namespace mma;
 
-using Sampler_T     = Sampler<"<>ds<>",mreal,mint>;
-using SamplerBase_T = SamplerBase<"<>ds<>",mreal,mint>;
+using Int  = mint;
+using Real = mreal;
+
+using Sampler_T     = Sampler<"<>ds<>",Real,Int>;
+using SamplerBase_T = SamplerBase<"<>ds<>",Real,Int>;
 
 using RandomVariable_Ptr = std::shared_ptr<RandomVariable<SamplerBase_T>>;
 
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )
 {
-	const mint i    = MArgument_getInteger(Args[0])-1;
-	const mint j    = MArgument_getInteger(Args[1])-1;
+	const Int i     = get<Int>(Args[0])-1;
+	const Int j     = get<Int>(Args[1])-1;
 
-	MTensor r       = MArgument_getMTensor(Args[2]);
-	MTensor rho     = MArgument_getMTensor(Args[3]);
+	MTensor r       = get<MTensor>(Args[2]);
+	MTensor rho     = get<MTensor>(Args[3]);
 
-	MTensor values  = MArgument_getMTensor(Args[4]);
-	MTensor weights = MArgument_getMTensor(Args[5]);
+	MTensor values  = get<MTensor>(Args[4]);
+	MTensor weights = get<MTensor>(Args[5]);
 
-	const mint space_flag   = MArgument_getInteger(Args[6]);
-	const mint sample_count = MArgument_getInteger(Args[7]);
-	const mint thread_count = MArgument_getInteger(Args[8]);
+	const Int space_flag   = get<Int>(Args[6]);
+	const Int sample_count = get<Int>(Args[7]);
+	const Int thread_count = get<Int>(Args[8]);
 
-	const mint edge_count = std::min(
-			libData->MTensor_getDimensions(r)[0],
-			libData->MTensor_getDimensions(rho)[0]
-	);
+	const Int edge_count = std::min( dimensions(r)[0], dimensions(rho)[0] );
 
-	Sampler_T S (
-			libData->MTensor_getRealData(r),
-			libData->MTensor_getRealData(rho),
-			edge_count
-	);
+	Sampler_T S ( data<Real>(r), data<Real>(rho), edge_count );
 
 	RandomVariable_Ptr F = "<>class["ChordLength"]<>"(i,j);
 
 	// Start the sampling process.
 	if( space_flag == 0 )
 	{
-		S.Sample(
-			libData->MTensor_getRealData(values),
-			libData->MTensor_getRealData(weights),
-			nullptr,
-			F,
-			sample_count,
-			thread_count
-		);
+		S.Sample( data<Real>(values), data<Real>(weights), nullptr, F, sample_count, thread_count );
 	}
 	else
 	{
-		S.Sample(
-			libData->MTensor_getRealData(values),
-			nullptr,
-			libData->MTensor_getRealData(weights),
-			F,
-			sample_count,
-			thread_count
-		);
+		S.Sample( data<Real>(values), nullptr, data<Real>(weights), F, sample_count, thread_count );
 	}
 
-	MArgument_setInteger(Res, 0);
-
-	libData->MTensor_disown(values);
-	libData->MTensor_disown(weights);
-
+	get<Int>(Res) = 0;
+	disown(values);
+	disown(weights);
 	return LIBRARY_NO_ERROR;
 }"];
 		

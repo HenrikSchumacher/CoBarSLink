@@ -25,30 +25,25 @@ cRandomOpenPolygons[d_Integer?Positive] := cRandomOpenPolygons[d] =  Module[{lib
 #include \"CycleSampler.hpp\"
 
 using namespace CycleSampler;
+using namespace mma;
 
 using Real = mreal;
-using Int  = int_fast32_t;
+using Int  = mint;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {
-	MTensor x      = MArgument_getMTensor(Args[0]);
+	MTensor x      = get<MTensor>(Args[0]);
 
-	const Int thread_count = int_cast<Int>(MArgument_getInteger(Args[1]));
+	const Int thread_count = int_cast<Int>(get<Int>(Args[1]));
 
-	const Int sample_count = libData->MTensor_getDimensions(x)[0];
-	const Int edge_count   = libData->MTensor_getDimensions(x)[1];
+	const Int sample_count = dimensions(x)[0];
+	const Int edge_count   = dimensions(x)[1];
 
-	Sampler<"<>ds<>",Real,Int> C (
-		edge_count
-	);
+	Sampler<"<>ds<>",Real,Int> C ( edge_count );
 
 	Tools::Time start_time = Tools::Clock::now();
 	
-	C.RandomOpenPolygons( 
-		libData->MTensor_getRealData(x),
-		sample_count, 
-		thread_count 
-	);
+	C.RandomOpenPolygons( data<Real>(x), sample_count, thread_count );
 
 	Tools::Time stop_time = Tools::Clock::now();
 
@@ -56,7 +51,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	file << C.ClassName() << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in "<>ds<>" D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
 
-	libData->MTensor_disown(x);
+	disown(x);
 
 	return LIBRARY_NO_ERROR;
 }"];
