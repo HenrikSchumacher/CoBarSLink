@@ -17,14 +17,13 @@ cConfidenceSampleRandomVariables[d_Integer?Positive] := cConfidenceSampleRandomV
 
 	If[Not[FileExistsQ[lib]],
 
-		Print["Compiling c"<>name<>"["<>ds<>"]..."];
+		Print["Compiling "<>name<>"["<>ds<>"]..."];
 
 		code = StringJoin[
 "
 // This is the actual C++ code.
 
 #define NDEBUG
-
 //#define TOOLS_ENABLE_PROFILER
 
 #include \"WolframLibrary.h\"
@@ -47,23 +46,26 @@ using RandomVariable_Ptr = std::shared_ptr<RandomVariable<SamplerBase_T>>;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )
 {
-	//Profiler::Clear(\""<>$HomeDirectory<>"\");
+	//Profiler::Clear(\""<>$libraryDirectory<>"\");
 
 	std::string key_string ( MArgument_getUTF8String(Args[0]) );
 
-	MTensor r       = get<MTensor>(Args[1]);
-	MTensor rho     = get<MTensor>(Args[2]);
+	MTensor r         = get<MTensor>(Args[1]);
+	MTensor rho       = get<MTensor>(Args[2]);
 
-	MTensor means   = get<MTensor>(Args[3]);
-	MTensor errors  = get<MTensor>(Args[4]);
+	MTensor means     = get<MTensor>(Args[3]);
+	MTensor variances = get<MTensor>(Args[4]);
+	MTensor errors    = get<MTensor>(Args[5]);
 
-	MTensor radii   = get<MTensor>(Args[5]);
+	MTensor radii     = get<MTensor>(Args[6]);
 
-	const Int  max_sample_count = get<Int> (Args[6]);
-	const Int  space_flag       = get<Int> (Args[7]);
-	const Int  thread_count     = get<Int> (Args[8]);
-	const Real confidence       = get<Real>(Args[9]);
-	const Int  chunk_size       = get<Int> (Args[10]);
+	const Int  max_sample_count = get<Int  >(Args[7]);
+	const bool quotientQ        = get<mbool>(Args[8]);
+	const Int  thread_count     = get<Int  >(Args[9]);
+	const Real confidence       = get<Real >(Args[10]);
+	const Int  chunk_size       = get<Int  >(Args[11]);
+	const bool relativeQ        = get<mbool>(Args[12]);
+	const bool verboseQ         = get<mbool>(Args[13]);
 
 	std::unordered_map<std::string,RandomVariable_Ptr> function_lookup;
 	function_lookup.insert( {\"DiagonalLength\",                  "<>class["DiagonalLength"]<>"()                  } );
@@ -107,6 +109,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 				get<Int>(Res) = -1;
 
 				disown(means);
+				disown(variances);
 				disown(errors);
 
 				return LIBRARY_NO_ERROR;
@@ -126,17 +129,20 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	Sampler_T S ( data<Real>(r), data<Real>(rho), edge_count );
 
 	Int N = S.ConfidenceSample(
-        F_list, data<Real>(means), data<Real>(errors), data<Real>(radii),
+        F_list, data<Real>(means), data<Real>(variances), data<Real>(errors), data<Real>(radii),
         max_sample_count,
-        static_cast<bool>(space_flag),
+        quotientQ,
         thread_count,
         confidence,
-        chunk_size
+        chunk_size,
+		relativeQ,
+		verboseQ
 	);
 
 	get<Int>(Res) = N;
 
 	disown(means);
+	disown(variances);
 	disown(errors);
 
 	return LIBRARY_NO_ERROR;
@@ -167,12 +173,15 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			{Real,1,"Constant"}, (* \[Rho] *)
 			{Real,1,"Shared"},   (* means *)
 			{Real,1,"Shared"},   (* errors *)
+			{Real,1,"Shared"},   (* variances *)
 			{Real,1,"Constant"}, (* confidence radii *)
 			Integer,             (* max_sample_count *)
-			Integer,             (* flag for specifying the space: values 0 means total space metric, all other values mean quotient space metric *)
+			"Boolean",           (* quotientQ: "False" means total space metric, "True" means quotient space metric *)
 			Integer,             (* number of threads *)
 			Real,                (* confidence level *)
-			Integer              (* chunk_size *)
+			Integer,             (* chunk_size *)
+			"Boolean",           (* relativeQ *)
+			"Boolean"            (* verboseQ *)
 		},
 		(*return*) Integer  (* If positive: succeed and number of samples taken is returned. If negative: Error occured. *)
 	]

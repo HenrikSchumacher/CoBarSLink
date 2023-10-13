@@ -3,10 +3,17 @@
 #define MATHEMATICA
 
 #include "mathlink.h"
+
+#if defined( P )
+    #undef P
+#endif
+
 #include <string>
 #include <cstdint>
 #include <ostream>
 #include <sstream>
+
+
 
 namespace mma
 {
@@ -119,35 +126,13 @@ namespace mma
     
     
     template<typename T>
-    inline MTensor make_MTensor( const std::initializer_list<mint> & dims );
-    
-    template<typename T>
     inline MTensor make_MTensor( const mint rank, const mint * dims );
-    
-    template<> inline MTensor make_MTensor<mint>( const std::initializer_list<mint> & dims )
-    {
-        MTensor M;
-        
-        libData->MTensor_new( MType_Integer, static_cast<mint>(dims.size()), &(*dims.begin()), &M );
-        
-        return M;
-    }
     
     template<> inline MTensor make_MTensor<mint>( const mint rank, const mint * dims )
     {
         MTensor M;
         
         libData->MTensor_new( MType_Integer, rank, dims, &M );
-        
-        return M;
-    }
-    
-    
-    template<> inline MTensor make_MTensor<mreal>( const std::initializer_list<mint> & dims )
-    {
-        MTensor M;
-        
-        libData->MTensor_new( MType_Real, static_cast<mint>(dims.size()), &(*dims.begin()), &M );
         
         return M;
     }
@@ -162,15 +147,6 @@ namespace mma
     }
     
     
-    template<> inline MTensor make_MTensor<mcomplex>( const std::initializer_list<mint> & dims )
-    {
-        MTensor M;
-        
-        libData->MTensor_new( MType_Complex, static_cast<mint>(dims.size()), &(*dims.begin()), &M );
-        
-        return M;
-    }
-    
     template<> inline MTensor make_MTensor<mcomplex>( const mint rank, const mint * dims )
     {
         MTensor M;
@@ -178,6 +154,13 @@ namespace mma
         libData->MTensor_new( MType_Complex, rank, dims, &M );
         
         return M;
+    }
+    
+    
+    template<typename T>
+    inline MTensor make_MTensor( const std::initializer_list<mint> & dims )
+    {
+        return make_MTensor<T>( static_cast<mint>(dims.size()), &dims.begin()[0] );
     }
     
     

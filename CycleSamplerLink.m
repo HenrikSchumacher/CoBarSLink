@@ -99,7 +99,7 @@ If[!FileExistsQ[$libraryDirectory],CreateDirectory[$libraryDirectory]];
 $sourceDirectory   = FileNameJoin[{$packageDirectory, "LibraryResources", "Source"}];
 If[!FileExistsQ[$sourceDirectory],CreateDirectory[$sourceDirectory]];
 
-$logFile = FileNameJoin[{$packageDirectory, "LibraryResources", $SystemID,"Log.txt"}];
+$logFile = FileNameJoin[{$packageDirectory, "LibraryResources", $SystemID,"Tools_Log.txt"}];
 
 If[FileExistsQ[$logFile],DeleteFile[$logFile]];
 
@@ -138,7 +138,7 @@ CycleSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samp
 	
 	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
 	err = cSampleRandomVariables[d][
-		StringRiffle[funs," "], r, \[Rho], values, weights, If[OptionValue["QuotientSpace"]=!=False,1,0], samplecount, OptionValue["ThreadCount"]
+		StringRiffle[funs," "], r, \[Rho], values, weights, TrueQ[OptionValue["QuotientSpace"]], samplecount, OptionValue["ThreadCount"]
 	];
 	
 	values = Transpose[values];
@@ -170,7 +170,7 @@ CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer
 	values  = ConstantArray[0., {samplecount}]; 
 	weights = ConstantArray[0., {samplecount}]; 
 	
-	err = cSampleChordLength[d][i, j, r, \[Rho], values, weights, If[OptionValue["QuotientSpace"]=!=False,1,0], samplecount, OptionValue["ThreadCount"]];
+	err = cSampleChordLength[d][i, j, r, \[Rho], values, weights, TrueQ[OptionValue["QuotientSpace"]], samplecount, OptionValue["ThreadCount"]];
 	
 	If[err===0,
 		WeightedData[values,weights]
@@ -188,21 +188,30 @@ Options[CycleConfidenceSample] = {
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
 	"ChunkSize"->1000000,
 	"MaxSamples"->10000000,
-	"ConfidenceLevel"->0.95
+	"ConfidenceLevel"->0.95,
+	"RelativeErrorMode"->False,
+	"Verbose"->True
 };
 
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
 
-CycleConfidenceSample[fun__String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, opts___]:=CycleConfidenceSample[{fun}, d, r, {confidenceradius}, opts]
+CycleConfidenceSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, opts___] := Module[{data},
+	data = CycleConfidenceSample[{fun}, d, r, {confidenceradius}, opts];
+	
+	Merge[{data[fun],data[[-12;;]]},First]
+];
 
-CycleConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, OptionsPattern[]]:=Module[{funcount,\[Rho], means, errors, samplecount, time, cf}, 
+CycleConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, OptionsPattern[]]:=Module[{funcount, \[Rho], means, variances, errors, samplecount, time, relativeQ}, 
 	
 	funcount = Min[Length[funs],Length[confidenceradii]];
 	
 	(* Allocation. *)
-	means  = ConstantArray[0., {funcount}]; 
-	errors = ConstantArray[0., {funcount}];
+	means     = ConstantArray[0., {funcount}]; 
+	variances = ConstantArray[0., {funcount}]; 
+	errors    = ConstantArray[0., {funcount}];
+	
+	relativeQ = TrueQ[OptionValue["RelativeErrorMode"]];
 	
 	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed,Return[$Failed]];
@@ -211,34 +220,36 @@ CycleConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,Numeric
 	
 	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
 	
-	cf = cConfidenceSampleRandomVariables[d];
-	
 	time = AbsoluteTiming[
-		samplecount = cf[
-			StringRiffle[funs," "], r, \[Rho], means, errors, confidenceradii, 
+		samplecount = cConfidenceSampleRandomVariables[d][
+			StringRiffle[funs," "], r, \[Rho], means, variances, errors, confidenceradii, 
 			OptionValue["MaxSamples"], 
-			If[OptionValue["QuotientSpace"]=!=False,1,0], 
+			TrueQ[OptionValue["QuotientSpace"]], 
 			OptionValue["ThreadCount"],
 			OptionValue["ConfidenceLevel"],
-			OptionValue["ChunkSize"]
+			OptionValue["ChunkSize"],
+			relativeQ,
+			TrueQ[OptionValue["Verbose"]]
 		];
 	][[1]];
 	
 	Association[
 		Sequence@@Table[
 			funs[[i]] -> Association[
-				"SampledMean" -> means[[i]],
+				"SampleMean" -> means[[i]],
+				"SampleVariance" -> variances[[i]],
 				"ConfidenceRadius" -> errors[[i]],
 				"PrescribedError" -> confidenceradii[[i]]
 			]
 		,{i,1,funcount}],
 		"ConfidenceLevel" -> OptionValue["ConfidenceLevel"],
 		"AmbientDimension" -> d,
+		"EdgeCount" -> Length[r],
 		"r" -> r,
 		"\[Rho]" -> \[Rho],
 		"SampleCount" -> samplecount,
 		"MaxSamples" -> OptionValue["MaxSamples"],
-		"QuotientSpace" -> OptionValue["QuotientSpace"],
+		"QuotientSpace" -> TrueQ[OptionValue["QuotientSpace"]],
 		"ThreadCount" -> OptionValue["ThreadCount"],
 		"ChunkSize" -> OptionValue["ChunkSize"],
 		"Chunks" -> samplecount/OptionValue["ChunkSize"],
@@ -345,16 +356,16 @@ ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))
 ];
 
 
-Get[FileNameJoin[{$sourceDirectory, "cActionAngleSampler.m"}]];
+Get[FileNameJoin[{$sourceDirectory, "cActionAngleSample.m"}]];
 
 Options[ActionAngleSample] = {
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
-	"Iterative"->True
+	"Progressive"->True
 };
 
 ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{p,trials},
 	p = ConstantArray[0.,{samplecount,edgecount,3}];
-	trials = cActionAngleSampler[p,OptionValue["ThreadCount"],Boole[OptionValue["Iterative"]]];
+	trials = cActionAngleSample[TrueQ[OptionValue["Progressive"]]][p,OptionValue["ThreadCount"]];
 	Association[
 		"ClosedPolygons"->p,
 		"Trials"->trials

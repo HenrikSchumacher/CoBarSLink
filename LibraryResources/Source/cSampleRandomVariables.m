@@ -52,9 +52,9 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	MTensor values  = get<MTensor>(Args[3]);
 	MTensor weights = get<MTensor>(Args[4]);
 
-	const Int space_flag   = get<Int>(Args[5]);
-	const Int sample_count = get<Int>(Args[6]);
-	const Int thread_count = get<Int>(Args[7]);
+	const bool quotientQ    = get<mbool>(Args[5]);
+	const Int  sample_count = get<Int  >(Args[6]);
+	const Int  thread_count = get<Int  >(Args[7]);
 
 	std::unordered_map<std::string,RandomVariable_Ptr> function_lookup;
 	function_lookup.insert( {\"DiagonalLength\",                  "<>class["DiagonalLength"]<>"()                  } );
@@ -117,13 +117,13 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	Sampler_T S ( data<Real>(r), data<Real>(rho), edge_count );
 
 	// Start the sampling process.
-	if( space_flag == 0 )
+	if( quotientQ )
 	{
-		S.Sample( data<Real>(values), data<Real>(weights), nullptr, F_list, sample_count, thread_count );
+		S.Sample( data<Real>(values), nullptr, data<Real>(weights), F_list, sample_count, thread_count );
 	}
 	else
 	{
-		S.Sample( data<Real>(values), nullptr, data<Real>(weights), F_list, sample_count, thread_count );
+		S.Sample( data<Real>(values), data<Real>(weights), nullptr, F_list, sample_count, thread_count );
 	}
 
 	get<Int>(Res) = 0;
@@ -157,7 +157,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			{Real,1,"Constant"}, (* \[Rho] *)
 			{Real,2,"Shared"},   (* sampled values *)
 			{Real,1,"Shared"},   (* weights *)
-			Integer,             (* flag for specifying the space: values 0 means total space metric, all other values mean quotient space metric *)
+			"Boolean",           (* flag for specifying the space: "False" means total space metric, "True" means quotient space metric *)
 			Integer,             (* number of samples to take *)
 			Integer              (* number of threads *)
 		},

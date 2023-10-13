@@ -1,0 +1,531 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     22299,        523]
+NotebookOptionsPosition[     21104,        495]
+NotebookOutlinePosition[     21499,        511]
+CellTagsIndexPosition[     21456,        508]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData["Exit"], "Input",
+ CellChangeTimes->{{3.9059541436321497`*^9, 3.9059541454534187`*^9}},
+ CellLabel->
+  "In[227]:=",ExpressionUUID->"06d63c5f-be15-4c34-be8c-38ea16278c0b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"n", "=", "6"}], ";"}]], "Input",
+ CellChangeTimes->{{3.905954146759214*^9, 3.905954147907749*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"d346de46-19bc-4bd2-87cb-ce43426e9b00"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"V", "[", "n_", "]"}], ":=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", "1"}], "/", "2"}], "/", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"n", "-", "3"}], ")"}], "!"}]}], 
+   RowBox[{"Sum", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"-", "1"}], ")"}], "^", "k"}], " ", 
+      RowBox[{"Binomial", "[", 
+       RowBox[{"n", ",", "k"}], "]"}], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"n", "-", 
+         RowBox[{"2", "k"}]}], ")"}], "^", 
+       RowBox[{"(", 
+        RowBox[{"n", "-", "3"}], ")"}]}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "0", ",", 
+       RowBox[{"Quotient", "[", 
+        RowBox[{"n", ",", "2"}], "]"}]}], "}"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.9059541499305153`*^9, 3.905954234752016*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"3998a0f5-6084-4052-abfb-e4de0fc5572f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Table", "[", 
+  RowBox[{
+   RowBox[{"n", "->", 
+    RowBox[{"V", "[", "n", "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"n", ",", "4", ",", "10"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.90595423613623*^9, 3.9059542648473883`*^9}},
+ CellLabel->"In[10]:=",ExpressionUUID->"b0772a67-ec0b-4eaf-8827-c611217b81a8"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"4", "\[Rule]", "2"}], ",", 
+   RowBox[{"5", "\[Rule]", 
+    FractionBox["5", "2"]}], ",", 
+   RowBox[{"6", "\[Rule]", "4"}], ",", 
+   RowBox[{"7", "\[Rule]", 
+    FractionBox["77", "12"]}], ",", 
+   RowBox[{"8", "\[Rule]", 
+    FractionBox["32", "3"]}], ",", 
+   RowBox[{"9", "\[Rule]", 
+    FractionBox["289", "16"]}], ",", 
+   RowBox[{"10", "\[Rule]", 
+    FractionBox["280", "9"]}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.905954237478972*^9, 3.9059542654118834`*^9}},
+ CellLabel->"Out[10]=",ExpressionUUID->"3c723e20-0b6a-4126-b446-6c6f6cabfc10"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "SymmetricReduction"}]], "Input",
+ CellChangeTimes->{{3.905956915654912*^9, 3.9059569246160517`*^9}},
+ CellLabel->"In[11]:=",ExpressionUUID->"e40a1e86-b9c8-4bbe-82a2-55fd0808908c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  StyleBox[
+   FrameBox[
+    DynamicModuleBox[{System`InformationDump`open$$ = False, 
+     System`InformationDump`mouseOver$$ = False}, 
+     PaneSelectorBox[{True->
+      TagBox[GridBox[{
+         {
+          ItemBox[
+           PaneBox[
+            StyleBox["\<\" Symbol\"\>", "InformationTitleText",
+             StripOnInput->False,
+             BaseStyle -> None],
+            FrameMargins->{{4, 0}, {-1, 1}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], 
+          ItemBox[
+           PaneBox[
+            TooltipBox[
+             ButtonBox[
+              PaneSelectorBox[{False->
+               
+               DynamicBox[FEPrivate`FrontEndResource[
+                "FEBitmaps", "InformationHelpIcon"]], True->
+               
+               DynamicBox[FEPrivate`FrontEndResource[
+                "FEBitmaps", "InformationHelpIconHot"]]}, Dynamic[
+                CurrentValue["MouseOver"]]],
+              Appearance->None,
+              BaseStyle->"Link",
+              ButtonData->"paclet:ref/SymmetricReduction",
+              ButtonNote->"paclet:ref/SymmetricReduction"],
+             "\"paclet:ref/SymmetricReduction\""],
+            FrameMargins->{{0, 4}, {0, 2}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           PaneBox[
+            
+            StyleBox["\<\"\\!\\(\\*RowBox[{\\\"SymmetricReduction\\\", \
+\\\"[\\\", RowBox[{StyleBox[\\\"f\\\", \\\"TI\\\"], \\\",\\\", \
+RowBox[{\\\"{\\\", RowBox[{SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], \
+StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\",\\\", StyleBox[\\\"\[Ellipsis]\\\", \\\
+\"TR\\\"], \\\",\\\", SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], StyleBox[\
+\\\"n\\\", \\\"TI\\\"]]}], \\\"}\\\"}]}], \\\"]\\\"}]\\) gives a pair of \
+polynomials \\!\\(\\*RowBox[{\\\"{\\\", RowBox[{\\\"p\\\", \\\",\\\", \\\"q\\\
+\"}], \\\"}\\\"}]\\) in \\!\\(\\*RowBox[{SubscriptBox[\\\"x\\\", \\\"1\\\"], \
+\\\",\\\", \\\"\[Ellipsis]\\\", \\\",\\\", SubscriptBox[\\\"x\\\", \
+\\\"n\\\"]}]\\) such that \\!\\(\\*RowBox[{\\\"f\\\", \\\"==\\\", \
+RowBox[{\\\"p\\\", \\\"+\\\", \\\"q\\\"}]}]\\), where p is the symmetric part \
+and q is the remainder.\\n\\!\\(\\*RowBox[{\\\"SymmetricReduction\\\", \
+\\\"[\\\", RowBox[{StyleBox[\\\"f\\\", \\\"TI\\\"], \\\",\\\", \
+RowBox[{\\\"{\\\", RowBox[{SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], \
+StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\",\\\", StyleBox[\\\"\[Ellipsis]\\\", \\\
+\"TR\\\"], \\\",\\\", SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], StyleBox[\
+\\\"n\\\", \\\"TI\\\"]]}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"{\\\", \
+RowBox[{SubscriptBox[StyleBox[\\\"s\\\", \\\"TI\\\"], StyleBox[\\\"1\\\", \
+\\\"TR\\\"]], \\\",\\\", StyleBox[\\\"\[Ellipsis]\\\", \\\"TR\\\"], \
+\\\",\\\", SubscriptBox[StyleBox[\\\"s\\\", \\\"TI\\\"], StyleBox[\\\"n\\\", \
+\\\"TI\\\"]]}], \\\"}\\\"}]}], \\\"]\\\"}]\\) gives the pair \
+\\!\\(\\*RowBox[{\\\"{\\\", RowBox[{\\\"p\\\", \\\",\\\", \\\"q\\\"}], \
+\\\"}\\\"}]\\) with the elementary symmetric polynomials in p replaced by \\!\
+\\(\\*RowBox[{SubscriptBox[\\\"s\\\", \\\"1\\\"], \\\",\\\", \
+\\\"\[Ellipsis]\\\", \\\",\\\", SubscriptBox[\\\"s\\\", \\\"n\\\"]}]\\).\"\>",
+              "InformationUsageText",
+             StripOnInput->False,
+             LineSpacing->{1.5, 1.5, 3.}],
+            FrameMargins->{{10, 10}, {8, 10}}],
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False]},
+         {
+          PaneBox[GridBox[{
+             {
+              
+              DynamicModuleBox[{System`InformationDump`open$$ = {
+               False, False, False, False, False, False}}, 
+               StyleBox[GridBox[{
+                  {
+                   TagBox[
+                    TooltipBox[
+                    StyleBox["\<\" Documentation\"\>", "InformationRowLabel",
+                    StripOnInput->False],
+                    "\"Documentation\"",
+                    TooltipStyle->"TextStyling"],
+                    Annotation[#, "Documentation", "Tooltip"]& ], 
+                   TemplateBox[{
+                    
+                    TemplateBox[{
+                    "\"Local \[RightGuillemet]\"", 
+                    "paclet:ref/SymmetricReduction", 
+                    "paclet:ref/SymmetricReduction", "Link", {
+                    RGBColor[0.9686274509803922, 0.4666666666666667, 0.]}, 
+                    BaseStyle -> {
+                    RGBColor[0.0784313725490196, 0.1568627450980392, 0.6]}}, 
+                    "HyperlinkTemplate"], "\"  \"", 
+                    StyleBox[
+                    "\"|\"", "InformationRowLabel", StripOnInput -> False], 
+                    "\"  \"", 
+                    TemplateBox[{"\"Web \[RightGuillemet]\"", {
+                    URL[
+                    "http://reference.wolfram.com/language/ref/\
+SymmetricReduction.html"], None}, 
+                    "http://reference.wolfram.com/language/ref/\
+SymmetricReduction.html", "Hyperlink", {
+                    RGBColor[0.9686274509803922, 0.4666666666666667, 0.]}, 
+                    BaseStyle -> {
+                    RGBColor[0.0784313725490196, 0.1568627450980392, 0.6]}}, 
+                    "HyperlinkTemplate"]},
+                    "RowDefault"]},
+                  {
+                   TagBox[
+                    TooltipBox[
+                    StyleBox["\<\" Attributes\"\>", "InformationRowLabel",
+                    StripOnInput->False],
+                    "\"Attributes\"",
+                    TooltipStyle->"TextStyling"],
+                    Annotation[#, "Attributes", "Tooltip"]& ], 
+                   RowBox[{"{", "Protected", "}"}]},
+                  {
+                   TagBox[
+                    TooltipBox[
+                    StyleBox["\<\" Full Name\"\>", "InformationRowLabel",
+                    StripOnInput->False],
+                    "\"FullName\"",
+                    TooltipStyle->"TextStyling"],
+                    
+                    Annotation[#, "FullName", 
+                    "Tooltip"]& ], "\<\"System`SymmetricReduction\"\>"}
+                 },
+                 AutoDelete->False,
+                 GridBoxAlignment->{"Columns" -> {Right, Left}},
+                 GridBoxDividers->None,
+                 GridBoxItemSize->{"Columns" -> {Automatic, Automatic}},
+                 GridBoxSpacings->{"Columns" -> {
+                    Offset[0.27999999999999997`], {
+                    Offset[0.5599999999999999]}, 
+                    Offset[0.27999999999999997`]}, "Rows" -> {
+                    Offset[0.2], {
+                    Offset[0.8]}, 
+                    Offset[0.2]}}], "DialogStyle",
+                StripOnInput->False],
+               DynamicModuleValues:>{}]}
+            },
+            DefaultBaseStyle->"Column",
+            GridBoxAlignment->{"Columns" -> {{Left}}},
+            GridBoxDividers->{"Columns" -> {{False}}, "Rows" -> {{False}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {
+                Offset[0.27999999999999997`], {
+                 Offset[0.5599999999999999]}, 
+                Offset[0.27999999999999997`]}, "Rows" -> {
+                Offset[0.2], {
+                 Offset[3.6]}, 
+                Offset[0.2]}}],
+           FrameMargins->{{6, 6}, {6, 3}}], ""},
+         {
+          ItemBox[
+           TagBox[
+            ButtonBox[
+             PaneSelectorBox[{False->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "UpPointerOpener"]], True->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "UpPointerOpenerHot"]]}, Dynamic[
+              System`InformationDump`mouseOver$$]],
+             Alignment->Left,
+             Appearance->{"Default" -> None},
+             
+             ButtonFunction:>FEPrivate`Set[
+              System`InformationDump`open$$, False],
+             Evaluator->Automatic,
+             FrameMargins->{{9, 0}, {0, 0}},
+             ImageMargins->0,
+             ImageSize->Full,
+             Method->"Preemptive"],
+            EventHandlerTag[{
+             "MouseEntered" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
+              "MouseExited" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, False], 
+              Method -> "Preemptive", PassEventsDown -> Automatic, 
+              PassEventsUp -> True}]],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], "\[SpanFromLeft]"}
+        },
+        AutoDelete->False,
+        FrameStyle->Directive[
+          GrayLevel[0.8], 
+          Thickness[Tiny]],
+        GridBoxAlignment->{"Columns" -> {Left, Right}, "Rows" -> {{Center}}},
+        GridBoxDividers->{
+         "Columns" -> {{None}}, "Rows" -> {False, {True}, False}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+       "Grid"], False->
+      TagBox[GridBox[{
+         {
+          ItemBox[
+           PaneBox[
+            StyleBox["\<\" Symbol\"\>", "InformationTitleText",
+             StripOnInput->False],
+            FrameMargins->{{4, 0}, {-1, 1}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], 
+          ItemBox[
+           PaneBox[
+            TooltipBox[
+             ButtonBox[
+              PaneSelectorBox[{False->
+               
+               DynamicBox[FEPrivate`FrontEndResource[
+                "FEBitmaps", "InformationHelpIcon"],
+                ImageSizeCache->{20., {6., 14.}}], True->
+               
+               DynamicBox[FEPrivate`FrontEndResource[
+                "FEBitmaps", "InformationHelpIconHot"],
+                ImageSizeCache->{20., {6., 14.}}]}, Dynamic[
+                CurrentValue["MouseOver"]]],
+              Appearance->None,
+              BaseStyle->"Link",
+              ButtonData->"paclet:ref/SymmetricReduction",
+              ButtonNote->"paclet:ref/SymmetricReduction"],
+             "\"paclet:ref/SymmetricReduction\""],
+            FrameMargins->{{0, 4}, {0, 2}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           PaneBox[
+            
+            StyleBox["\<\"\\!\\(\\*RowBox[{\\\"SymmetricReduction\\\", \
+\\\"[\\\", RowBox[{StyleBox[\\\"f\\\", \\\"TI\\\"], \\\",\\\", \
+RowBox[{\\\"{\\\", RowBox[{SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], \
+StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\",\\\", StyleBox[\\\"\[Ellipsis]\\\", \\\
+\"TR\\\"], \\\",\\\", SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], StyleBox[\
+\\\"n\\\", \\\"TI\\\"]]}], \\\"}\\\"}]}], \\\"]\\\"}]\\) gives a pair of \
+polynomials \\!\\(\\*RowBox[{\\\"{\\\", RowBox[{\\\"p\\\", \\\",\\\", \\\"q\\\
+\"}], \\\"}\\\"}]\\) in \\!\\(\\*RowBox[{SubscriptBox[\\\"x\\\", \\\"1\\\"], \
+\\\",\\\", \\\"\[Ellipsis]\\\", \\\",\\\", SubscriptBox[\\\"x\\\", \
+\\\"n\\\"]}]\\) such that \\!\\(\\*RowBox[{\\\"f\\\", \\\"==\\\", \
+RowBox[{\\\"p\\\", \\\"+\\\", \\\"q\\\"}]}]\\), where p is the symmetric part \
+and q is the remainder.\\n\\!\\(\\*RowBox[{\\\"SymmetricReduction\\\", \
+\\\"[\\\", RowBox[{StyleBox[\\\"f\\\", \\\"TI\\\"], \\\",\\\", \
+RowBox[{\\\"{\\\", RowBox[{SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], \
+StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\",\\\", StyleBox[\\\"\[Ellipsis]\\\", \\\
+\"TR\\\"], \\\",\\\", SubscriptBox[StyleBox[\\\"x\\\", \\\"TI\\\"], StyleBox[\
+\\\"n\\\", \\\"TI\\\"]]}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"{\\\", \
+RowBox[{SubscriptBox[StyleBox[\\\"s\\\", \\\"TI\\\"], StyleBox[\\\"1\\\", \
+\\\"TR\\\"]], \\\",\\\", StyleBox[\\\"\[Ellipsis]\\\", \\\"TR\\\"], \
+\\\",\\\", SubscriptBox[StyleBox[\\\"s\\\", \\\"TI\\\"], StyleBox[\\\"n\\\", \
+\\\"TI\\\"]]}], \\\"}\\\"}]}], \\\"]\\\"}]\\) gives the pair \
+\\!\\(\\*RowBox[{\\\"{\\\", RowBox[{\\\"p\\\", \\\",\\\", \\\"q\\\"}], \
+\\\"}\\\"}]\\) with the elementary symmetric polynomials in p replaced by \\!\
+\\(\\*RowBox[{SubscriptBox[\\\"s\\\", \\\"1\\\"], \\\",\\\", \
+\\\"\[Ellipsis]\\\", \\\",\\\", SubscriptBox[\\\"s\\\", \\\"n\\\"]}]\\).\"\>",
+              "InformationUsageText",
+             StripOnInput->False,
+             LineSpacing->{1.5, 1.5, 3.}],
+            FrameMargins->{{10, 10}, {8, 10}}],
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           TagBox[
+            ButtonBox[
+             PaneSelectorBox[{False->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "DownPointerOpener"],
+               ImageSizeCache->{15., {2., 13.}}], True->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "DownPointerOpenerHot"],
+               ImageSizeCache->{15., {2., 13.}}]}, Dynamic[
+              System`InformationDump`mouseOver$$]],
+             Alignment->Left,
+             Appearance->{"Default" -> None},
+             
+             ButtonFunction:>FEPrivate`Set[
+              System`InformationDump`open$$, True],
+             Evaluator->Automatic,
+             FrameMargins->{{9, 0}, {0, 0}},
+             ImageMargins->0,
+             ImageSize->Full,
+             Method->"Preemptive"],
+            
+            EventHandlerTag[{
+             "MouseEntered" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
+              "MouseExited" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, False], 
+              Method -> "Preemptive", PassEventsDown -> Automatic, 
+              PassEventsUp -> True}]],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], "\[SpanFromLeft]"}
+        },
+        AutoDelete->False,
+        FrameStyle->Directive[
+          GrayLevel[0.8], 
+          Thickness[Tiny]],
+        GridBoxAlignment->{"Columns" -> {Left, Right}, "Rows" -> {{Center}}},
+        GridBoxDividers->{
+         "Columns" -> {{None}}, "Rows" -> {False, {True}, False}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+       "Grid"]}, Dynamic[System`InformationDump`open$$],
+      BaselinePosition->Baseline,
+      FrameMargins->0,
+      ImageSize->Automatic],
+     DynamicModuleValues:>{}],
+    BaseStyle->"InformationGridFrame",
+    StripOnInput->False], "InformationGridPlain",
+   StripOnInput->False],
+  InformationData[<|
+   "ObjectType" -> "Symbol", "Usage" -> 
+    "\!\(\*RowBox[{\"SymmetricReduction\", \"[\", RowBox[{StyleBox[\"f\", \
+\"TI\"], \",\", RowBox[{\"{\", RowBox[{SubscriptBox[StyleBox[\"x\", \"TI\"], \
+StyleBox[\"1\", \"TR\"]], \",\", StyleBox[\"\[Ellipsis]\", \"TR\"], \",\", \
+SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"n\", \"TI\"]]}], \"}\"}]}], \
+\"]\"}]\) gives a pair of polynomials \!\(\*RowBox[{\"{\", RowBox[{\"p\", \",\
+\", \"q\"}], \"}\"}]\) in \!\(\*RowBox[{SubscriptBox[\"x\", \"1\"], \",\", \"\
+\[Ellipsis]\", \",\", SubscriptBox[\"x\", \"n\"]}]\) such that \!\(\*RowBox[{\
+\"f\", \"==\", RowBox[{\"p\", \"+\", \"q\"}]}]\), where p is the symmetric \
+part and q is the remainder.\n\!\(\*RowBox[{\"SymmetricReduction\", \"[\", \
+RowBox[{StyleBox[\"f\", \"TI\"], \",\", RowBox[{\"{\", \
+RowBox[{SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"1\", \"TR\"]], \
+\",\", StyleBox[\"\[Ellipsis]\", \"TR\"], \",\", SubscriptBox[StyleBox[\"x\", \
+\"TI\"], StyleBox[\"n\", \"TI\"]]}], \"}\"}], \",\", RowBox[{\"{\", \
+RowBox[{SubscriptBox[StyleBox[\"s\", \"TI\"], StyleBox[\"1\", \"TR\"]], \
+\",\", StyleBox[\"\[Ellipsis]\", \"TR\"], \",\", SubscriptBox[StyleBox[\"s\", \
+\"TI\"], StyleBox[\"n\", \"TI\"]]}], \"}\"}]}], \"]\"}]\) gives the pair \!\(\
+\*RowBox[{\"{\", RowBox[{\"p\", \",\", \"q\"}], \"}\"}]\) with the elementary \
+symmetric polynomials in p replaced by \!\(\*RowBox[{SubscriptBox[\"s\", \
+\"1\"], \",\", \"\[Ellipsis]\", \",\", SubscriptBox[\"s\", \"n\"]}]\).", 
+    "Documentation" -> <|
+     "Local" -> "paclet:ref/SymmetricReduction", "Web" -> 
+      "http://reference.wolfram.com/language/ref/SymmetricReduction.html"|>, 
+    "OwnValues" -> None, "UpValues" -> None, "DownValues" -> None, 
+    "SubValues" -> None, "DefaultValues" -> None, "NValues" -> None, 
+    "FormatValues" -> None, "Options" -> None, "Attributes" -> {Protected}, 
+    "FullName" -> "System`SymmetricReduction"|>, False]]], "Output",
+ CellChangeTimes->{3.9059569251965313`*^9},
+ CellLabel->"Out[11]=",ExpressionUUID->"067ba63c-d086-4391-abd0-43865179a638"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"SymmetricReduction", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"\[Lambda]1", "+", "\[Lambda]2"}], ")"}], 
+    RowBox[{"(", 
+     RowBox[{"\[Lambda]1", "+", "\[Lambda]3"}], ")"}], 
+    RowBox[{"(", 
+     RowBox[{"\[Lambda]2", "+", "\[Lambda]3"}], ")"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\[Lambda]1", ",", "\[Lambda]2", ",", "\[Lambda]3"}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.905956964384879*^9, 3.9059569920012283`*^9}},
+ CellLabel->"In[12]:=",ExpressionUUID->"731ac255-4502-4da7-8d3f-a05f3c103144"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", "\[Lambda]1"}], " ", "\[Lambda]2", " ", "\[Lambda]3"}], "+", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"\[Lambda]1", "+", "\[Lambda]2", "+", "\[Lambda]3"}], ")"}], 
+     " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Lambda]1", " ", "\[Lambda]2"}], "+", 
+       RowBox[{"\[Lambda]1", " ", "\[Lambda]3"}], "+", 
+       RowBox[{"\[Lambda]2", " ", "\[Lambda]3"}]}], ")"}]}]}], ",", "0"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.9059569922913094`*^9},
+ CellLabel->"Out[12]=",ExpressionUUID->"5152ee1f-21f3-486b-8641-d9d80f6669a9"]
+}, Open  ]]
+},
+WindowSize->{1496, 905},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"b8eee209-090c-4480-bfc8-147d216cab42"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 183, 3, 41, "Input",ExpressionUUID->"06d63c5f-be15-4c34-be8c-38ea16278c0b"],
+Cell[744, 25, 211, 4, 41, "Input",ExpressionUUID->"d346de46-19bc-4bd2-87cb-ce43426e9b00"],
+Cell[958, 31, 917, 29, 42, "Input",ExpressionUUID->"3998a0f5-6084-4052-abfb-e4de0fc5572f"],
+Cell[CellGroupData[{
+Cell[1900, 64, 342, 8, 41, "Input",ExpressionUUID->"b0772a67-ec0b-4eaf-8827-c611217b81a8"],
+Cell[2245, 74, 604, 16, 69, "Output",ExpressionUUID->"3c723e20-0b6a-4126-b446-6c6f6cabfc10"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2886, 95, 208, 3, 41, "Input",ExpressionUUID->"e40a1e86-b9c8-4bbe-82a2-55fd0808908c"],
+Cell[3097, 100, 16762, 354, 175, "Output",ExpressionUUID->"067ba63c-d086-4391-abd0-43865179a638"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19896, 459, 561, 14, 41, "Input",ExpressionUUID->"731ac255-4502-4da7-8d3f-a05f3c103144"],
+Cell[20460, 475, 628, 17, 47, "Output",ExpressionUUID->"5152ee1f-21f3-486b-8641-d9d80f6669a9"]
+}, Open  ]]
+}
+]
+*)
+
