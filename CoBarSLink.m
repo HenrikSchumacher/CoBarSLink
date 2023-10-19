@@ -6,26 +6,33 @@ BeginPackage["CoBarSLink`", {"CCompilerDriver`"}];
 Begin["`Private`"];
 
 sphereRadiiUsage = "
-\"SphereRadii\" -> \[Rho]. If the edgelengths \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \",\", \"\[Ellipsis]\", \",\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r_1, \\\\dotsc, r_n\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) are different from one another, there are different plausible choices of metric for the space of polygons
+\"SphereRadii\" -> \[Rho], \"One\", \"SymplecticQuotient\", \"EdgeLengths\". The space \!\(\*SubscriptBox[\(Pol\), \(d\)]\)(n;r) of closed n-edge polygons 
+in \!\(\*SuperscriptBox[\(\[DoubleStruckCapitalR]\), \(d\)]\) (up to translation) with edgelengths r=(\!\(\*SubscriptBox[\(r\), \(1\)]\),...,\!\(\*SubscriptBox[\(r\), \(n\)]\)) is parametrized by lists of unit vectors x=(\!\(\*SubscriptBox[\(x\), \(1\)]\),...,\!\(\*SubscriptBox[\(x\), \(n\)]\)) 
+in \!\(\*SuperscriptBox[\(S\), \(d - 1\)]\)\[Cross]...\[Cross]\!\(\*SuperscriptBox[\(S\), \(d - 1\)]\) with \[Sum] \!\(\*SubscriptBox[\(r\), \(i\)]\)\!\(\*SubscriptBox[\(x\), \(i\)]\)=0. If we choose a metric on each \!\(\*SuperscriptBox[\(S\), \(d - 1\)]\), the probability measure on this space is determined 
+by its volume form as a Riemannian submanifold of the product of spheres. CoBarS always assumes that the metric on 
+each sphere is round and allows the user to choose the (metric) radius of the sphere. 
 
-	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]], \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(r_1) \\\\times \\\\cdots \\\\times S^{d-1}(r_n) \\\\mid \\\\sum x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\)
-	
-In the special case of Millson and Kapovich's symplectic structure on polygons in \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SuperscriptBox[StyleBox[\"R\", FontSlant -> \"Bold\"], \"3\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\mathbf{R}^3\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\), they define
+There are three options: 
 
-	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"]], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], \"2\"], RowBox[{\"(\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]], \")\"}], \"|\", \"\[Sum]\", SqrtBox[SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^2(\\\\sqrt{r_1}) \\\\times \\\\cdots \\\\times S^2(\\\\sqrt{r_n}) \\\\mid \\\\sum \\\\sqrt{r_i} x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\)
-	
-These choices yield different metrics on the space of polygons and hence different measures for sampling.
-The default choice is the second option (sphere radii equal to edgelengths), but the user may set the 
-radii of the spheres \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SubscriptBox[\"\[Rho]\", StyleBox[\"i\", \"TI\"]], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\rho_i\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) separately.
+	a list of positive reals \!\(\*SubscriptBox[\(\[CurlyRho]\), \(1\)]\),...,\!\(\*SubscriptBox[\(\[CurlyRho]\), \(n\)]\) giving sphere radii explicitly, 
 
-\"QuotientSpace\" - If set to True, then the Riemannian quotient space probability measure with respect to the SO(d) action is used for sampling. This is the default. Otherwise, the push-forward measure along the quotient map is used.
+	the string \"One\" setting all of the sphere metrics to unit spheres, 
 
-\"ThreadCount\" - The number of threads to be used for sampling. The default is \"ParallelOptions\"/.\[VeryThinSpace]SystemOptions[\"ParallelOptions\"].";
+	the string \"SymplecticQuotient\", which sets \!\(\*SubscriptBox[\(\[CurlyRho]\), \(i\)]\)=\!\(\*SqrtBox[SubscriptBox[\(r\), \(i\)]]\) to make the 
+	Riemannian volume of \!\(\*SubscriptBox[OverscriptBox[\(Pol\), \(^\)], \(3\)]\)(n;r) = \!\(\*SubscriptBox[\(Pol\), \(3\)]\)(n;r)/SO(3) equal to the Liouville (symplectic) volume,
+
+	the string \"EdgeLengths\", which sets \!\(\*SubscriptBox[\(\[CurlyRho]\), \(i\)]\)=\!\(\*SubscriptBox[\(r\), \(i\)]\).
+
+\"QuotientSpace\" - If set to True, then the Riemannian quotient space probability measure with respect to 
+					the SO(d) action is used for sampling. This is the default. 
+                    Otherwise, the push-forward measure along the quotient map is used. 
+
+\"ThreadCount\" - The number of threads to be used for sampling. The default is \"ParallelOptions\"/.\[VeryThinSpace]SystemOptions[\"ParallelOptions\"].
+
+To sample from the symplectic volume on \!\(\*SubscriptBox[OverscriptBox[\(Pol\), \(^\)], \(3\)]\)(n;r) as in Kapovich and Millson (The Symplectic Geometry of Polygons in Euclidean Space, 1996)
+or Cantarella, Schumacher, Shonkwiler (A Faster Direct Sampling Algorithm for Equilateral Closed Polygons, 2023), 
+use \"SphereRadii\"->\"SymplecticQuotient\" and \"QuotientSpace\"->True.
+";
 
 confidenceUsage = "
 
