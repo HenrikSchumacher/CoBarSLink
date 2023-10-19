@@ -72,17 +72,18 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	const bool verboseQ         = get<mbool>(Args[14]);
 
 	std::unordered_map<std::string,RandomVariable_Ptr> function_lookup;
-	function_lookup.insert( {\"DiagonalLength\",                  "<>class["DiagonalLength"]<>"()                  } );
-	function_lookup.insert( {\"Gyradius\",                        "<>class["Gyradius"]<>"()                        } );
-	function_lookup.insert( {\"SquaredGyradius\",                 "<>class["SquaredGyradius"]<>"()                 } );
-	function_lookup.insert( {\"ShiftNorm\",                       "<>class["ShiftNorm"]<>"()                       } );
-	function_lookup.insert( {\"TotalCurvature\",                  "<>class["TotalCurvature"]<>"()                  } );
-	function_lookup.insert( {\"BendingEnergy\",                   "<>class["BendingEnergy"]<>"(2)                  } );
-	function_lookup.insert( {\"MaxAngle\",                        "<>class["MaxAngle"]<>"()                        } );
-	function_lookup.insert( {\"EdgeSpaceSamplingWeight\",         "<>class["EdgeSpaceSamplingWeight"]<>"()         } );
-	function_lookup.insert( {\"EdgeQuotientSpaceSamplingWeight\", "<>class["EdgeQuotientSpaceSamplingWeight"]<>"() } );
-	function_lookup.insert( {\"IterationCount\",                  "<>class["IterationCount"]<>"()                  } );
-	function_lookup.insert( {\"BarycenterNorm\",                  "<>class["BarycenterNorm"]<>"()                  } );
+	function_lookup.insert( {\"DiagonalLength\",                      "<>class["DiagonalLength"]<>"()                      } );
+	function_lookup.insert( {\"Gyradius\",                            "<>class["Gyradius"]<>"()                            } );
+	function_lookup.insert( {\"SquaredGyradius\",                     "<>class["SquaredGyradius"]<>"()                     } );
+	function_lookup.insert( {\"ShiftNorm\",                           "<>class["ShiftNorm"]<>"()                           } );
+	function_lookup.insert( {\"TotalCurvature\",                      "<>class["TotalCurvature"]<>"()                      } );
+	function_lookup.insert( {\"BendingEnergy\",                       "<>class["BendingEnergy"]<>"(2)                      } );
+	function_lookup.insert( {\"MaxAngle\",                            "<>class["MaxAngle"]<>"()                            } );
+	function_lookup.insert( {\"EdgeSpaceSamplingWeight\",             "<>class["EdgeSpaceSamplingWeight"]<>"()             } );
+	function_lookup.insert( {\"EdgeQuotientSpaceSamplingWeight\",     "<>class["EdgeQuotientSpaceSamplingWeight"]<>"()     } );
+	function_lookup.insert( {\"EdgeQuotientSpaceSamplingCorrection\", "<>class["EdgeQuotientSpaceSamplingCorrection"]<>"() } );
+	function_lookup.insert( {\"IterationCount\",                      "<>class["IterationCount"]<>"()                      } );
+	function_lookup.insert( {\"BarycenterNorm\",                      "<>class["BarycenterNorm"]<>"()                      } );
 
 	std::vector<RandomVariable_Ptr> F_list;
 

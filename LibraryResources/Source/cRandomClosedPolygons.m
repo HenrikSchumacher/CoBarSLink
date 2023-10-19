@@ -24,6 +24,7 @@ cRandomClosedPolygons[d_Integer?Positive] := cRandomClosedPolygons[d] = Module[{
 #include \"MMA.hpp\"
 #include \"CoBarS.hpp\"
 
+using namespace Tools;
 using namespace mma;
 
 using Real = mreal;
@@ -43,12 +44,12 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	const Int thread_count = get<Int>(Args[7]);
 
-	const Int edge_count = int_cast<Int>( std::min(
+	const Int edge_count = static_cast<Int>( std::min(
 		std::min( dimensions(r)[0], dimensions(rho)[0] ) ,
 		std::min( dimensions(x)[1], dimensions(y)[1] )
 	) );
 
-	const Int sample_count = int_cast<Int>( std::min(
+	const Int sample_count = static_cast<Int>( std::min(
 		std::min(
 			std::min( dimensions(x)[0], dimensions(y)[0] ),
 			std::min( dimensions(K)[0], dimensions(K_quot)[0] )
