@@ -1,14 +1,14 @@
-# CycleSamplerLink
+# CoBarSLink
 by Jason Cantarella and Henrik Schumacher
 
 
-A Mathematica interface for CycleSampler, a C++ library for Monte-Carlo sampling of cylic polygons with prescribed edge lengths.
+A Mathematica interface for CoBarS, a C++ library for Monte-Carlo sampling of cylic polygons with prescribed edge lengths.
 
 # Installation
 
 Please clone with
 
-    git clone --recurse-submodules git@github.com:HenrikSchumacher/CycleSamplerLink.git
+    git clone --recurse-submodules git@github.com:HenrikSchumacher/CoBarSLink.git
 
 to load also all submodules. If you forgot to do that, you can also run the following afterwards:
 
@@ -20,7 +20,7 @@ Currently the package is configured and tested only for macos (both Apple Silico
 
 From within Mathematica, just run 
 
-    Get[FileNameJoin[{<<path to cloned repo>>,"CycleSamplerLink.m"}];
+    Get[FileNameJoin[{<<path to cloned repo>>,"CoBarSLink.m"}];
     
 to load the package.
 
@@ -30,6 +30,6 @@ You may also consider to clone directly to the path where _Mathematica_ looks fo
     
 Then you can load the package just by executing
 
-    Needs["CycleSamplerLink`"];
+    Needs["CoBarSLink`"];
     
 See also the notebook files *.nb in the "Examples" subdirection for usage examples.
