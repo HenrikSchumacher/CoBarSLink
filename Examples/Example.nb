@@ -236,7 +236,7 @@ Cell[BoxData[{
   RowBox[{"result", ",", "\"\<Wand\>\"", ",", "\"\<PDF\>\"", ",", 
    RowBox[{"ChartLegends", "->", "Automatic"}]}], "]"}]}], "Input",
  CellChangeTimes->{{3.906726913757153*^9, 3.906726976701479*^9}},
- CellLabel->"In[70]:=",ExpressionUUID->"00090559-5e4b-4436-9d02-0c43b32a9e5e"],
+ CellLabel->"In[72]:=",ExpressionUUID->"00090559-5e4b-4436-9d02-0c43b32a9e5e"],
 
 Cell["We can sample in 3D...", "Text",
  CellChangeTimes->{{3.879948679500442*^9, 3.8799486940119762`*^9}, {
