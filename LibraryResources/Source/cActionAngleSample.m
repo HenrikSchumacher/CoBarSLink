@@ -18,17 +18,16 @@ cActionAngleSample[progressiveQ:(True|False)] := cActionAngleSample[progressiveQ
 #define NDEBUG
 
 #include \"WolframLibrary.h\"
-#include \"MMA.h\"
 
-#include \"CycleSampler.hpp\"
+#include \"MMA.hpp\"
+#include \"CoBarS.hpp\"
 
-using namespace CycleSampler;
 using namespace mma;
 
 using Int  = mint;
 using Real = mreal;
 
-using Sampler_T = ActionAngleSampler<Real,Int,CycleSampler::Xoshiro256Plus,"<>If[TrueQ[progressiveQ],"true","false"]<>">;
+using Sampler_T = AAM::Sampler<Real,Int,CoBarS::Xoshiro256Plus,"<>If[TrueQ[progressiveQ],"true","false"]<>">;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {

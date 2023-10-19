@@ -17,20 +17,21 @@ cActionAngleConfidenceSample[progressiveQ:(True|False)] := cActionAngleConfidenc
 //#define TOOL_ENABLE_PROFILER
 
 #include \"WolframLibrary.h\"
-#include \"MMA.h\"
 
-#include \"CycleSampler.hpp\"
+#include \"MMA.hpp\"
+#include \"CoBarS.hpp\"
 
-using namespace CycleSampler;
 using namespace Tensors;
 using namespace mma;
+
+using CoBarS::N_CDF;
 
 using Int  = mint;
 using Real = mreal;
 
 static constexpr bool progressiveQ = "<>If[TrueQ[progressiveQ],"true","false"]<>";
 
-using Sampler_T = ActionAngleSampler<Real,Int,CycleSampler::Xoshiro256Plus,progressiveQ>;
+using Sampler_T = AAM::Sampler<Real,Int,CoBarS::Xoshiro256Plus,progressiveQ>;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {

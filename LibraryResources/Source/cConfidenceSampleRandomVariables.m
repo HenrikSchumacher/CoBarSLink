@@ -13,7 +13,7 @@ cConfidenceSampleRandomVariables[d_Integer?Positive] := cConfidenceSampleRandomV
 	
 	lib = FileNameJoin[{$libraryDirectory, libname<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension}];
 	
-	class[s_]:="std::make_shared<"<>s<>"<SamplerBase_T>>";
+	class[s_]:="std::make_shared<CoBarS::"<>s<>"<SamplerBase_T>>";
 
 	If[Not[FileExistsQ[lib]],
 
@@ -27,22 +27,24 @@ cConfidenceSampleRandomVariables[d_Integer?Positive] := cConfidenceSampleRandomV
 //#define TOOLS_ENABLE_PROFILER
 
 #include \"WolframLibrary.h\"
-#include \"MMA.h\"
+
 #include <unordered_map>
-#include \"CycleSampler.hpp\"
+
+#include \"MMA.hpp\"
+#include \"CoBarS.hpp\"
 
 using namespace Tools;
 using namespace Tensors;
-using namespace CycleSampler;
+//using namespace CoBarS;
 using namespace mma;
 
 using Int  = mint;
 using Real = mreal;
 
-using Sampler_T     = Sampler<"<>ds<>",Real,Int>;
-using SamplerBase_T = SamplerBase<"<>ds<>",Real,Int>;
+using Sampler_T     = CoBarS::Sampler<"<>ds<>",Real,Int>;
+using SamplerBase_T = CoBarS::SamplerBase<"<>ds<>",Real,Int>;
 
-using RandomVariable_Ptr = std::shared_ptr<RandomVariable<SamplerBase_T>>;
+using RandomVariable_Ptr = std::shared_ptr<CoBarS::RandomVariable<SamplerBase_T>>;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )
 {
@@ -130,13 +132,8 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	Int N = S.ConfidenceSample(
         F_list, data<Real>(means), data<Real>(variances), data<Real>(errors), data<Real>(radii),
-        max_sample_count,
-        quotientQ,
-        thread_count,
-        confidence,
-        chunk_size,
-		relativeQ,
-		verboseQ
+        max_sample_count, quotientQ, thread_count, confidence, chunk_size,
+		relativeQ, verboseQ
 	);
 
 	get<Int>(Res) = N;

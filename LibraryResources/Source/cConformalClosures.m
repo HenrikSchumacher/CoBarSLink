@@ -20,11 +20,9 @@ cConformalClosures[d_Integer?Positive] := cConformalClosures[d] = Module[{lib, l
 #define NDEBUG
 
 #include \"WolframLibrary.h\"
-#include \"MMA.h\"
 
-#include \"CycleSampler.hpp\"
-
-using namespace CycleSampler;
+#include \"MMA.hpp\"
+#include \"CoBarS.hpp\"
 
 using Real = mreal;
 using Int  = mint;
@@ -56,11 +54,11 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		dimension(w)[0]
 	);
 
-	Sampler<"<>ds<>",Real,Int> C ( data<Real>(r), data<Real>(rho), edge_count );
+	CoBarS::Sampler<"<>ds<>",Real,Int> S ( data<Real>(r), data<Real>(rho), edge_count );
 
 	Tools::Time start_time = Tools::Clock::now();
 	
-	C.ConformalClosures( 
+	S.ConformalClosures( 
 		data<Real>(x), data<Real>(w), data<Real>(y), data<Real>(K), data<Real>(K_quot),
 		sample_count, thread_count 
 	);
@@ -69,7 +67,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	std::ofstream file ( \""<>$logFile<>"\" , std::ofstream::app );
 
-	file << C.ClassName() << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in "<>ds<>" D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
+	file << S.ClassName() << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in "<>ds<>" D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
 
 	disown(w);
 	disown(y);

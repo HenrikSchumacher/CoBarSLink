@@ -31,13 +31,13 @@ Switch[ $OperatingSystem
 		]
 		,"IncludeDirectories" -> Flatten[{
 			DirectoryName[$InputFileName]
-			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
+			,FileNameJoin[{DirectoryName[$InputFileName],"CoBarS"}]
 		}]
 		,"LibraryDirectories" -> {}
 		(*,"ShellCommandFunction" -> Print*)
 		,"ShellOutputFunction" -> (If[#=!="",Print[#]]&)
 	},
-	"Unix", (* Compilation settings for Linux on x86 architecture. Untested so far. *)
+	"Unix", (* Compilation settings for Linux on x86 architecture. Assuming gcc. Untested so far. *)
 	{
 		"CompileOptions" -> {
 			" -Wall"
@@ -54,7 +54,7 @@ Switch[ $OperatingSystem
 		,"LinkerOptions"->{"-lm","-ldl"}
 		,"IncludeDirectories" -> {
 			FileNameJoin[{DirectoryName[$InputFileName]}]
-			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
+			,FileNameJoin[{DirectoryName[$InputFileName],"CoBarS"}]
 			,{(*Put your own include directories here.*)}
 		}
 		,"LibraryDirectories" -> {}
@@ -68,7 +68,7 @@ Switch[ $OperatingSystem
 		,"LinkerOptions"->{}
 		,"IncludeDirectories" -> Flatten[{
 			FileNameJoin[{DirectoryName[$InputFileName]}]
-			,FileNameJoin[{DirectoryName[$InputFileName],"CycleSampler"}]
+			,FileNameJoin[{DirectoryName[$InputFileName],"CoBarS"}]
 			,{(*Add you own include directories here*)}
 		}]
 		,"LibraryDirectories" -> {}

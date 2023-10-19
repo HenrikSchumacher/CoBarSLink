@@ -13,7 +13,7 @@ cSampleChordLength[d_Integer?Positive] := cSampleChordLength[d] = Module[{lib, l
 	
 	lib = FileNameJoin[{$libraryDirectory, libname<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension}];
 	
-	class[s_]:="std::make_shared<"<>s<>"<SamplerBase_T>>";
+	class[s_]:="std::make_shared<CoBarS::"<>s<>"<SamplerBase_T>>";
 
 	If[Not[FileExistsQ[lib]],
 
@@ -26,20 +26,22 @@ cSampleChordLength[d_Integer?Positive] := cSampleChordLength[d] = Module[{lib, l
 #define NDEBUG
 
 #include \"WolframLibrary.h\"
-#include \"MMA.h\"
-#include <unordered_map>
-#include \"CycleSampler.hpp\"
 
-using namespace CycleSampler;
+#include <unordered_map>
+
+#include \"MMA.hpp\"
+#include \"CoBarS.hpp\"
+
+//using namespace CoBarS;
 using namespace mma;
 
 using Int  = mint;
 using Real = mreal;
 
-using Sampler_T     = Sampler<"<>ds<>",Real,Int>;
-using SamplerBase_T = SamplerBase<"<>ds<>",Real,Int>;
+using Sampler_T     = CoBarS::Sampler<"<>ds<>",Real,Int>;
+using SamplerBase_T = CoBarS::SamplerBase<"<>ds<>",Real,Int>;
 
-using RandomVariable_Ptr = std::shared_ptr<RandomVariable<SamplerBase_T>>;
+using RandomVariable_Ptr = std::shared_ptr<CoBarS::RandomVariable<SamplerBase_T>>;
 
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res )

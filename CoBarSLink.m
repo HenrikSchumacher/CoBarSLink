@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-BeginPackage["CycleSamplerLink`", {"CCompilerDriver`"}];
+BeginPackage["CoBarSLink`", {"CCompilerDriver`"}];
 
 
 Begin["`Private`"];
@@ -33,18 +33,18 @@ TraditionalForm]\) separately.
 End[];
 
 
-CycleSample::usage = "CycleSample[randomvariable_String,d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
+CoBarSample::usage = "CoBarSample[randomvariable_String,d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
 The vector r contains the length of each edge of the polygon. As option one can set:
 
-"<>CycleSamplerLink`Private`sphereRadiiUsage;
+"<>CoBarSLink`Private`sphereRadiiUsage;
 
 
-CycleSampleChordLength::usage = "CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer?Positive] draws samplecount samples of closed polygons of edge lengths r in d-dimensional Euclidean space. Then it evaluates the chord length between vertices i and j. As option one can set:
+CoBarSampleChordLength::usage = "CoBarSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer?Positive] draws samplecount samples of closed polygons of edge lengths r in d-dimensional Euclidean space. Then it evaluates the chord length between vertices i and j. As option one can set:
 
-"<>CycleSamplerLink`Private`sphereRadiiUsage;
+"<>CoBarSLink`Private`sphereRadiiUsage;
 
 
-CycleConfidenceSample::usage = "";
+CoBarConfidenceSample::usage = "";
 
 
 RandomOpenPolygons::usage="RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space. The result is equivalent to - but significantly faster to obtain than - RandomPoint[Sphere[ConstantArray[0.,d]],{samplecount,edgecount}].";
@@ -59,7 +59,7 @@ RandomClosedPolygons::usage="RandomClosedPolygons[d_Integer?Positive, r_?(Vector
 
 	 As option one can set:
 
-"<>CycleSamplerLink`Private`sphereRadiiUsage;
+"<>CoBarSLink`Private`sphereRadiiUsage;
 
 
 ConformalClosures::usage="ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))&)] closes the Length[r]-gons stored in the 3-tensor x via the conformal barycenter method. Then it returns: 
@@ -71,7 +71,7 @@ ConformalClosures::usage="ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((Arra
 
 	 As option one can set:
 
-"<>CycleSamplerLink`Private`sphereRadiiUsage;
+"<>CoBarSLink`Private`sphereRadiiUsage;
 
 
 ActionAngleSample::usage="ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space.";
@@ -79,13 +79,13 @@ ActionAngleSample::usage="ActionAngleSample[edgecount_Integer?Positive, sampleco
 
 (*Some error and warning messages.*)
 
-CycleSamplerLink::badedgelengths = "One edge has more than half the total length of the polygon. No closed polygons with these edgelengths exist.";
+CoBarSLink::badedgelengths = "One edge has more than half the total length of the polygon. No closed polygons with these edgelengths exist.";
 
-CycleSamplerLink::badsphereradii = "The Length of the vector given as value for option \"SphereRadii\" does not coincide with the Length of the second argument.";
+CoBarSLink::badsphereradii = "The Length of the vector given as value for option \"SphereRadii\" does not coincide with the Length of the second argument.";
 
-CycleSamplerLink::badsphereradii2 = "The value for the option \"SphereRadii\" has to be a numerical vector or a String.";
+CoBarSLink::badsphereradii2 = "The value for the option \"SphereRadii\" has to be a numerical vector or a String.";
 
-CycleSamplerLink::badsphereradii3 = "Bad value `1` for the option \"SphereRadii\".";
+CoBarSLink::badsphereradii3 = "Bad value `1` for the option \"SphereRadii\".";
 
 
 Begin["`Private`"];
@@ -113,7 +113,7 @@ $compilationOptions := $compilationOptions = Get[FileNameJoin[{$sourceDirectory,
 
 Get[FileNameJoin[{$sourceDirectory, "cSampleRandomVariables.m"}]];
 
-Options[CycleSample] = {
+Options[CoBarSample] = {
 	"SphereRadii" -> "EdgeLengths",
 	"QuotientSpace" -> True,
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
@@ -121,9 +121,9 @@ Options[CycleSample] = {
 
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
-CycleSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, opts___] := CycleSample[{fun}, d, r, samplecount, opts];
+CoBarSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, opts___] := CoBarSample[{fun}, d, r, samplecount, opts];
 
-CycleSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{funcount,\[Rho], err, values, weights}, 
+CoBarSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{funcount,\[Rho], err, values, weights}, 
 	
 	funcount = Length[funs];
 	
@@ -134,7 +134,7 @@ CycleSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samp
 	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed,Return[$Failed]];
 	
-	If[2 Max[r] > Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+	If[2 Max[r] > Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
 	
 	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
 	err = cSampleRandomVariables[d][
@@ -154,15 +154,15 @@ CycleSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samp
 
 Get[FileNameJoin[{$sourceDirectory, "cSampleChordLength.m"}]];
 
-Options[CycleSampleChordLength] = {
+Options[CoBarSampleChordLength] = {
 	"SphereRadii" -> "EdgeLengths",
 	"QuotientSpace" -> True,
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
 };
 
-CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{\[Rho], err, values, weights}, 
+CoBarSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{\[Rho], err, values, weights}, 
 
-	If[2 Max[r] > Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+	If[2 Max[r] > Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
 		
 	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed, Return[$Failed]];		
@@ -182,7 +182,7 @@ CycleSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer
 
 Get[FileNameJoin[{$sourceDirectory, "cConfidenceSampleRandomVariables.m"}]];
 
-Options[CycleConfidenceSample] = {
+Options[CoBarConfidenceSample] = {
 	"SphereRadii" -> "EdgeLengths",
 	"QuotientSpace" -> True,
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
@@ -196,13 +196,13 @@ Options[CycleConfidenceSample] = {
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
 
-CycleConfidenceSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, opts___] := Module[{data},
-	data = CycleConfidenceSample[{fun}, d, r, {confidenceradius}, opts];
+CoBarConfidenceSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, opts___] := Module[{data},
+	data = CoBarConfidenceSample[{fun}, d, r, {confidenceradius}, opts];
 	
 	Merge[{data[fun],data[[-12;;]]},First]
 ];
 
-CycleConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, OptionsPattern[]]:=Module[{funcount, \[Rho], means, variances, errors, samplecount, time, relativeQ}, 
+CoBarConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, OptionsPattern[]]:=Module[{funcount, \[Rho], means, variances, errors, samplecount, time, relativeQ}, 
 	
 	funcount = Min[Length[funs],Length[confidenceradii]];
 	
@@ -216,7 +216,7 @@ CycleConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,Numeric
 	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed,Return[$Failed]];
 	
-	If[2 Max[r] > Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+	If[2 Max[r] > Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
 	
 	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
 	
@@ -285,7 +285,7 @@ Options[RandomClosedPolygons ]= {
 
 RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{W,edgecount,x,w,y,Klist,Kquotlist,\[Rho]},
 
-	If[2 Max[r]>Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+	If[2 Max[r]>Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
 		
 	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed, Return[$Failed]];
@@ -324,7 +324,7 @@ Options[ConformalClosures ]= {
 
 ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))&), OptionsPattern[]]:=Module[{W,edgecount,samplecount,d,w,y,Klist,Kquotlist,\[Rho]},
 
-	If[2 Max[r]>Total[r], Message[CycleSamplerLink::badedgelengths]; Return[$Failed]];
+	If[2 Max[r]>Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
 		
 	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed, Return[$Failed]];
@@ -379,7 +379,7 @@ processSphereRadii[r_?(VectorQ[#,NumericQ]&), \[Rho]_]:=If[
 	If[
 		!TrueQ[Length[\[Rho]]==Length[r]]
 	,
-		Message[CycleSamplerLink::badsphereradii];
+		Message[CoBarSLink::badsphereradii];
 		Return[$Failed];
 	,   
 		Return[\[Rho]];
@@ -388,7 +388,7 @@ processSphereRadii[r_?(VectorQ[#,NumericQ]&), \[Rho]_]:=If[
 	If[
 		!StringQ[\[Rho]]
 	,
-		Message[CycleSamplerLink::badsphereradii2];
+		Message[CoBarSLink::badsphereradii2];
 		Return[$Failed];
 	,
 		Switch[
@@ -400,7 +400,7 @@ processSphereRadii[r_?(VectorQ[#,NumericQ]&), \[Rho]_]:=If[
 			,
 			"SymplecticQuotient",Return[Sqrt[r]];
 			,
-			_, (Message[CycleSamplerLink::badsphereradii3,\[Rho]];Return[$Failed];)
+			_, (Message[CoBarSLink::badsphereradii3,\[Rho]];Return[$Failed];)
 		];
 	];
 ];
