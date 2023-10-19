@@ -1,5 +1,5 @@
-[submodule "LibraryResources/Source/CycleSampler"]
-	path = LibraryResources/Source/CycleSampler
-	url = git@github.com:HenrikSchumacher/CycleSampler.git
+[submodule "LibraryResources/Source/CoBarS"]
+	path = LibraryResources/Source/CoBarS
+	url = git@github.com:HenrikSchumacher/CoBarS.git
 	branch = main
 	update = merge
