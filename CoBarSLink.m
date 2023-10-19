@@ -12,7 +12,7 @@ in \!\(\*SuperscriptBox[\(S\), \(d - 1\)]\)\[Cross]...\[Cross]\!\(\*SuperscriptB
 by its volume form as a Riemannian submanifold of the product of spheres. CoBarS always assumes that the metric on 
 each sphere is round and allows the user to choose the (metric) radius of the sphere. 
 
-There are three options: 
+There are four options: 
 
 	a list of positive reals \!\(\*SubscriptBox[\(\[CurlyRho]\), \(1\)]\),...,\!\(\*SubscriptBox[\(\[CurlyRho]\), \(n\)]\) giving sphere radii explicitly, 
 
