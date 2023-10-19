@@ -49,14 +49,15 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 {
 	std::string key_string ( get<char *>(Args[0]) );
 
-	MTensor r       = get<MTensor>(Args[1]);
-	MTensor rho     = get<MTensor>(Args[2]);
-	MTensor values  = get<MTensor>(Args[3]);
-	MTensor weights = get<MTensor>(Args[4]);
+	MTensor chords          = get<MTensor>(Args[1]);
+	MTensor r               = get<MTensor>(Args[2]);
+	MTensor rho             = get<MTensor>(Args[3]);
+	MTensor values          = get<MTensor>(Args[4]);
+	MTensor weights         = get<MTensor>(Args[5]);
 
-	const bool quotientQ    = get<mbool>(Args[5]);
-	const Int  sample_count = get<Int  >(Args[6]);
-	const Int  thread_count = get<Int  >(Args[7]);
+	const bool quotientQ    = get<mbool>(Args[6]);
+	const Int  sample_count = get<Int  >(Args[7]);
+	const Int  thread_count = get<Int  >(Args[8]);
 
 	std::unordered_map<std::string,RandomVariable_Ptr> function_lookup;
 	function_lookup.insert( {\"DiagonalLength\",                  "<>class["DiagonalLength"]<>"()                  } );
@@ -113,6 +114,13 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
         }
     }
 
+	for( Int k = 0; k < dimensions(chords)[0]; ++k ) 
+	{
+		F_list.push_back( 
+			"<>class["ChordLength"]<>"( data<Int>(chords)[2*k], data<Int>(chords)[2*k+1] )
+		);
+    }
+
 	const Int edge_count = std::min( dimensions(r)[0], dimensions(rho)[0] );
 	
 	// This creates an instance S of the Sampler class.
@@ -154,14 +162,15 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		lib, 
 		name,
 		{
-			"UTF8String",        (* tag of random variable *)
-			{Real,1,"Constant"}, (* r *)
-			{Real,1,"Constant"}, (* \[Rho] *)
-			{Real,2,"Shared"},   (* sampled values *)
-			{Real,1,"Shared"},   (* weights *)
-			"Boolean",           (* flag for specifying the space: "False" means total space metric, "True" means quotient space metric *)
-			Integer,             (* number of samples to take *)
-			Integer              (* number of threads *)
+			"UTF8String",           (* tags of random variables, separated by whitespace *)
+			{Integer,2,"Constant"}, (* chords *)
+			{Real,1,"Constant"},    (* r *)
+			{Real,1,"Constant"},    (* \[Rho] *)
+			{Real,2,"Shared"},      (* sampled values *)
+			{Real,1,"Shared"},      (* weights *)
+			"Boolean",              (* flag for specifying the space: "False" means total space metric, "True" means quotient space metric *)
+			Integer,                (* number of samples to take *)
+			Integer                 (* number of threads *)
 		},
 		(*return*) Integer  (* error flag; ==0 if succeeded. *)
 	]

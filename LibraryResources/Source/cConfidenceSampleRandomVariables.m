@@ -52,22 +52,24 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	std::string key_string ( MArgument_getUTF8String(Args[0]) );
 
-	MTensor r         = get<MTensor>(Args[1]);
-	MTensor rho       = get<MTensor>(Args[2]);
+	MTensor chords    = get<MTensor>(Args[1]);
 
-	MTensor means     = get<MTensor>(Args[3]);
-	MTensor variances = get<MTensor>(Args[4]);
-	MTensor errors    = get<MTensor>(Args[5]);
+	MTensor r         = get<MTensor>(Args[2]);
+	MTensor rho       = get<MTensor>(Args[3]);
 
-	MTensor radii     = get<MTensor>(Args[6]);
+	MTensor means     = get<MTensor>(Args[4]);
+	MTensor variances = get<MTensor>(Args[5]);
+	MTensor errors    = get<MTensor>(Args[6]);
 
-	const Int  max_sample_count = get<Int  >(Args[7]);
-	const bool quotientQ        = get<mbool>(Args[8]);
-	const Int  thread_count     = get<Int  >(Args[9]);
-	const Real confidence       = get<Real >(Args[10]);
-	const Int  chunk_size       = get<Int  >(Args[11]);
-	const bool relativeQ        = get<mbool>(Args[12]);
-	const bool verboseQ         = get<mbool>(Args[13]);
+	MTensor radii     = get<MTensor>(Args[7]);
+
+	const Int  max_sample_count = get<Int  >(Args[8]);
+	const bool quotientQ        = get<mbool>(Args[9]);
+	const Int  thread_count     = get<Int  >(Args[10]);
+	const Real confidence       = get<Real >(Args[11]);
+	const Int  chunk_size       = get<Int  >(Args[12]);
+	const bool relativeQ        = get<mbool>(Args[13]);
+	const bool verboseQ         = get<mbool>(Args[14]);
 
 	std::unordered_map<std::string,RandomVariable_Ptr> function_lookup;
 	function_lookup.insert( {\"DiagonalLength\",                  "<>class["DiagonalLength"]<>"()                  } );
@@ -125,6 +127,13 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
         }
     }
 
+	for( Size_T k = 0; k < dimension(chords)[0]; ++k ) 
+	{
+		F_list.push_back( 
+			std::move( "<>class["ChordLength"]<>"( data<Int>(chords)[2*k], data<Int>(chords)[2*k+1] ) ) 
+		);
+    }
+
 	const Int edge_count = std::min( dimensions(r)[0], dimensions(rho)[0] );
 	
 	// This creates an instance S of the Sampler class.
@@ -165,20 +174,21 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		lib, 
 		name,
 		{
-			"UTF8String",        (* tag of random variable *)
-			{Real,1,"Constant"}, (* r *)
-			{Real,1,"Constant"}, (* \[Rho] *)
-			{Real,1,"Shared"},   (* means *)
-			{Real,1,"Shared"},   (* errors *)
-			{Real,1,"Shared"},   (* variances *)
-			{Real,1,"Constant"}, (* confidence radii *)
-			Integer,             (* max_sample_count *)
-			"Boolean",           (* quotientQ: "False" means total space metric, "True" means quotient space metric *)
-			Integer,             (* number of threads *)
-			Real,                (* confidence level *)
-			Integer,             (* chunk_size *)
-			"Boolean",           (* relativeQ *)
-			"Boolean"            (* verboseQ *)
+			"UTF8String",           (* tags of random variables, separated by whitespace *)
+			{Integer,2,"Constant"}, (* chords *)
+			{Real,1,"Constant"},    (* r *)
+			{Real,1,"Constant"},    (* \[Rho] *)
+			{Real,1,"Shared"},      (* means *)
+			{Real,1,"Shared"},      (* errors *)
+			{Real,1,"Shared"},      (* variances *)
+			{Real,1,"Constant"},    (* confidence radii *)
+			Integer,                (* max_sample_count *)
+			"Boolean",              (* quotientQ: "False" means total space metric, "True" means quotient space metric *)
+			Integer,                (* number of threads *)
+			Real,                   (* confidence level *)
+			Integer,                (* chunk_size *)
+			"Boolean",              (* relativeQ *)
+			"Boolean"               (* verboseQ *)
 		},
 		(*return*) Integer  (* If positive: succeed and number of samples taken is returned. If negative: Error occured. *)
 	]

@@ -5,15 +5,9 @@ BeginPackage["CoBarSLink`", {"CCompilerDriver`"}];
 
 Begin["`Private`"];
 
-sphereRadiiUsage = "\"SphereRadii\" -> \[Rho]. If the edgelengths \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \",\", \"\[Ellipsis]\", \",\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r_1, \\\\dotsc, r_n\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) are different from one another, there are different plausible choices of metric for the space of polygons. If \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], \"(\", StyleBox[\"r\", \"TI\"], \")\"}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"S^{d-1}(r)\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\) is the sphere of radius \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[StyleBox[\"r\", \"TI\"], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\), we may define
-
-	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", \"1\", \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"i\", \"TI\"]], SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(1) \\\\times \\\\cdots \\\\times S^{d-1}(1) \\\\mid \\\\sum r_i x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
-TraditionalForm]\)
-
-or we may define
+sphereRadiiUsage = "
+\"SphereRadii\" -> \[Rho]. If the edgelengths \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \",\", \"\[Ellipsis]\", \",\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"r_1, \\\\dotsc, r_n\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
+TraditionalForm]\) are different from one another, there are different plausible choices of metric for the space of polygons
 
 	\!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[RowBox[{\"Pol\", RowBox[{\"(\", RowBox[{StyleBox[\"n\", \"TI\"], \",\", StyleBox[\"r\", \"TI\"]}], \")\"}], \"\[LongEqual]\", RowBox[{\"{\", RowBox[{StyleBox[\"x\", \"TI\"], \"\[Element]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], \"1\"], \")\"}], \"\[Cross]\", \"\[CenterEllipsis]\", \"\[Cross]\", SuperscriptBox[StyleBox[\"S\", \"TI\"], RowBox[{StyleBox[\"d\", \"TI\"], \"-\", \"1\"}]], RowBox[{\"(\", SubscriptBox[StyleBox[\"r\", \"TI\"], StyleBox[\"n\", \"TI\"]], \")\"}], \"|\", \"\[Sum]\", SubscriptBox[StyleBox[\"x\", \"TI\"], StyleBox[\"i\", \"TI\"]], \"\[LongEqual]\", \"0\"}], \"}\"}]}], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\text{Pol}(n,r) = \\\\{ x \\\\in S^{d-1}(r_1) \\\\times \\\\cdots \\\\times S^{d-1}(r_n) \\\\mid \\\\sum x_i = 0 \\\\}\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
 TraditionalForm]\)
@@ -28,53 +22,66 @@ These choices yield different metrics on the space of polygons and hence differe
 The default choice is the second option (sphere radii equal to edgelengths), but the user may set the 
 radii of the spheres \!\(\*FormBox[TemplateBox[<|\"boxes\" -> FormBox[SubscriptBox[\"\[Rho]\", StyleBox[\"i\", \"TI\"]], TraditionalForm], \"errors\" -> {}, \"input\" -> \"\\\\rho_i\", \"state\" -> \"Boxes\"|>,\n\"TeXAssistantTemplate\"],
 TraditionalForm]\) separately.
+
+\"QuotientSpace\" - If set to True, then the Riemannian quotient space probability measure with respect to the SO(d) action is used for sampling. This is the default. Otherwise, the push-forward measure along the quotient map is used.
+
+\"ThreadCount\" - The number of threads to be used for sampling. The default is \"ParallelOptions\"/.\[VeryThinSpace]SystemOptions[\"ParallelOptions\"].";
+
+confidenceUsage = "
+
+\"ConfidenceLevel\" - The confidence level. The default value is 95%.
+
+\"ChunkSize\" - The number of samples to be sampled at once by the backend library. Greater values reduce overhead; but they may also cause unneccessary high sample counts if chosen too large.
+
+\"MaxSamples\" - Sampling will stop after this many samples, no matter if the desired confidence has been reached or not.
+
+\"RelativeErrorMode\" - If set to True, the entries of the input vector confidenceradii are treated as relative to the corresponding sample mean. This feature is turned off by default.
+
+\"Verbose\" - If set to True, the backend library will printed intermediate sampling results to the notebook. Turn this off for reducing message overhead. This feature is turned on by default.
 ";
 
 End[];
 
 
-CoBarSample::usage = "CoBarSample[randomvariable_String,d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer] draws samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
-The vector r contains the length of each edge of the polygon. As option one can set:
+CoBarSample::usage = "CoBarSample[randomvariable_String,d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer] draws samplecount samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
+The vector r contains the length of each edge of the polygon. 
 
+The following options can be set:
 "<>CoBarSLink`Private`sphereRadiiUsage;
 
 
-CoBarSampleChordLength::usage = "CoBarSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer?Positive] draws samplecount samples of closed polygons of edge lengths r in d-dimensional Euclidean space. Then it evaluates the chord length between vertices i and j. As option one can set:
+CoBarConfidenceSample::usage = "CoBarConfidenceSample[funs:{__}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, opts___] draws samples of closed polygons in d-dimensional Euclidean space and evaluates the list of random variables specified by funs on them. It stops if each random variable's confidence radius is below the prescribed value in the condidenceradii. Returned are sample mean, sample variance, and some further statistics. The drawn polygons are discarded afterwards. The vector r contains the length of each edge of the polygon. 
 
-"<>CoBarSLink`Private`sphereRadiiUsage;
-
-
-CoBarConfidenceSample::usage = "";
+The following options can be set:
+"<>CoBarSLink`Private`sphereRadiiUsage<>CoBarSLink`Private`confidenceUsage;
 
 
-RandomOpenPolygons::usage="RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space. The result is equivalent to - but significantly faster to obtain than - RandomPoint[Sphere[ConstantArray[0.,d]],{samplecount,edgecount}].";
+RandomOpenPolygons::usage = "RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space. The result is equivalent to - but significantly faster to obtain than - RandomPoint[Sphere[ConstantArray[0.,d]],{samplecount,edgecount}].";
 
 
-RandomClosedPolygons::usage="RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space, closes them via the conformal barycenter method. Then it returns: 
+RandomClosedPolygons::usage = "RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space, closes them via the conformal barycenter method. Then it returns: 
 	(i)   the open polygons' unit edge vectors;
 	(ii)  the conformal shift vectors; 
 	(iii) the closed polygons' unit edge vectors;
 	(iv)  the sampling weights for the edge space; and
 	(v)   the sampling weights for the quotient space of the edge space by the action of SO(d).
 
-	 As option one can set:
-
+The following options can be set:
 "<>CoBarSLink`Private`sphereRadiiUsage;
 
 
-ConformalClosures::usage="ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))&)] closes the Length[r]-gons stored in the 3-tensor x via the conformal barycenter method. Then it returns: 
+ConformalClosures::usage = "ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))&)] closes the Length[r]-gons stored in the 3-tensor x via the conformal barycenter method. Then it returns: 
 	(i)   the open polygons' unit edge vectors;
 	(ii)  the conformal shift vectors; 
 	(iii) the closed polygons' unit edge vectors;
 	(iv)  the sampling weights for the edge space; and
 	(v)   the sampling weights for the quotient space of the edge space by the action of SO(d).
 
-	 As option one can set:
-
+The following options can be set:
 "<>CoBarSLink`Private`sphereRadiiUsage;
 
 
-ActionAngleSample::usage="ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space.";
+ActionAngleSample::usage = "ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space.";
 
 
 (*Some error and warning messages.*)
@@ -86,6 +93,8 @@ CoBarSLink::badsphereradii = "The Length of the vector given as value for option
 CoBarSLink::badsphereradii2 = "The value for the option \"SphereRadii\" has to be a numerical vector or a String.";
 
 CoBarSLink::badsphereradii3 = "Bad value `1` for the option \"SphereRadii\".";
+
+CoBarSLink::badvertex = "Vertex index `1` is out of bounds {1,...,`2`}.";
 
 
 Begin["`Private`"];
@@ -121,11 +130,25 @@ Options[CoBarSample] = {
 
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
-CoBarSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, opts___] := CoBarSample[{fun}, d, r, samplecount, opts];
+CoBarSample[fun_, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, opts___] := With[{result=CoBarSample[{fun}, d, r, samplecount, opts]},
 
-CoBarSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{funcount,\[Rho], err, values, weights}, 
+	If[result===$Failed,
+		$Failed,
+		result[[Key[fun]]]
+	]
+];
+
+CoBarSample[funs:{__}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{ordinaryfuns, chords, funcount, \[Rho], err, values, weights}, 
 	
-	funcount = Length[funs];
+	If[2 Max[r] > Total[r], 
+		Message[CoBarSLink::badedgelengths]; 
+		Return[$Failed]
+	];
+	
+	ordinaryfuns = Cases[funs,_String];
+	chords = Cases[funs,"ChordLength"[i_Integer,j_Integer]:>{i,j}];
+	
+	funcount = Length[ordinaryfuns]+Length[chords];
 	
 	(* Allocation. *)
 	values  = ConstantArray[0., {samplecount,funcount}]; 
@@ -134,46 +157,20 @@ CoBarSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samp
 	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed,Return[$Failed]];
 	
-	If[2 Max[r] > Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
-	
 	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
 	err = cSampleRandomVariables[d][
-		StringRiffle[funs," "], r, \[Rho], values, weights, TrueQ[OptionValue["QuotientSpace"]], samplecount, OptionValue["ThreadCount"]
+		StringRiffle[ordinaryfuns," "], chords, r, \[Rho], values, weights, TrueQ[OptionValue["QuotientSpace"]], samplecount, OptionValue["ThreadCount"]
 	];
 	
 	values = Transpose[values];
 	
-	If[err===0,
-		
-		Association[Table[funs[[i]]->WeightedData[values[[i]],weights],{i,1,funcount}]]
-	,
-		$Failed
-	]
-];
-
-
-Get[FileNameJoin[{$sourceDirectory, "cSampleChordLength.m"}]];
-
-Options[CoBarSampleChordLength] = {
-	"SphereRadii" -> "EdgeLengths",
-	"QuotientSpace" -> True,
-	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
-};
-
-CoBarSampleChordLength[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), {i_Integer, j_Integer}, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{\[Rho], err, values, weights}, 
-
-	If[2 Max[r] > Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
-		
-	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
-	If[\[Rho]===$Failed, Return[$Failed]];		
-	
-	values  = ConstantArray[0., {samplecount}]; 
-	weights = ConstantArray[0., {samplecount}]; 
-	
-	err = cSampleChordLength[d][i, j, r, \[Rho], values, weights, TrueQ[OptionValue["QuotientSpace"]], samplecount, OptionValue["ThreadCount"]];
-	
-	If[err===0,
-		WeightedData[values,weights]
+	If[err===0,	
+		Association[
+			Join[
+				Table[funs[[i]]->WeightedData[values[[i]],weights],{i,1,Length[ordinaryfuns]}],
+				Table["ChordLength"[chords[[i,1]],chords[[i,2]]]->WeightedData[values[[Length[ordinaryfuns]+i]],weights],{i,1,Length[chords]}]
+			]
+		]
 	,
 		$Failed
 	]
@@ -196,15 +193,23 @@ Options[CoBarConfidenceSample] = {
 (* This is the Mathematica wrapper for the compiled library. It allocates the accumulation buffers, 
 sends them to the dynamic library, and postprocesses the outputs.*)
 
-CoBarConfidenceSample[fun_String, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, opts___] := Module[{data},
+CoBarConfidenceSample[fun_, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradius_?NumericQ, opts___] := Module[{data},
 	data = CoBarConfidenceSample[{fun}, d, r, {confidenceradius}, opts];
 	
-	Merge[{data[fun],data[[-12;;]]},First]
+	Merge[{data[[Key[fun]]],data[[-12;;]]},First]
 ];
 
-CoBarConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, OptionsPattern[]]:=Module[{funcount, \[Rho], means, variances, errors, samplecount, time, relativeQ}, 
+CoBarConfidenceSample[funs:{__}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, OptionsPattern[]]:=Module[{funcount, ordinaryfuns, chords, \[Rho], means, variances, errors, samplecount, time, relativeQ}, 
 	
-	funcount = Min[Length[funs],Length[confidenceradii]];
+	If[2 Max[r] > Total[r], 
+		Message[CoBarSLink::badedgelengths]; 
+		Return[$Failed]
+	];
+	
+	ordinaryfuns = Cases[funs,_String];
+	chords = Cases[funs,"ChordLength"[i_Integer,j_Integer]:>{i,j}];
+	
+	funcount = Min[Length[ordinaryfuns]+Length[chords],Length[confidenceradii]];
 	
 	(* Allocation. *)
 	means     = ConstantArray[0., {funcount}]; 
@@ -216,13 +221,11 @@ CoBarConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,Numeric
 	\[Rho] = processSphereRadii[r,OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed,Return[$Failed]];
 	
-	If[2 Max[r] > Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
-	
 	(* Here the dynamic library is looked up and then called on the allocated buffers. *)
 	
 	time = AbsoluteTiming[
 		samplecount = cConfidenceSampleRandomVariables[d][
-			StringRiffle[funs," "], r, \[Rho], means, variances, errors, confidenceradii, 
+			StringRiffle[ordinaryfuns," "], chords, r, \[Rho], means, variances, errors, confidenceradii, 
 			OptionValue["MaxSamples"], 
 			TrueQ[OptionValue["QuotientSpace"]], 
 			OptionValue["ThreadCount"],
@@ -234,14 +237,24 @@ CoBarConfidenceSample[funs:{__String}, d_Integer?Positive, r_?(VectorQ[#,Numeric
 	][[1]];
 	
 	Association[
-		Sequence@@Table[
-			funs[[i]] -> Association[
-				"SampleMean" -> means[[i]],
-				"SampleVariance" -> variances[[i]],
-				"ConfidenceRadius" -> errors[[i]],
-				"PrescribedError" -> confidenceradii[[i]]
-			]
-		,{i,1,funcount}],
+		Sequence@@Join[
+			Table[
+				ordinaryfuns[[i]] -> Association[
+					"SampleMean" -> means[[i]],
+					"SampleVariance" -> variances[[i]],
+					"ConfidenceRadius" -> errors[[i]],
+					"PrescribedError" -> confidenceradii[[i]]
+				]
+			,{i,1,Length[ordinaryfuns]}],
+			Table[
+				"ChordLength"[chords[[i,1]],chords[[i,2]]] -> Association[
+					"SampleMean" -> means[[Length[ordinaryfuns]+i]],
+					"SampleVariance" -> variances[[Length[ordinaryfuns]+i]],
+					"ConfidenceRadius" -> errors[[Length[ordinaryfuns]+i]],
+					"PrescribedError" -> confidenceradii[[Length[ordinaryfuns]+i]]
+				]
+			,{i,1,Length[chords]}]
+		],
 		"ConfidenceLevel" -> OptionValue["ConfidenceLevel"],
 		"AmbientDimension" -> d,
 		"EdgeCount" -> Length[r],
@@ -285,7 +298,10 @@ Options[RandomClosedPolygons ]= {
 
 RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{W,edgecount,x,w,y,Klist,Kquotlist,\[Rho]},
 
-	If[2 Max[r]>Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
+	If[2 Max[r] > Total[r], 
+		Message[CoBarSLink::badedgelengths]; 
+		Return[$Failed]
+	];
 		
 	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed, Return[$Failed]];
@@ -324,7 +340,10 @@ Options[ConformalClosures ]= {
 
 ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))&), OptionsPattern[]]:=Module[{W,edgecount,samplecount,d,w,y,Klist,Kquotlist,\[Rho]},
 
-	If[2 Max[r]>Total[r], Message[CoBarSLink::badedgelengths]; Return[$Failed]];
+	If[2 Max[r] > Total[r], 
+		Message[CoBarSLink::badedgelengths]; 
+		Return[$Failed]
+	];
 		
 	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed, Return[$Failed]];
@@ -406,10 +425,9 @@ processSphereRadii[r_?(VectorQ[#,NumericQ]&), \[Rho]_]:=If[
 ];
 
 
-clearLibraries[]:=(
-	Scan[DeleteFile,FileNames["*"<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension,$libraryDirectory]];
-	Get[$packageFile];
-);
+clearLibraries[]:=( Scan[DeleteFile,listLibraries[]]; Get[$packageFile]; );
+
+listLibraries[]:=FileNames["*"<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension,$libraryDirectory];
 
 
 End[];
