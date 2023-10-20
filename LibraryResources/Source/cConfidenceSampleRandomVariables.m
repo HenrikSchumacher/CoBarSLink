@@ -128,10 +128,10 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
         }
     }
 
-	for( Size_T k = 0; k < dimension(chords)[0]; ++k ) 
+	for( Int k = 0; k < dimensions(chords)[0]; ++k ) 
 	{
 		F_list.push_back( 
-			std::move( "<>class["ChordLength"]<>"( data<Int>(chords)[2*k], data<Int>(chords)[2*k+1] ) ) 
+			"<>class["ChordLength"]<>"( data<Int>(chords)[2*k], data<Int>(chords)[2*k+1] ) 
 		);
     }
 
