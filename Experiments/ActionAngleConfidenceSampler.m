@@ -55,7 +55,7 @@ ActionAngleConfidenceSample[edgecount_Integer?Positive, radius_?NumericQ, Option
 	];
 	
 	Association[
-		"SampledMean"->data[[1]],
+		"SampleMean"->data[[1]],
 		"SampleVariance"->data[[2]],
 		"ConfidenceRadius"->data[[3]],
 		"PrescribedRadius"->radius,
