@@ -27,6 +27,8 @@ cConformalClosures[d_Integer?Positive] := cConformalClosures[d] = Module[{lib, l
 using Real = mreal;
 using Int  = mint;
 
+using namespace mma;
+
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {
 	MTensor r      = get<MTensor>(Args[0]);
@@ -42,16 +44,16 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	const Int thread_count = get<Int>(Args[7]);
 
 	const Int edge_count = std::min(
-		std::min( dimension(r)[0], dimension(rho)[0] ),
-		std::min( dimension(x)[1], dimension(y)[1] )
+		std::min( dimensions(r)[0], dimensions(rho)[0] ),
+		std::min( dimensions(x)[1], dimensions(y)[1] )
 	);
 
 	const Int sample_count = std::min(
 		std::min(
-			std::min( dimension(x)[0], dimension(y)[0] ),
-			std::min( dimension(K)[0], dimension(K_quot)[0] )
+			std::min( dimensions(x)[0], dimensions(y)[0] ),
+			std::min( dimensions(K)[0], dimensions(K_quot)[0] )
 		),
-		dimension(w)[0]
+		dimensions(w)[0]
 	);
 
 	CoBarS::Sampler<"<>ds<>",Real,Int> S ( data<Real>(r), data<Real>(rho), edge_count );
