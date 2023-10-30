@@ -1,4 +1,4 @@
-# CoBarSLink
+# CoBarSLink - A Mathematica interface for CoBarS
 by Jason Cantarella and Henrik Schumacher
 
 
