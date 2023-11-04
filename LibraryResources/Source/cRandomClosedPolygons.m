@@ -59,6 +59,8 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	CoBarS::Sampler<"<>ds<>",Real,Int> S ( data<Real>(r), data<Real>(rho), edge_count );
 
+	Tools::print(S.PRNG_Name());
+
 	Tools::Time start_time = Tools::Clock::now();
 	
 	S.RandomClosedPolygons( 

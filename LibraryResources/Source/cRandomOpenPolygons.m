@@ -22,6 +22,8 @@ cRandomOpenPolygons[d_Integer?Positive] := cRandomOpenPolygons[d] =  Module[{lib
 #include \"WolframLibrary.h\"
 #include \"MMA.hpp\"
 
+#include \"CoBarS.hpp\"
+
 using namespace mma;
 
 using Real = mreal;
@@ -31,7 +33,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 {
 	MTensor x = get<MTensor>(Args[0]);
 
-	const Int thread_count = int_cast<Int>(get<Int>(Args[1]));
+	const Int thread_count = get<Int>(Args[1]);
 
 	const Int sample_count = dimensions(x)[0];
 	const Int edge_count   = dimensions(x)[1];
