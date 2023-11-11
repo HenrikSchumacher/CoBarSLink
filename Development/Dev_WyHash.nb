@@ -1,0 +1,436 @@
+Notebook[{
+Cell[BoxData["Exit"], "Input",
+ CellLabel->"In[10]:=",ExpressionUUID->"56db3cad-511d-4410-b816-3ab0b8c99d6e"],
+
+Cell[BoxData[
+ RowBox[{"Get", "[", "\[IndentingNewLine]", 
+  RowBox[{"FileNameJoin", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"ParentDirectory", "[", 
+      RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+     "\"\<CoBarSLink.m\>\""}], "}"}], "]"}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"e0e034b3-e733-4ed3-9de3-1abb645b7b12"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CoBarSLink`Private`clearLibraries", "[", "]"}]], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"17316ae1-b2a0-4208-876e-8fc9b54e053c"],
+
+Cell[BoxData[
+ RowBox[{"CoBarSLink`Private`clearLibraries", "[", "]"}]], "Output",
+ CellLabel->"Out[1]=",ExpressionUUID->"52012f9a-bc61-466a-bf0a-639eaaef2386"]
+}, Open  ]],
+
+Cell[BoxData[""], \
+"Input",ExpressionUUID->"2dfc6f07-15b1-4bdc-b373-633ef23018c3"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Quiet", "[", 
+   RowBox[{"LibraryFunctionUnload", "[", "cXoshiro", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", "cXoshiro", "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"cXoshiro", " ", "=", " ", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"lib", ",", " ", "code", ",", " ", "name", ",", " ", "t"}], 
+      "}"}], ",", "\n", "\t", 
+     RowBox[{
+      RowBox[{"name", " ", "=", " ", "\"\<cXoshiro\>\""}], ";", "\n", "\t", 
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<Compiling \>\"", "<>", "name", "<>", "\"\<...\>\""}], 
+       "]"}], ";", "\n", "\t", 
+      RowBox[{"code", "=", 
+       RowBox[{"StringJoin", "[", "\n", 
+        RowBox[{
+        "\"\<\n#define NDEBUG\n#include \\\"WolframLibrary.h\\\"\n#include \\\
+\"MMA.hpp\\\"\n#include \\\"CoBarS.hpp\\\"\n\nusing namespace Tensors;\nusing \
+namespace Tools;\nusing namespace mma;\n\nusing Int  = mint;\nusing Real = \
+mreal;\n\nusing PRNG_T = CoBarS::Xoshiro256Plus;\n\nconstexpr Int d = 4;\n\n\
+EXTERN_C DLLEXPORT int \>\"", "<>", "name", "<>", 
+         "\"\<(WolframLibraryData libData, mint Argc, MArgument *Args, \
+MArgument Res)\n{\n\tconst Int n            = get<Int>(Args[0]);\n\tconst Int \
+reps         = get<Int>(Args[1]);\n\tconst Int thread_count = \
+get<Int>(Args[2]);\n\n\tMTensor A_ = make_MTensor<Real>( {n,d} );\n\n\t\
+mptr<Real> A = data<Real>(A_);\n\n\ttic(\\\"Xoshiro\\\");\n\n\tfor( Int rep = \
+0; rep < reps; ++ rep )\n\t{\n\t\tParallelDo(\n\t\t\t[n,A,thread_count]( \
+const Int thread )\n\t\t\t{\n\t\t\t\tconst Int i_begin = JobPointer( n, \
+thread_count, thread     );\n\t\t\t\tconst Int i_end   = JobPointer( n, \
+thread_count, thread + 1 );\n\t\n\t\t\t\tPRNG_T random_engine;\n\t\t\t\t\n\n\t\
+\t\t\t//Tools::uniform_dist<Real,std::uint64_t> dist {-1.,1.};\n\t\n\t\t\t\t\
+//Tools::BoxMuller<Real,std::uint64_t> dist;\n\n\t\t\t\t\
+//Tools::Gaussian<Real,std::uint64_t> dist;\n\n\t\t\t\t\
+std::normal_distribution<Real> dist {0,1};\n\n\t\t\t\tfor( Int i = i_begin; i \
+< i_end; ++i )\n\t\t\t\t{\n\t\t\t\t\tfor( Int k = 0; k < d; ++k )\n\t\t\t\t\t\
+{\n\t\t\t\t\t\tA[4 * i + k] = dist( random_engine );\n\t\t\t\t\t}\n\t\t\t\t}\n\
+\t\t\t},\n\t\t\tthread_count\n\t\t);\n\t}\n\ttoc(\\\"Xoshiro\\\");\n\n\t\
+get<MTensor>(Res) = A_;\n\n\treturn LIBRARY_NO_ERROR;\n}\>\""}], "]"}]}], ";",
+       "\n", "\n", "\t", 
+      RowBox[{"t", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"AbsoluteTiming", "[", "\n", "\t\t", 
+         RowBox[{"lib", "=", 
+          RowBox[{"CreateLibrary", "[", "\n", "\t\t\t", 
+           RowBox[{"code", ",", " ", "name", ",", "\n", "\t\t\t", 
+            RowBox[{"\"\<Language\>\"", "->", "\"\<C++\>\""}], ",", "\n", 
+            "\t\t\t", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{"\"\<ShellCommandFunction\>\"", "\[Rule]", "Print"}], 
+              ","}], "*)"}], "\n", "\t\t\t", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{"\"\<ShellOutputFunction\>\"", "\[Rule]", "Print"}], 
+              ","}], "*)"}], "\n", "\t\t\t", 
+            RowBox[{"Get", "[", 
+             RowBox[{"FileNameJoin", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"ParentDirectory", "[", 
+                 RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+                "\"\<LibraryResources\>\"", ",", "\"\<Source\>\"", ",", 
+                "\"\<BuildSettings.m\>\""}], "}"}], "]"}], "]"}]}], "\n", 
+           "\t\t", "]"}]}], "\n", "\t", "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\n", "\t", 
+      RowBox[{"Print", "[", 
+       RowBox[{
+       "\"\<Compilation done. Time elapsed = \>\"", ",", " ", "t", ",", " ", 
+        "\"\< s.\\n\>\""}], "]"}], ";", "\n", "\n", "\t", 
+      RowBox[{"LibraryFunctionLoad", "[", 
+       RowBox[{"lib", ",", " ", "name", ",", "\n", "\t\t", 
+        RowBox[{"{", "\n", "\t\t\t", 
+         RowBox[{"Integer", ",", " ", "Integer", ",", "Integer"}], "\n", 
+         "\t\t", "}"}], ",", "\n", "\t\t", 
+        RowBox[{"{", 
+         RowBox[{"Real", ",", "2"}], "}"}]}], "\n", "\t", "]"}]}]}], "\n", 
+    "]"}]}], ";"}]}], "Input",
+ CellLabel->
+  "In[128]:=",ExpressionUUID->"bfeac5aa-cda2-4fd4-9e93-1a4aa7c24d95"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Compiling cXoshiro...\"\>"], "Print",
+ CellLabel->
+  "During evaluation of \
+In[128]:=",ExpressionUUID->"9e8bde76-56e8-4b83-ac1a-d8d4ce89805a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Reading build settings from \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/Henrik/github/CoBarsLink/LibraryResources/Source/BuildSettings.m\"\
+\>"}],
+  SequenceForm[
+  "Reading build settings from ", 
+   "/Users/Henrik/github/CoBarsLink/LibraryResources/Source/BuildSettings.m"],
+  
+  Editable->False]], "Print",
+ CellLabel->
+  "During evaluation of \
+In[128]:=",ExpressionUUID->"4585d670-7d6d-4c68-9ae3-727eea1aa0d6"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Compilation done. Time elapsed = \"\>", "\[InvisibleSpace]", 
+   "0.927873`", "\[InvisibleSpace]", "\<\" s.\\n\"\>"}],
+  SequenceForm["Compilation done. Time elapsed = ", 0.927873, " s.\n"],
+  Editable->False]], "Print",
+ CellLabel->
+  "During evaluation of \
+In[128]:=",ExpressionUUID->"bf42695e-447a-4541-88a5-985f4e3edd59"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Quiet", "[", 
+   RowBox[{"LibraryFunctionUnload", "[", "cWyRand", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", "cWyRand", "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"cWyRand", " ", "=", " ", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"lib", ",", " ", "code", ",", " ", "name", ",", " ", "t"}], 
+      "}"}], ",", "\n", "\t", 
+     RowBox[{
+      RowBox[{"name", " ", "=", " ", "\"\<cWyRand\>\""}], ";", "\n", "\t", 
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<Compiling \>\"", "<>", "name", "<>", "\"\<...\>\""}], 
+       "]"}], ";", "\n", "\t", 
+      RowBox[{"code", "=", 
+       RowBox[{"StringJoin", "[", "\n", 
+        RowBox[{
+        "\"\<\n#define NDEBUG\n#include \\\"WolframLibrary.h\\\"\n#include \\\
+\"MMA.hpp\\\"\n#include \\\"CoBarS.hpp\\\"\n\nusing namespace Tensors;\nusing \
+namespace Tools;\nusing namespace mma;\n\nusing Int  = mint;\nusing Real = \
+mreal;\n\nconstexpr Int d = 4;\n\nEXTERN_C DLLEXPORT int \>\"", "<>", "name", 
+         "<>", "\"\<(WolframLibraryData libData, mint Argc, MArgument *Args, \
+MArgument Res)\n{\t\n\tconst Int n            = get<Int>(Args[0]);\n\tconst \
+Int reps         = get<Int>(Args[1]);\n\tconst Int thread_count = \
+get<Int>(Args[2]);\n\n\tMTensor A_ = make_MTensor<Real>( {n,d} );\n\n\t\
+mptr<Real> A = data<Real>(A_);\n\n\ttic(\\\"cWyRand\\\");\n\n\tfor( Int rep = \
+0; rep < reps; ++ rep )\n\t{\n\t\tParallelDo(\n\t\t\t[n,A,thread_count]( \
+const Int thread )\n\t\t\t{\n\t\t\t\tconst Int i_begin = JobPointer( n, \
+thread_count, thread     );\n\t\t\t\tconst Int i_end   = JobPointer( n, \
+thread_count, thread + 1 );\n\t\n\t\t\t\tCoBarS::WyRand random_engine;\n\t\t\t\
+\t\n\t\t\t\t//CoBarS::Lehmer random_engine;\n\n\t\t\t\t//wy::rand \
+random_engine;\n\t\t\t\t\n\t\t\t\t//Tools::uniform_dist<Real,std::uint64_t> \
+dist {-1.,1.};\n\t\n\t\t\t\t//Tools::BoxMuller<Real,std::uint64_t> dist;\n\t\t\
+\t\t\n\t\t\t\t//Tools::Gaussian<Real,std::uint64_t> dist;\n\t\t\t\t\n\t\t\t\t\
+std::normal_distribution<Real> dist {0,1};\n\n\t\t\t\t\
+//Tools::fake_gaussian_dist<Real,std::uint64_t> dist;\n\n\t\n\t\t\t\tfor( Int \
+i = i_begin; i < i_end; ++i )\n\t\t\t\t{\n\t\t\t\t\tfor( Int k = 0; k < d; \
+++k )\n\t\t\t\t\t{\n\t\t\t\t\t\tA[4 * i + k] = dist( random_engine );\n\t\t\t\
+\t\t}\n\t\t\t\t}\n\t\t\t},\n\t\t\tthread_count\n\t\t);\n\t}\n\t\
+toc(\\\"cWyRand\\\");\n\n\tget<MTensor>(Res) = A_;\n\n\treturn \
+LIBRARY_NO_ERROR;\n}\>\""}], "]"}]}], ";", "\n", "\n", "\t", 
+      RowBox[{"t", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"AbsoluteTiming", "[", "\n", "\t\t", 
+         RowBox[{"lib", "=", 
+          RowBox[{"CreateLibrary", "[", "\n", "\t\t\t", 
+           RowBox[{"code", ",", " ", "name", ",", "\n", "\t\t\t", 
+            RowBox[{"\"\<Language\>\"", "->", "\"\<C++\>\""}], ",", "\n", 
+            "\t\t\t", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{"\"\<ShellCommandFunction\>\"", "\[Rule]", "Print"}], 
+              ","}], "*)"}], "\n", "\t\t\t", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{"\"\<ShellOutputFunction\>\"", "\[Rule]", "Print"}], 
+              ","}], "*)"}], "\n", "\t\t\t", 
+            RowBox[{"Get", "[", 
+             RowBox[{"FileNameJoin", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"ParentDirectory", "[", 
+                 RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+                "\"\<LibraryResources\>\"", ",", "\"\<Source\>\"", ",", 
+                "\"\<BuildSettings.m\>\""}], "}"}], "]"}], "]"}]}], "\n", 
+           "\t\t", "]"}]}], "\n", "\t", "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\n", "\t", 
+      RowBox[{"Print", "[", 
+       RowBox[{
+       "\"\<Compilation done. Time elapsed = \>\"", ",", " ", "t", ",", " ", 
+        "\"\< s.\\n\>\""}], "]"}], ";", "\n", "\n", "\t", 
+      RowBox[{"LibraryFunctionLoad", "[", 
+       RowBox[{"lib", ",", " ", "name", ",", "\n", "\t\t", 
+        RowBox[{"{", "\n", "\t\t\t", 
+         RowBox[{"Integer", ",", " ", "Integer", ",", "Integer"}], "\n", 
+         "\t\t", "}"}], ",", "\n", "\t\t", 
+        RowBox[{"{", 
+         RowBox[{"Real", ",", "2"}], "}"}]}], "\n", "\t", "]"}]}]}], "\n", 
+    "]"}]}], ";"}]}], "Input",
+ CellLabel->
+  "In[131]:=",ExpressionUUID->"c0574fb3-6982-4e90-be4f-fd53a6addba7"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Compiling cWyRand...\"\>"], "Print",
+ CellLabel->
+  "During evaluation of \
+In[131]:=",ExpressionUUID->"a7ebb1ad-8bc1-413e-8a26-d8fc674c3c57"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Reading build settings from \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/Henrik/github/CoBarsLink/LibraryResources/Source/BuildSettings.m\"\
+\>"}],
+  SequenceForm[
+  "Reading build settings from ", 
+   "/Users/Henrik/github/CoBarsLink/LibraryResources/Source/BuildSettings.m"],
+  
+  Editable->False]], "Print",
+ CellLabel->
+  "During evaluation of \
+In[131]:=",ExpressionUUID->"4e4e46a8-8f8b-418f-ba97-97fb9b08a522"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Compilation done. Time elapsed = \"\>", "\[InvisibleSpace]", 
+   "0.921187`", "\[InvisibleSpace]", "\<\" s.\\n\"\>"}],
+  SequenceForm["Compilation done. Time elapsed = ", 0.921187, " s.\n"],
+  Editable->False]], "Print",
+ CellLabel->
+  "During evaluation of \
+In[131]:=",ExpressionUUID->"a6651dc2-5349-4941-bc02-f26e53674e42"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"threadCount", "=", "8"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"n", "=", "10000000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"reps", "=", "100"}], ";"}]}], "Input",
+ CellLabel->
+  "In[134]:=",ExpressionUUID->"f9ca4e3e-4106-4116-9ff3-991c4e30bd9f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"aa", "=", 
+   RowBox[{"cXoshiro", "[", 
+    RowBox[{"n", ",", "reps", ",", "8"}], "]"}]}], ";"}]], "Input",
+ CellLabel->
+  "In[141]:=",ExpressionUUID->"d0804d46-3c52-4592-b485-1f7a0d07309c"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"  Xoshiro...\"\>"], "Print",
+ CellLabel->
+  "During evaluation of \
+In[141]:=",ExpressionUUID->"fd6d4cfd-e608-4d27-a7c9-67d0c0c30c48"],
+
+Cell[BoxData["\<\"  2.970987 s.\"\>"], "Print",
+ CellLabel->
+  "During evaluation of \
+In[141]:=",ExpressionUUID->"0e288cf2-4ace-4410-ac65-e2d19ffdc403"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"bb", "=", 
+   RowBox[{"cWyRand", "[", 
+    RowBox[{"n", ",", "reps", ",", "8"}], "]"}]}], ";"}]], "Input",
+ CellLabel->
+  "In[142]:=",ExpressionUUID->"f5643546-3d43-436f-b2e2-be050e18aae6"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"  cWyRand...\"\>"], "Print",
+ CellLabel->
+  "During evaluation of \
+In[142]:=",ExpressionUUID->"9ff2c3ec-a325-476b-b612-18cf0591a9e0"],
+
+Cell[BoxData["\<\"  3.364199 s.\"\>"], "Print",
+ CellLabel->
+  "During evaluation of \
+In[142]:=",ExpressionUUID->"920d96bb-c60a-4f41-96f2-4e9893713c44"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"Mean", "[", "aa", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Correlation", "[", "aa", "]"}], "//", "MatrixForm"}]}], "Input",
+ CellLabel->
+  "In[118]:=",ExpressionUUID->"b97fb8e1-c118-4b09-959f-4093aa19bd23"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.00007548673344643289`", ",", 
+   RowBox[{"-", "0.00033167780105297553`"}], ",", "0.0001500291486368456`", 
+   ",", 
+   RowBox[{"-", "0.0002632105295706005`"}]}], "}"}]], "Output",
+ CellLabel->
+  "Out[118]=",ExpressionUUID->"a412a0eb-a144-46bb-acdf-d12b6493ed3e"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"1.000000000000033`", 
+      RowBox[{"-", "0.00023849307064748458`"}], 
+      RowBox[{"-", "0.00022619931491331147`"}], "0.00021561093395722954`"},
+     {
+      RowBox[{"-", "0.00023849307064748458`"}], "1.0000000000000664`", 
+      "0.0005512267757496865`", "0.00037999210090521697`"},
+     {
+      RowBox[{"-", "0.00022619931491331147`"}], "0.0005512267757496865`", 
+      "0.9999999999998631`", 
+      RowBox[{"-", "0.0003243615848325858`"}]},
+     {"0.00021561093395722954`", "0.00037999210090521697`", 
+      RowBox[{"-", "0.0003243615848325858`"}], "1.0000000000000455`"}
+    },
+    GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellLabel->
+  "Out[119]//MatrixForm=",ExpressionUUID->"4e918364-274b-43b0-aa4b-\
+4099ebac21ff"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"Mean", "[", "bb", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Correlation", "[", "bb", "]"}], "//", "MatrixForm"}]}], "Input",
+ CellLabel->
+  "In[120]:=",ExpressionUUID->"fb45f815-8b19-4059-b756-d0609cce56f3"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"-", "0.00021919480307884981`"}], ",", "0.000049524702524142506`", 
+   ",", "0.00045475150919275213`", ",", "0.00026020798655463647`"}], 
+  "}"}]], "Output",
+ CellLabel->
+  "Out[120]=",ExpressionUUID->"90df6a33-e23a-404f-9293-6c8b9c8fef9d"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"0.9999999999998845`", 
+      RowBox[{"-", "0.0004645981612077117`"}], "0.0006409207226246055`", 
+      RowBox[{"-", "0.00019186853381798`"}]},
+     {
+      RowBox[{"-", "0.0004645981612077117`"}], "1.000000000000055`", 
+      RowBox[{"-", "0.0001253737815828271`"}], "0.00007962344204608209`"},
+     {"0.0006409207226246055`", 
+      RowBox[{"-", "0.0001253737815828271`"}], "1.0000000000000295`", 
+      RowBox[{"-", "0.00010042484173178033`"}]},
+     {
+      RowBox[{"-", "0.00019186853381798`"}], "0.00007962344204608209`", 
+      RowBox[{"-", "0.00010042484173178033`"}], "0.999999999999957`"}
+    },
+    GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellLabel->
+  "Out[121]//MatrixForm=",ExpressionUUID->"207685d1-7c65-40d0-94ab-\
+e9d5b40ab363"]
+}, Open  ]]
+},
+WindowSize->{1496, 905},
+WindowMargins->{{1, Automatic}, {Automatic, 0}},
+FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"1a1c484a-3702-41e3-a173-7c2784c08a70"
+]
