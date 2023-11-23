@@ -130,8 +130,6 @@ Cell[BoxData[{
  CellLabel->
   "In[1055]:=",ExpressionUUID->"929a199e-1318-414a-84bd-123dcedc6ddb"],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[{
  RowBox[{
   RowBox[{"sampleCoBarS", "[", "min", "]"}], ";"}], "\[IndentingNewLine]", 
@@ -173,50 +171,6 @@ Cell[BoxData[{
    3.906139469620969*^9, 3.9061394858097897`*^9}},
  CellLabel->
   "In[1064]:=",ExpressionUUID->"44767dbf-a857-4090-b0db-7cd438071247"],
-
-Cell[CellGroupData[{
-
-Cell[BoxData["\<\"Compiling cConfidenceSampleRandomVariables[3]...\"\>"], \
-"Print",
- CellLabel->
-  "During evaluation of \
-In[1064]:=",ExpressionUUID->"70466c44-35b1-4d68-b5ae-dc063cd7a3d7"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Reading build settings from \"\>", 
-   "\[InvisibleSpace]", \
-"\<\"/Users/Henrik/github/CoBarsLink/LibraryResources/Source/BuildSettings.m\"\
-\>"}],
-  SequenceForm[
-  "Reading build settings from ", 
-   "/Users/Henrik/github/CoBarsLink/LibraryResources/Source/BuildSettings.m"],
-  
-  Editable->False]], "Print",
- CellLabel->
-  "During evaluation of \
-In[1064]:=",ExpressionUUID->"19a08be6-8445-4735-833c-d3717ccaf7fd"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Compilation done. Time elapsed = \"\>", "\[InvisibleSpace]", 
-   "2.395785`", "\[InvisibleSpace]", "\<\" s.\\n\"\>"}],
-  SequenceForm["Compilation done. Time elapsed = ", 2.395785, " s.\n"],
-  Editable->False]], "Print",
- CellLabel->
-  "During evaluation of \
-In[1064]:=",ExpressionUUID->"9047411e-c1a5-46ab-9556-13a49e8cac31"],
-
-Cell[BoxData["1"], "Print",
- CellLabel->
-  "During evaluation of \
-In[1064]:=",ExpressionUUID->"b3b1a9c4-fadd-4ae5-827b-c096b5e2d084"]
-}, Open  ]],
-
-Cell[BoxData["$Aborted"], "Output",
- CellLabel->
-  "Out[1065]=",ExpressionUUID->"533809dc-1275-4441-9677-35e04817340d"]
-}, Open  ]],
 
 Cell[BoxData[
  RowBox[{" ", 
