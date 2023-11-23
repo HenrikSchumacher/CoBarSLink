@@ -32,7 +32,8 @@ Cell[BoxData[{
    3.905320479912788*^9, 3.905320483633527*^9}, {3.905540457310047*^9, 
    3.905540458416585*^9}, {3.906122545982299*^9, 3.906122561946806*^9}, {
    3.906715322268939*^9, 3.906715351262867*^9}},
- CellLabel->"In[19]:=",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
+ CellLabel->
+  "In[1052]:=",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
 
 Cell[BoxData[{
  RowBox[{
@@ -126,15 +127,10 @@ Cell[BoxData[{
      RowBox[{"n", ",", "radius", ",", 
       RowBox[{"\"\<Progressive\>\"", "->", "True"}], ",", "opts"}], "]"}]}]}],
    ";"}], "\[IndentingNewLine]"}], "Input",
- CellChangeTimes->{{3.906137714341848*^9, 3.906137759866014*^9}, {
-   3.9061378355601187`*^9, 3.906137836420676*^9}, {3.906138196942698*^9, 
-   3.906138197182713*^9}, {3.906139452411107*^9, 3.906139452620719*^9}, {
-   3.906139884036461*^9, 3.906139885049595*^9}, {3.906715357413814*^9, 
-   3.906715390568212*^9}, {3.906715476326565*^9, 3.9067154772497377`*^9}, {
-   3.906716927568397*^9, 3.90671694644471*^9}, {3.9067169870469217`*^9, 
-   3.9067169872829933`*^9}, {3.906717201639133*^9, 3.9067172024728394`*^9}, 
-   3.906717335190531*^9, 3.906717948730393*^9},
- CellLabel->"In[22]:=",ExpressionUUID->"929a199e-1318-414a-84bd-123dcedc6ddb"],
+ CellLabel->
+  "In[1055]:=",ExpressionUUID->"929a199e-1318-414a-84bd-123dcedc6ddb"],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
@@ -175,7 +171,56 @@ Cell[BoxData[{
    3.906137681369525*^9, 3.906137731874316*^9}, {3.9061378276522217`*^9, 
    3.906137891749354*^9}, {3.906138209553123*^9, 3.906138210007011*^9}, {
    3.906139469620969*^9, 3.9061394858097897`*^9}},
- CellLabel->"In[13]:=",ExpressionUUID->"44767dbf-a857-4090-b0db-7cd438071247"],
+ CellLabel->
+  "In[1064]:=",ExpressionUUID->"44767dbf-a857-4090-b0db-7cd438071247"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Compiling cConfidenceSampleRandomVariables[3]...\"\>"], \
+"Print",
+ CellLabel->
+  "During evaluation of \
+In[1064]:=",ExpressionUUID->"70466c44-35b1-4d68-b5ae-dc063cd7a3d7"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Reading build settings from \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/Henrik/github/CoBarsLink/LibraryResources/Source/BuildSettings.m\"\
+\>"}],
+  SequenceForm[
+  "Reading build settings from ", 
+   "/Users/Henrik/github/CoBarsLink/LibraryResources/Source/BuildSettings.m"],
+  
+  Editable->False]], "Print",
+ CellLabel->
+  "During evaluation of \
+In[1064]:=",ExpressionUUID->"19a08be6-8445-4735-833c-d3717ccaf7fd"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Compilation done. Time elapsed = \"\>", "\[InvisibleSpace]", 
+   "2.395785`", "\[InvisibleSpace]", "\<\" s.\\n\"\>"}],
+  SequenceForm["Compilation done. Time elapsed = ", 2.395785, " s.\n"],
+  Editable->False]], "Print",
+ CellLabel->
+  "During evaluation of \
+In[1064]:=",ExpressionUUID->"9047411e-c1a5-46ab-9556-13a49e8cac31"],
+
+Cell[BoxData["1"], "Print",
+ CellLabel->
+  "During evaluation of \
+In[1064]:=",ExpressionUUID->"b3b1a9c4-fadd-4ae5-827b-c096b5e2d084"]
+}, Open  ]],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellLabel->
+  "Out[1065]=",ExpressionUUID->"533809dc-1275-4441-9677-35e04817340d"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{" ", 
+  "."}]], "Input",ExpressionUUID->"aa149afa-02a7-4297-bb59-f2075d409248"],
 
 Cell[BoxData[{
  RowBox[{
@@ -856,3 +901,4 @@ FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"e7e31e3c-c2b2-44e1-8ffd-c44cb591d7ee"
 ]
+
