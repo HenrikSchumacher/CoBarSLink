@@ -1,26 +1,7 @@
-(* Content-type: application/vnd.wolfram.mathematica *)
-
-(*** Wolfram Notebook File ***)
-(* http://www.wolfram.com/nb *)
-
-(* CreatedBy='Mathematica 13.2' *)
-
-(*CacheID: 234*)
-(* Internal cache information:
-NotebookFileLineBreakTest
-NotebookFileLineBreakTest
-NotebookDataPosition[       158,          7]
-NotebookDataLength[      6644,        148]
-NotebookOptionsPosition[      5976,        130]
-NotebookOutlinePosition[      6413,        147]
-CellTagsIndexPosition[      6370,        144]
-WindowFrame->Normal*)
-
-(* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData["Exit"], "Input",
  CellChangeTimes->{{3.9052502925206537`*^9, 3.905250293008569*^9}},
- CellLabel->"In[24]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
+ CellLabel->"In[5]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
 
 Cell[BoxData[{
  RowBox[{
@@ -125,32 +106,12 @@ Cell[BoxData[{
    3.9053619799798*^9, 3.9053619958279867`*^9}, 3.9053620733416243`*^9, {
    3.906714543785673*^9, 3.906714546100356*^9}, 3.9067166564697638`*^9, 
    3.906718583625915*^9},
- CellLabel->
-  "In[129]:=",ExpressionUUID->"0500f23d-1464-47bf-affe-b28ad0bc5524"]
+ CellLabel->"In[3]:=",ExpressionUUID->"0500f23d-1464-47bf-affe-b28ad0bc5524"]
 },
 WindowSize->{1496, 905},
 WindowMargins->{{1, Automatic}, {Automatic, 0}},
 TaggingRules-><|"TryRealOnly" -> False|>,
-FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+FrontEndVersion->"13.3 for Mac OS X ARM (64-bit) (July 24, 2023)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"be48836e-9f73-4191-b5bb-a6c7f14c4c53"
 ]
-(* End of Notebook Content *)
-
-(* Internal cache information *)
-(*CellTagsOutline
-CellTagsIndex->{}
-*)
-(*CellTagsIndex
-CellTagsIndex->{}
-*)
-(*NotebookFileOutline
-Notebook[{
-Cell[558, 20, 177, 2, 41, "Input",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
-Cell[738, 24, 1162, 24, 142, "Input",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
-Cell[1903, 50, 299, 5, 41, "Input",ExpressionUUID->"97c185f2-5cfd-434c-9476-9c77dfabac33"],
-Cell[2205, 57, 3767, 71, 367, "Input",ExpressionUUID->"0500f23d-1464-47bf-affe-b28ad0bc5524"]
-}
-]
-*)
-
