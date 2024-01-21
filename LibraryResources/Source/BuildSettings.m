@@ -18,6 +18,7 @@ Switch[ $OperatingSystem
 			,"-fno-math-errno"
 			,"-flto"
 			,"-pthread"
+			,"-fenable-matrix"
 			,"-framework Accelerate"
 			,"-march=native"
 			,"-mtune=native"

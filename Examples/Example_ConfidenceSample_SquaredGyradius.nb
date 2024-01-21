@@ -1,7 +1,8 @@
 Notebook[{
 Cell[BoxData["Exit"], "Input",
  CellChangeTimes->{{3.9052502925206537`*^9, 3.905250293008569*^9}},
- CellLabel->"In[5]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
+ CellLabel->
+  "In[522]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
 
 Cell[BoxData[{
  RowBox[{
@@ -20,21 +21,7 @@ Cell[BoxData[{
     RowBox[{"package", "."}]}], "*)"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"CoBarSLink`Private`clearLibraries", "[", "]"}], 
-  ";"}], "\[IndentingNewLine]"}], "Input",
- CellChangeTimes->{{3.8802095908904676`*^9, 3.8802096051713343`*^9}, 
-   3.880210597814003*^9, {3.905279022848572*^9, 3.90527902533095*^9}, {
-   3.905279163987751*^9, 3.90527916429506*^9}, {3.905319847584572*^9, 
-   3.905319850790804*^9}, {3.905320184201621*^9, 3.905320186377838*^9}, {
-   3.905320479912788*^9, 3.905320483633527*^9}, {3.906714506571617*^9, 
-   3.906714539489366*^9}, {3.906714601787669*^9, 3.906714603168274*^9}},
- CellLabel->"In[1]:=",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
-
-Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.9053601006687803`*^9, 3.905360101155367*^9}, {
-   3.905360334725371*^9, 3.905360335729187*^9}, 3.905361091530816*^9, {
-   3.905361309523984*^9, 3.905361309957584*^9}, 
-   3.905361399789257*^9},ExpressionUUID->"97c185f2-5cfd-434c-9476-\
-9c77dfabac33"],
+  ";"}]}], "Input",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
 
 Cell[BoxData[{
  RowBox[{
@@ -115,3 +102,4 @@ FrontEndVersion->"13.3 for Mac OS X ARM (64-bit) (July 24, 2023)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"be48836e-9f73-4191-b5bb-a6c7f14c4c53"
 ]
+
