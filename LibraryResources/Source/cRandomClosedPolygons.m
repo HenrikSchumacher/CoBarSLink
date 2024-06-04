@@ -1,19 +1,24 @@
 (* ::Package:: *)
 
 ClearAll[cRandomClosedPolygons];
-cRandomClosedPolygons[d_Integer?Positive] := cRandomClosedPolygons[d] = Module[{lib, libname, file, code,ds, name, t},
+cRandomClosedPolygons[
+	d_Integer?Positive,
+	rng:"MersenneTwister"|"PCG"|"Xoshiro"|"WY":"Xoshiro",
+	vectorizedQ:True|False:True,
+	zerofyfirstQ:True|False:False	
+] := cRandomClosedPolygons[d,rng] = Module[{lib, libname, file, code,ds, name, t},
 
 	name = "RandomClosedPolygons";
 
 	ds = IntegerString[d];
 	
-	libname = name<>"_"<>ds<>"D";
+	libname = StringJoin[name,"_",ds,"D","_",rng,"_",ToString[Boole[vectorizedQ]],"_",ToString[Boole[zerofyfirstQ]]];
 	
 	lib = FileNameJoin[{$libraryDirectory, libname<>CCompilerDriver`CCompilerDriverBase`$PlatformDLLExtension}];
 	
 	If[Not[FileExistsQ[lib]],
 
-		Print["Compiling c"<>name<>"["<>ds<>"]..."];
+		Print["Compiling c"<>libname<>"..."];
 
 		code = StringJoin["
 
@@ -21,14 +26,23 @@ cRandomClosedPolygons[d_Integer?Positive] := cRandomClosedPolygons[d] = Module[{
 
 #include \"WolframLibrary.h\"
 
-#include \"MMA.hpp\"
+#include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
 
 using namespace Tools;
 using namespace mma;
 
-using Real = mreal;
-using Int  = mint;
+using RNG_T = ",
+	Switch[rng,
+		"MersenneTwister" ,"CoBarS::MT64",
+		"PCG"             ,"CoBarS::PCG64",
+		"Xoshiro"         ,"CoBarS::Xoshiro256Plus",
+		"WY"              ,"CoBarS::WyRand"
+	],
+";
+
+constexpr bool vectorizedQ  = ",If[vectorizedQ,"true","false"],";
+constexpr bool zerofyfirstQ = ",If[zerofyfirstQ,"true","false"],";
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {
@@ -57,11 +71,11 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 		dimensions(w)[0]
 	) );
 
-	CoBarS::Sampler<"<>ds<>",Real,Int> S ( data<Real>(r), data<Real>(rho), edge_count );
+	CoBarS::Sampler<"<>ds<>",Real,Int,RNG_T,vectorizedQ,zerofyfirstQ> S ( data<Real>(r), data<Real>(rho), edge_count );
 
 	Tools::Time start_time = Tools::Clock::now();
 	
-	S.RandomClosedPolygons( 
+	S.CreateRandomClosedPolygons( 
 		data<Real>(x), data<Real>(w), data<Real>(y), data<Real>(K), data<Real>(K_quot),
 		sample_count, thread_count 
 	);

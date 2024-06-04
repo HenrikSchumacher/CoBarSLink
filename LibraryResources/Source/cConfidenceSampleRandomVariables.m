@@ -30,16 +30,12 @@ cConfidenceSampleRandomVariables[d_Integer?Positive] := cConfidenceSampleRandomV
 
 #include <unordered_map>
 
-#include \"MMA.hpp\"
+#include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
 
 using namespace Tools;
 using namespace Tensors;
-//using namespace CoBarS;
 using namespace mma;
-
-using Int  = mint;
-using Real = mreal;
 
 using Sampler_T     = CoBarS::Sampler<"<>ds<>",Real,Int>;
 using SamplerBase_T = CoBarS::SamplerBase<"<>ds<>",Real,Int>;
@@ -81,7 +77,6 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	function_lookup.insert( {\"MaxAngle\",                            "<>class["MaxAngle"]<>"()                            } );
 	function_lookup.insert( {\"EdgeSpaceSamplingWeight\",             "<>class["EdgeSpaceSamplingWeight"]<>"()             } );
 	function_lookup.insert( {\"EdgeQuotientSpaceSamplingWeight\",     "<>class["EdgeQuotientSpaceSamplingWeight"]<>"()     } );
-	function_lookup.insert( {\"EdgeQuotientSpaceSamplingCorrection\", "<>class["EdgeQuotientSpaceSamplingCorrection"]<>"() } );
 	function_lookup.insert( {\"IterationCount\",                      "<>class["IterationCount"]<>"()                      } );
 	function_lookup.insert( {\"BarycenterNorm\",                      "<>class["BarycenterNorm"]<>"()                      } );
 

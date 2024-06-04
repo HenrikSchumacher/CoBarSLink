@@ -21,11 +21,8 @@ cConformalClosures[d_Integer?Positive] := cConformalClosures[d] = Module[{lib, l
 
 #include \"WolframLibrary.h\"
 
-#include \"MMA.hpp\"
+#include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
-
-using Real = mreal;
-using Int  = mint;
 
 using namespace mma;
 
@@ -60,7 +57,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	Tools::Time start_time = Tools::Clock::now();
 	
-	S.ConformalClosures( 
+	S.ComputeConformalClosures( 
 		data<Real>(x), data<Real>(w), data<Real>(y), data<Real>(K), data<Real>(K_quot),
 		sample_count, thread_count 
 	);

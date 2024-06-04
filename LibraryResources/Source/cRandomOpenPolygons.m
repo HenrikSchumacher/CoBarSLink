@@ -20,14 +20,13 @@ cRandomOpenPolygons[d_Integer?Positive] := cRandomOpenPolygons[d] =  Module[{lib
 #define NDEBUG
 
 #include \"WolframLibrary.h\"
-#include \"MMA.hpp\"
+#include \"submodules/Tensors/MMA.hpp\"
 
 #include \"CoBarS.hpp\"
 
 using namespace mma;
 
 using Real = mreal;
-using Int  = mint;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {
@@ -42,7 +41,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	Tools::Time start_time = Tools::Clock::now();
 	
-	S.RandomOpenPolygons( data<Real>(x), sample_count, thread_count );
+	S.CreateRandomOpenPolygons( data<Real>(x), sample_count, thread_count );
 
 	Tools::Time stop_time = Tools::Clock::now();
 

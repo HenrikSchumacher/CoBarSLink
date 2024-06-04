@@ -19,13 +19,10 @@ cActionAngleSample[progressiveQ:(True|False)] := cActionAngleSample[progressiveQ
 
 #include \"WolframLibrary.h\"
 
-#include \"MMA.hpp\"
+#include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
 
 using namespace mma;
-
-using Int  = mint;
-using Real = mreal;
 
 using Sampler_T = AAM::Sampler<Real,Int,CoBarS::Xoshiro256Plus,"<>If[TrueQ[progressiveQ],"true","false"]<>">;
 
@@ -42,7 +39,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	Sampler_T  S ( edge_count );
 		
-	Int  trials = S.RandomClosedPolygons( data<Real>(p), sample_count, thread_count );
+	Int  trials = S.CreateRandomClosedPolygons( data<Real>(p), sample_count, thread_count );
 
 	Tools::Time stop_time = Tools::Clock::now();
 

@@ -21,14 +21,11 @@ cDouadyEarleExtension[d_Integer?Positive] := cDouadyEarleExtension[d] = Module[{
 
 #include \"WolframLibrary.h\"
 
-#include \"MMA.hpp\"
+#include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
 
 using namespace mma;
 using namespace Tools;
-
-using Real = mreal;
-using Int  = mint;
 
 static constexpr Int AmbDim = "<>ds<>";
 
@@ -41,8 +38,6 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	const Int edge_count   = get<Int>(Args[2]);
 	const Int thread_count = get<Int>(Args[3]);
-
-	const bool UseOldResultQ = get<mbool>(Args[4]);
 
 	if( dimensions(curve)[1] != AmbDim )
 	{
@@ -62,7 +57,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	E.LoadCurve( data<Real>(curve), dimensions(curve)[0] );
 
-	E( data<Real>(disk_points), dimensions(disk_points)[0], data<Real>(ball_points), thread_count, UseOldResultQ );
+	E( data<Real>(disk_points), dimensions(disk_points)[0], data<Real>(ball_points), thread_count );
 
 	get<MTensor>(Res) = ball_points;
 
@@ -89,8 +84,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			{Real,2,"Constant"},(*the curve to extend*)
 			{Real,2,"Constant"},(*the 2D points to evaluate on*)
 			Integer,
-			Integer,
-			"Boolean"
+			Integer
 		},
 		{Real,2}
 	]

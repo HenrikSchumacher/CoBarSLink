@@ -15,21 +15,15 @@ Switch[ $OperatingSystem
 			,"-mmacosx-version-min="<>StringSplit[Import["!sw_vers &2>1","Text"]][[4]]
 			,"-std=c++20"
 			,"-Ofast"
-			,"-fno-math-errno"
 			,"-flto"
+			,"-fno-math-errno"
 			,"-pthread"
 			,"-fenable-matrix"
-			,"-framework Accelerate"
+			(*,"-framework Accelerate"*)
 			,"-march=native"
 			,"-mtune=native"
 		}
-		,"LinkerOptions"->Switch[
-			$SystemID
-			,"MacOSX-ARM64",{"-lm","-ldl"}
-			,"MacOSX-x86-64",{"-lm","-ldl"}
-			,_,
-			$Failed
-		]
+		,"LinkerOptions"->{}
 		,"IncludeDirectories" -> Flatten[{
 			DirectoryName[$InputFileName]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CoBarS"}]
@@ -47,12 +41,10 @@ Switch[ $OperatingSystem
 			,"-Wno-unused-parameter"
 			,"-fno-math-errno"
 			,"-Ofast"
-			,"-flto"
 			,"-pthread"
-			,"-m64"
 			,"-march=native","-mtune=native"
 		}
-		,"LinkerOptions"->{"-lm","-ldl"}
+		,"LinkerOptions"->{}
 		,"IncludeDirectories" -> {
 			FileNameJoin[{DirectoryName[$InputFileName]}]
 			,FileNameJoin[{DirectoryName[$InputFileName],"CoBarS"}]
@@ -65,7 +57,7 @@ Switch[ $OperatingSystem
 	
 	"Windows", (* Compilation settings for Windows and Microsoft Visual Studio. Untested so far. *)
 	{
-		"CompileOptions" -> {"/EHsc", "/wd4244", "/DNOMINMAX", "/arch:AVX","/O2"}
+		"CompileOptions" -> {"/EHsc", "/wd4244", "/DNOMINMAX","/O2"}
 		,"LinkerOptions"->{}
 		,"IncludeDirectories" -> Flatten[{
 			FileNameJoin[{DirectoryName[$InputFileName]}]

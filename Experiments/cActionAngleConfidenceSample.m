@@ -18,16 +18,13 @@ cActionAngleConfidenceSample[progressiveQ:(True|False)] := cActionAngleConfidenc
 
 #include \"WolframLibrary.h\"
 
-#include \"MMA.hpp\"
+#include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
 
 using namespace Tensors;
 using namespace mma;
 
 using CoBarS::N_CDF;
-
-using Int  = mint;
-using Real = mreal;
 
 static constexpr bool progressiveQ = "<>If[TrueQ[progressiveQ],"true","false"]<>";
 
@@ -92,7 +89,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 				for( Int k = 0; k < repetitions; ++k )
 				{
-					S.RandomClosedPolygon( p.data() );
+					S.CreateRandomClosedPolygon( p.data() );
 
 					Tiny::Vector<3,Real,Int> barycenter;
 					Tiny::Vector<3,Real,Int> v;
