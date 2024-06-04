@@ -2,6 +2,7 @@
 
 (* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time. Afterwards it is memoized. *)
 
+Quiet[Scan[LibraryFunctionUnload,Cases[DownValues[cActionAngleSample],_LibraryFunction,All]]];
 ClearAll[cActionAngleSample];
 cActionAngleSample[progressiveQ:(True|False)] := cActionAngleSample[progressiveQ] = Module[{lib, code, name, t},
 
@@ -18,10 +19,10 @@ cActionAngleSample[progressiveQ:(True|False)] := cActionAngleSample[progressiveQ
 #define NDEBUG
 
 #include \"WolframLibrary.h\"
-
 #include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
 
+using namespace Tools;
 using namespace mma;
 
 using Sampler_T = AAM::Sampler<Real,Int,CoBarS::Xoshiro256Plus,"<>If[TrueQ[progressiveQ],"true","false"]<>">;

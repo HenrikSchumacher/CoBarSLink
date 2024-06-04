@@ -1,5 +1,6 @@
 (* ::Package:: *)
 
+Quiet[Scan[LibraryFunctionUnload,Cases[DownValues[cActionAngleConfidenceSample],_LibraryFunction,All]]];
 ClearAll[cActionAngleConfidenceSample];
 cActionAngleConfidenceSample[progressiveQ:(True|False)] := cActionAngleConfidenceSample[progressiveQ] = Module[{lib, code, name, t},
 
@@ -21,6 +22,7 @@ cActionAngleConfidenceSample[progressiveQ:(True|False)] := cActionAngleConfidenc
 #include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
 
+using namespace Tools;
 using namespace Tensors;
 using namespace mma;
 

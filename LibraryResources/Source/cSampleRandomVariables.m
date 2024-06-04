@@ -2,6 +2,7 @@
 
 (* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time. Afterwards it is memoized. *)
 
+Quiet[Scan[LibraryFunctionUnload,Cases[DownValues[cSampleRandomVariables],_LibraryFunction,All]]];
 ClearAll[cSampleRandomVariables];
 cSampleRandomVariables[d_Integer?Positive] := cSampleRandomVariables[d] = Module[{lib, libname, code, ds, class, name, t},
 
@@ -34,7 +35,6 @@ cSampleRandomVariables[d_Integer?Positive] := cSampleRandomVariables[d] = Module
 
 using namespace Tools;
 using namespace Tensors;
-//using namespace CoBarS;
 using namespace mma;
 
 using Sampler_T     = CoBarS::Sampler<"<>ds<>",Real,Int>;

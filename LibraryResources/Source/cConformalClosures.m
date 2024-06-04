@@ -1,5 +1,6 @@
 (* ::Package:: *)
 
+Quiet[Scan[LibraryFunctionUnload,Cases[DownValues[cConformalClosures],_LibraryFunction,All]]];
 ClearAll[cConformalClosures];
 cConformalClosures[d_Integer?Positive] := cConformalClosures[d] = Module[{lib, libname, file, code,ds, name, t},
 
@@ -24,6 +25,7 @@ cConformalClosures[d_Integer?Positive] := cConformalClosures[d] = Module[{lib, l
 #include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
 
+using namespace Tools;
 using namespace mma;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)

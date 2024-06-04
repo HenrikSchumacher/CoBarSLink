@@ -1,5 +1,6 @@
 (* ::Package:: *)
 
+Quiet[Scan[LibraryFunctionUnload,Cases[DownValues[cRandomOpenPolygons],_LibraryFunction,All]]];
 ClearAll[cRandomOpenPolygons];
 cRandomOpenPolygons[d_Integer?Positive] := cRandomOpenPolygons[d] =  Module[{lib, libname, file, code,ds, name, t},
 
@@ -24,9 +25,8 @@ cRandomOpenPolygons[d_Integer?Positive] := cRandomOpenPolygons[d] =  Module[{lib
 
 #include \"CoBarS.hpp\"
 
+using namespace Tools;
 using namespace mma;
-
-using Real = mreal;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {

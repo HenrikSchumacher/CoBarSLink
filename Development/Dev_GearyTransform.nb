@@ -1,27 +1,8 @@
-(* Content-type: application/vnd.wolfram.mathematica *)
-
-(*** Wolfram Notebook File ***)
-(* http://www.wolfram.com/nb *)
-
-(* CreatedBy='Mathematica 13.2' *)
-
-(*CacheID: 234*)
-(* Internal cache information:
-NotebookFileLineBreakTest
-NotebookFileLineBreakTest
-NotebookDataPosition[       158,          7]
-NotebookDataLength[     15279,        346]
-NotebookOptionsPosition[     14577,        327]
-NotebookOutlinePosition[     15014,        344]
-CellTagsIndexPosition[     14971,        341]
-WindowFrame->Normal*)
-
-(* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData["Exit"], "Input",
  CellChangeTimes->{{3.9052502925206537`*^9, 3.905250293008569*^9}},
  CellLabel->
-  "In[676]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
+  "In[100]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
 
 Cell[BoxData[
  RowBox[{
@@ -53,16 +34,16 @@ Cell[BoxData[
       RowBox[{
        RowBox[{"ParentDirectory", "[", 
         RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
-       "\"\<CycleSamplerLink.m\>\""}], "}"}], "]"}], "\[IndentingNewLine]", 
+       "\"\<CoBarSLink.m\>\""}], "}"}], "]"}], "\[IndentingNewLine]", 
     "]"}]}]}]], "Input",
- CellChangeTimes->{{3.8802095908904676`*^9, 3.8802096051713343`*^9}, 
-   3.880210597814003*^9, {3.905279022848572*^9, 3.90527902533095*^9}, {
-   3.905279163987751*^9, 3.90527916429506*^9}, {3.905319847584572*^9, 
-   3.905319850790804*^9}, {3.905320184201621*^9, 3.905320186377838*^9}, {
-   3.905320479912788*^9, 3.905320483633527*^9}},
  CellLabel->"In[1]:=",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
 
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<CCompilerDriver`\>\"", "]"}]], "Input",
+ CellLabel->"In[3]:=",ExpressionUUID->"be230c79-2025-43f8-829a-d7a957638668"],
+
 Cell[BoxData[{
+ RowBox[{"Needs", "[", "\"\<CCompilerDriver`\>\"", "]"}], "\n", 
  RowBox[{
   RowBox[{"Quiet", "[", 
    RowBox[{"LibraryFunctionUnload", "[", "cGearyTransform", "]"}], "]"}], 
@@ -96,18 +77,18 @@ Cell[BoxData[{
           RowBox[{
            RowBox[{"\"\<Compiling c\>\"", "<>", "name"}], "\"\<...\>\""}], 
           "]"}], ";", "\n", "\n", "\t\t", 
-         RowBox[{"code", " ", "=", " ", 
-          RowBox[{"StringJoin", "[", "\n", 
-           RowBox[{
-           "\"\<\n// This is the actual C++ code.\n\n#define NDEBUG\n\n\
+         RowBox[{"ccode", "=", 
+          RowBox[{"code", " ", "=", " ", 
+           RowBox[{"StringJoin", "[", "\n", 
+            RowBox[{
+            "\"\<\n// This is the actual C++ code.\n\n#define NDEBUG\n\n\
 //#define TOOLS_ENABLE_PROFILER\n\n#include \\\"WolframLibrary.h\\\"\n\
-#include \\\"MMA.h\\\"\n\n#include \\\"CycleSampler.hpp\\\"\n\nusing \
-namespace Tools;\nusing namespace Tensors;\nusing namespace CycleSampler;\n\n\
-using Real = mreal;\nusing Int  = mint;\n\nEXTERN_C DLLEXPORT int \>\"", "<>",
-             "name", "<>", 
-            "\"\<(WolframLibraryData libData, mint Argc, MArgument *Args, \
+#include \\\"submodules/Tensors/MMA.hpp\\\"\n#include \\\"CoBarS.hpp\\\"\n\n\
+using namespace Tools;\nusing namespace Tensors;\n\nEXTERN_C DLLEXPORT int \>\
+\"", "<>", "name", "<>", 
+             "\"\<(WolframLibraryData libData, mint Argc, MArgument *Args, \
 MArgument Res )\n{\n\t//Profiler::Clear(\\\"\>\"", "<>", "$HomeDirectory", 
-            "<>", "\"\<\\\");\n\n\tMTensor X_   = \
+             "<>", "\"\<\\\");\n\n\tMTensor X_   = \
 MArgument_getMTensor(Args[0]);\n\tMTensor Y_   = \
 MArgument_getMTensor(Args[1]);\n\t\n\tReal mean_X  = \
 MArgument_getReal(Args[2]);\n\tReal mean_Y  = MArgument_getReal(Args[3]);\n\t\
@@ -120,13 +101,13 @@ libData->MTensor_getDimensions(Y_)[0] );\n\n\tMTensor t_;\n\t\
 libData->MTensor_getRealData(X_);\n\tcptr<Real> Y = \
 libData->MTensor_getRealData(Y_);\n\tmptr<Real> t = \
 libData->MTensor_getRealData(t_);\n\n    ParallelDo(\n\t\t[&,X,Y,t]( const \
-Int thread )\n\t\t{\n\t\t\tGearyTransform<Real> G ( mean_X, mean_Y, var_X, \
-cov_X_Y, var_Y );\n\n\t\t\tconst Int i_begin = JobPointer( n, thread_count, \
-thread     );\n\t\t\tconst Int i_end   = JobPointer( n, thread_count, thread \
-+ 1 );\n\n\t\t\tfor( Int i = i_begin; i < i_end; ++i )\n\t\t\t{\n\t\t\t\tt[i] \
-= G( X[i] / Y[i] );\n\t\t\t}\n\t\t},\n\t\tthread_count\n\t);\n\n\t\
-MArgument_setMTensor(Res, t_);\n\n\treturn LIBRARY_NO_ERROR;\n}\>\""}], 
-           "]"}]}], ";", "\n", "\t\t", "\n", "\t\t", 
+Int thread )\n\t\t{\n\t\t\tCoBarS::GearyTransform<Real> G ( mean_X, mean_Y, \
+var_X, cov_X_Y, var_Y );\n\n\t\t\tconst Int i_begin = JobPointer( n, \
+thread_count, thread     );\n\t\t\tconst Int i_end   = JobPointer( n, \
+thread_count, thread + 1 );\n\n\t\t\tfor( Int i = i_begin; i < i_end; ++i )\n\
+\t\t\t{\n\t\t\t\tt[i] = G( X[i] / Y[i] );\n\t\t\t}\n\t\t},\n\t\tthread_count\n\
+\t);\n\n\tMArgument_setMTensor(Res, t_);\n\n\treturn LIBRARY_NO_ERROR;\n\
+}\>\""}], "]"}]}]}], ";", "\n", "\t\t", "\n", "\t\t", 
          RowBox[{"(*", " ", 
           RowBox[{
           "Invoke", " ", "CreateLibrary", " ", "to", " ", "compile", " ", 
@@ -144,7 +125,7 @@ MArgument_setMTensor(Res, t_);\n\n\treturn LIBRARY_NO_ERROR;\n}\>\""}],
                "\t\t\t\t", 
                RowBox[{
                "\"\<TargetDirectory\>\"", "->", " ", 
-                "CycleSamplerLink`Private`$libraryDirectory"}], ",", "\n", 
+                "CoBarSLink`Private`$libraryDirectory"}], ",", "\n", 
                "\t\t\t\t", 
                RowBox[{"(*", 
                 RowBox[{
@@ -154,8 +135,8 @@ MArgument_setMTensor(Res, t_);\n\n\treturn LIBRARY_NO_ERROR;\n}\>\""}],
                 RowBox[{
                  RowBox[{"\"\<ShellOutputFunction\>\"", "\[Rule]", "Print"}], 
                  ","}], "*)"}], "\n", "\t\t\t\t", 
-               "CycleSamplerLink`Private`$compilationOptions"}], "\n", 
-              "\t\t\t", "]"}]}], "\n", "\t\t", "]"}], "[", 
+               "CoBarSLink`Private`$compilationOptions"}], "\n", "\t\t\t", 
+              "]"}]}], "\n", "\t\t", "]"}], "[", 
            RowBox[{"[", "1", "]"}], "]"}]}], ";", "\n", "\t\t", 
          RowBox[{"Print", "[", 
           RowBox[{
@@ -188,18 +169,9 @@ MArgument_setMTensor(Res, t_);\n\n\treturn LIBRARY_NO_ERROR;\n}\>\""}],
          RowBox[{"Real", ",", "1"}], "}"}]}], "\n", "\t", "]"}]}]}], "\n", 
     "]"}]}], ";"}]}], "Code",
  InitializationCell->False,
- CellChangeTimes->{{3.905501884018005*^9, 3.905502102137062*^9}, {
-  3.905502132443536*^9, 3.905502583161292*^9}, {3.905503151066325*^9, 
-  3.905503175309259*^9}, {3.905503265953223*^9, 3.9055032888152246`*^9}, {
-  3.905503380539662*^9, 3.905503390120139*^9}, {3.905503428536756*^9, 
-  3.905503432256806*^9}, {3.905503702610094*^9, 3.905503826583572*^9}, {
-  3.905503929723792*^9, 3.9055039433131733`*^9}, {3.905504246162998*^9, 
-  3.905504257566847*^9}, {3.905504303137576*^9, 3.905504307187879*^9}, {
-  3.90550434114566*^9, 3.9055043461168823`*^9}, {3.905504378877021*^9, 
-  3.905504424452869*^9}, {3.905504485086441*^9, 3.905504487113969*^9}, {
-  3.905505017694763*^9, 3.905505017907127*^9}, {3.905521196534387*^9, 
-  3.9055212433587303`*^9}, {3.905521793859848*^9, 3.905521807677136*^9}},
- CellLabel->"In[19]:=",ExpressionUUID->"f8890398-13ad-4df5-b63e-509a9b4877e6"],
+ CellLabel->"In[17]:=",ExpressionUUID->"f8890398-13ad-4df5-b63e-509a9b4877e6"],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
@@ -315,40 +287,19 @@ Cell[BoxData[
          "\[IndentingNewLine]", 
          RowBox[{"PlotRange", "->", "All"}]}], "\[IndentingNewLine]", "]"}], 
        "]"}]}], ",", "\[IndentingNewLine]", 
-     RowBox[{"{", "100", "}"}]}], "]"}]}]}]], "Input",
- CellChangeTimes->{{3.905502729633511*^9, 3.905502761076634*^9}, {
-   3.905503064207789*^9, 3.905503069271967*^9}, 3.905503872070327*^9, {
-   3.905504508635723*^9, 3.905504508831086*^9}, {3.905504547392071*^9, 
-   3.9055045496289883`*^9}, {3.905505677581983*^9, 3.9055056827017508`*^9}, {
-   3.905505856469262*^9, 3.905505963173903*^9}, {3.9055060344618196`*^9, 
-   3.905506050501223*^9}, {3.905506211838204*^9, 3.905506212852374*^9}, 
-   3.905506889813971*^9, {3.9055070620794277`*^9, 3.905507082058317*^9}},
- CellLabel->"In[22]:=",ExpressionUUID->"3054479e-3144-49ed-ac1b-629f391e9a2d"]
+     RowBox[{"{", "10", "}"}]}], "]"}]}]}]], "Input",
+ CellLabel->"In[23]:=",ExpressionUUID->"3054479e-3144-49ed-ac1b-629f391e9a2d"],
+
+Cell[BoxData[""], "Echo",
+ GeneratedCell->False,
+ CellAutoOverwrite->
+  False,ExpressionUUID->"50a2c666-bb2a-4da8-a0e0-3169ab318fff"]
+}, Open  ]]
 },
 WindowSize->{1496, 905},
 WindowMargins->{{1, Automatic}, {Automatic, 0}},
 TaggingRules-><|"TryRealOnly" -> False|>,
-FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+FrontEndVersion->"13.3 for Mac OS X ARM (64-bit) (July 24, 2023)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"1c6eb3cc-0e3d-4f74-944b-ee1c33303865"
 ]
-(* End of Notebook Content *)
-
-(* Internal cache information *)
-(*CellTagsOutline
-CellTagsIndex->{}
-*)
-(*CellTagsIndex
-CellTagsIndex->{}
-*)
-(*NotebookFileOutline
-Notebook[{
-Cell[558, 20, 181, 3, 41, "Input",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
-Cell[742, 25, 1612, 37, 217, "Input",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
-Cell[2357, 64, 6930, 137, 2395, "Code",ExpressionUUID->"f8890398-13ad-4df5-b63e-509a9b4877e6",
- InitializationCell->False],
-Cell[9290, 203, 5283, 122, 917, "Input",ExpressionUUID->"3054479e-3144-49ed-ac1b-629f391e9a2d"]
-}
-]
-*)
-

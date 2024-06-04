@@ -2,6 +2,7 @@
 
 (* The backend routine is a dynamic library that is compiled on the fly when it is called for the first time. Afterwards it is memoized. *)
 
+Quiet[Scan[LibraryFunctionUnload,Cases[DownValues[cConfidenceSampleRandomVariable],_LibraryFunction,All]]];
 ClearAll[cConfidenceSampleRandomVariables];
 cConfidenceSampleRandomVariables[d_Integer?Positive] := cConfidenceSampleRandomVariable[d] = Module[{lib, libname, code, ds, class, name, t},
 

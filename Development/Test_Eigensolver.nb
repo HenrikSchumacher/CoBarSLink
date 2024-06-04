@@ -1,0 +1,286 @@
+Notebook[{
+Cell[BoxData["Exit"], "Input",
+ CellLabel->"In[6]:=",ExpressionUUID->"56db3cad-511d-4410-b816-3ab0b8c99d6e"],
+
+Cell[BoxData[{
+ RowBox[{"Get", "[", "\[IndentingNewLine]", 
+  RowBox[{"FileNameJoin", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"ParentDirectory", "[", 
+      RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+     "\"\<CoBarSLink.m\>\""}], "}"}], "]"}], "\[IndentingNewLine]", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"CoBarSLink`Private`clearLibraries", "[", "]"}]}], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"e0e034b3-e733-4ed3-9de3-1abb645b7b12"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Get", "[", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", " ", 
+      "\"\<cTinySelfAdjointMatrixEigenvalues.m\>\""}], "}"}], "]"}], "]"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Get", "[", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"NotebookDirectory", "[", "]"}], ",", " ", 
+       "\"\<cLapackEigenvalues.m\>\""}], "}"}], "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", "cWeight", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cWeight", "[", "d_Integer", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"cWeight", "[", "d", "]"}], "=", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"n", "=", "d"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Compile", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"\[Lambda]", ",", "_Real", ",", "1"}], "}"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Module", "[", 
+         RowBox[{
+          RowBox[{"{", "prod", "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"prod", "=", "1."}], ";", "\[IndentingNewLine]", 
+           RowBox[{"Do", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"prod", "*=", 
+               RowBox[{"0.5", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"Compile`GetElement", "[", 
+                   RowBox[{"\[Lambda]", ",", "i"}], "]"}], "+", 
+                  RowBox[{"Compile`GetElement", "[", 
+                   RowBox[{"\[Lambda]", ",", "j"}], "]"}]}], ")"}]}]}], ";"}],
+              "\[IndentingNewLine]", ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "n"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"j", ",", 
+               RowBox[{"i", "+", "1"}], ",", "n"}], "}"}]}], "]"}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", "prod"}]}], 
+         "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"CompilationTarget", "->", "\"\<C\>\""}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"RuntimeAttributes", "->", 
+         RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Parallelization", "->", "True"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"RuntimeOptions", "->", "\"\<Speed\>\""}]}], 
+       "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+  ";"}]}], "Input",
+ CellLabel->"In[98]:=",ExpressionUUID->"916c8e3a-c23e-40f0-8d53-2624163f623a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"dlist", "=", 
+   RowBox[{"{", 
+    RowBox[{"2", ",", "3", ",", "4", ",", "6", ",", "12", ",", "16"}], 
+    RowBox[{"(*", 
+     RowBox[{",", " ", "32", ",", "64"}], "*)"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Do", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"CoBarSLink`Private`cRandomClosedPolygons", "[", "d", "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+    "CoBarSLink`Private`cTinySelfAdjointMatrixEigenvalues", "[", "d", "]"}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"CoBarSLink`Private`cLapackEigenvalues", "[", "d", "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"cWeight", "[", "d", "]"}], ";"}], "\[IndentingNewLine]", ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"d", ",", "dlist"}], "}"}]}], "]"}]}], "Input",
+ CellLabel->"In[78]:=",ExpressionUUID->"757c944a-c061-41ce-bc2e-72177ea1a26a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"samplecount", "=", "100000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"elist", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "4", ",", "5", ",", "6", ",", "7", ",", "8", ",", "16", ",", "32", ",", 
+     "64", ",", "128"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"threadCount", "=", "8"}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "DistributeDefinitions", "[", "CoBarSLink`Private`cRandomClosedPolygons", 
+     "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{
+    "DistributeDefinitions", "[", 
+     "CoBarSLink`Private`cTinySelfAdjointMatrixEigenvalues", "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+    "DistributeDefinitions", "[", "CoBarSLink`Private`cLapackEigenvalues", 
+     "]"}], ";"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Epsilon]", "=", "0.0001"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"data", "=", 
+   RowBox[{"Flatten", "@", 
+    RowBox[{"Table", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "T", ",", "r", ",", "\[CapitalSigma]list", ",", "tTiny", ",", 
+          "tLapack", ",", "\[Lambda]Tiny", ",", "\[Lambda]Lapack", ",", 
+          "\[Omega]Tiny", ",", "\[Omega]Lapack", ",", "\[Lambda]errors", ",", 
+          "\[Omega]errors"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"T", "=", 
+          RowBox[{
+           RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"r", "=", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{"1.", ",", "edgecount"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\[CapitalSigma]list", "=", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"#", "\[Transpose]"}], ".", "#"}], "&"}], ",", 
+                RowBox[{
+                 RowBox[{"RandomClosedPolygons", "[", 
+                  RowBox[{"d", ",", "r", ",", "samplecount", ",", 
+                   RowBox[{"\"\<ThreadCount\>\"", "->", "threadCount"}]}], 
+                  "]"}], "[", "\"\<ClosedPolygonUnitEdgeVectors\>\"", "]"}]}],
+                "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{"tTiny", "=", 
+              RowBox[{
+               RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"\[Lambda]Tiny", "=", 
+                  RowBox[{
+                   RowBox[{
+                   "CoBarSLink`Private`cTinySelfAdjointMatrixEigenvalues", 
+                    "[", "d", "]"}], "[", 
+                   RowBox[{"\[CapitalSigma]list", ",", "threadCount"}], 
+                   "]"}]}], ";"}], "\[IndentingNewLine]", "]"}], "[", 
+               RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", 
+             RowBox[{"tLapack", "=", 
+              RowBox[{
+               RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"\[Lambda]Lapack", "=", 
+                  RowBox[{
+                   RowBox[{
+                   "CoBarSLink`Private`cLapackEigenvalues", "[", "d", "]"}], 
+                   "[", 
+                   RowBox[{"\[CapitalSigma]list", ",", "threadCount"}], 
+                   "]"}]}], ";"}], "\[IndentingNewLine]", "]"}], "[", 
+               RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\[Lambda]Tiny", "=", 
+              RowBox[{"Sort", "/@", "\[Lambda]Tiny"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\[Lambda]Lapack", "=", 
+              RowBox[{"Sort", "/@", "\[Lambda]Lapack"}]}], ";", 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{"\[Omega]Tiny", "=", 
+              RowBox[{
+               RowBox[{"cWeight", "[", "d", "]"}], "[", "\[Lambda]Tiny", 
+               "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"\[Omega]Lapack", "=", 
+              RowBox[{
+               RowBox[{"cWeight", "[", "d", "]"}], "[", "\[Lambda]Lapack", 
+               "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"errors", "=", 
+                RowBox[{"Abs", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"(", "\[Lambda]Tiny", ")"}], "/", 
+                   RowBox[{"(", "\[Lambda]Lapack", ")"}]}], "-", "1"}], 
+                 "]"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"\[Lambda]errors", "=", 
+              RowBox[{"Abs", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"\[Epsilon]", "+", "\[Lambda]Tiny"}], ")"}], "/", 
+                 RowBox[{"(", 
+                  RowBox[{"\[Epsilon]", "+", "\[Lambda]Lapack"}], ")"}]}], 
+                "-", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"\[Omega]errors", "=", 
+              RowBox[{"Abs", "[", 
+               RowBox[{
+                RowBox[{"\[Omega]Tiny", "/", "\[Omega]Lapack"}], "-", "1"}], 
+               "]"}]}], ";"}], "\[IndentingNewLine]", "]"}], "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"d", ",", "edgecount"}], "}"}], "->", "T"}], "]"}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"Association", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\"\<d\>\"", "->", "d"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<EdgeCount\>\"", "->", "edgecount"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<TimingTiny\>\"", "->", "tTiny"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<TimingLapack\>\"", "->", "tLapack"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Log10Max \[Lambda]Error\>\"", "->", 
+            RowBox[{"Log10", "@", 
+             RowBox[{"Max", "[", "\[Lambda]errors", "]"}]}]}], ",", 
+           RowBox[{"\"\<Log10Mean \[Lambda]Error\>\"", "->", 
+            RowBox[{"Log10", "@", 
+             RowBox[{"Mean", "[", 
+              RowBox[{"Flatten", "[", "\[Lambda]errors", "]"}], "]"}]}]}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<Log10Max \[Omega]Error\>\"", "->", 
+            RowBox[{"Log10", "@", 
+             RowBox[{"Max", "[", "\[Omega]errors", "]"}]}]}], ",", 
+           RowBox[{"\"\<Log10Mean \[Omega]Error\>\"", "->", 
+            RowBox[{"Log10", "@", 
+             RowBox[{"Mean", "[", "\[Omega]errors", "]"}]}]}]}], 
+          "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+      "\[IndentingNewLine]", ",", 
+      RowBox[{"{", 
+       RowBox[{"d", ",", "dlist"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"edgecount", ",", 
+        RowBox[{"Select", "[", 
+         RowBox[{"elist", ",", 
+          RowBox[{
+           RowBox[{"#", ">", "d"}], "&"}]}], "]"}]}], "}"}]}], "]"}]}]}], 
+  ";"}]}], "Input",
+ CellLabel->
+  "In[102]:=",ExpressionUUID->"22536018-8002-4334-b77d-037df4fbc696"],
+
+Cell[BoxData[
+ RowBox[{"data", "//", "Dataset"}]], "Input",
+ CellLabel->"In[107]:=",ExpressionUUID->"f1a7e756-a3ab-4f9b-ba83-e11a0c4c5556"]
+},
+WindowSize->{1496, 905},
+WindowMargins->{{1, Automatic}, {Automatic, 0}},
+FrontEndVersion->"13.3 for Mac OS X ARM (64-bit) (July 24, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"64231ed1-ce94-48cf-a51a-24b3b04a5fa0"
+]
+

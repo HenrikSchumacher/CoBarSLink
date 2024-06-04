@@ -1,12 +1,13 @@
 (* ::Package:: *)
 
+Quiet[Scan[LibraryFunctionUnload,Cases[DownValues[cRandomClosedPolygons],_LibraryFunction,All]]];
 ClearAll[cRandomClosedPolygons];
 cRandomClosedPolygons[
 	d_Integer?Positive,
 	rng:"MersenneTwister"|"PCG"|"Xoshiro"|"WY":"Xoshiro",
 	vectorizedQ:True|False:True,
 	zerofyfirstQ:True|False:False	
-] := cRandomClosedPolygons[d,rng] = Module[{lib, libname, file, code,ds, name, t},
+] := cRandomClosedPolygons[d,rng,vectorizedQ,zerofyfirstQ] = Module[{lib, libname, file, code,ds, name, t},
 
 	name = "RandomClosedPolygons";
 

@@ -1,5 +1,6 @@
 (* ::Package:: *)
 
+Quiet[Scan[LibraryFunctionUnload,Cases[DownValues[cDouadyEarleExtension],_LibraryFunction,All]]];
 ClearAll[cDouadyEarleExtension];
 cDouadyEarleExtension[d_Integer?Positive] := cDouadyEarleExtension[d] = Module[{lib, libname, file, code,ds, name, t},
 
@@ -24,8 +25,8 @@ cDouadyEarleExtension[d_Integer?Positive] := cDouadyEarleExtension[d] = Module[{
 #include \"submodules/Tensors/MMA.hpp\"
 #include \"CoBarS.hpp\"
 
-using namespace mma;
 using namespace Tools;
+using namespace mma;
 
 static constexpr Int AmbDim = "<>ds<>";
 
