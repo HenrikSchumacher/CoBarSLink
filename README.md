@@ -42,6 +42,6 @@ To generate `samplecount` closed random `n`-gons in dimension `d`, simply run
     dataCoBarS = RandomClosedPolygons[d, r, samplecount,
         "QuotientSpace" -> True,
         "SphereRadii" -> rho
-   ];
+    ];
     
 See also the notebook files *.nb in the "Examples" subdirection for usage examples.
