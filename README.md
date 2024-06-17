@@ -44,4 +44,4 @@ To generate `samplecount` closed random `n`-gons in dimension `d`, simply run
         "SphereRadii" -> rho
     ];
     
-See also the notebook files *.nb in the "Examples" subdirection for usage examples.
+See also the notebook files `*.nb` in the `Examples` subdirection for further usage examples.
