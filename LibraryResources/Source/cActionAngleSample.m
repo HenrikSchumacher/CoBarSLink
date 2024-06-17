@@ -34,7 +34,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	const Int  thread_count  = get<Int>(Args[1]);
 
 	const Int  sample_count  = dimensions(p)[0];
-	const Int  edge_count    = dimensions(p)[1];
+	const Int  edge_count    = dimensions(p)[1] - 1;
 
 	Tools::Time start_time = Tools::Clock::now();
 

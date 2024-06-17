@@ -57,19 +57,27 @@ The following options can be set:
 "<>CoBarSLink`Private`sphereRadiiUsage;
 
 
-CoBarConfidenceSample::usage = "CoBarConfidenceSample[funs:{__}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, opts___] draws samples of closed polygons in d-dimensional Euclidean space and evaluates the list of random variables specified by funs on them. It stops if each random variable's confidence radius is below the prescribed value in the condidenceradii. Returned are sample mean, sample variance, and some further statistics. The drawn polygons are discarded afterwards. The vector r contains the length of each edge of the polygon. 
+CoBarConfidenceSample::usage = "CoBarConfidenceSample[funs:{__}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, opts___] draws samples of closed polygons in d-dimensional Euclidean space and evaluates the list of random variables specified by funs on them. It stops if each random variable's confidence radius is below the prescribed value in the condidence radii. Returned are sample mean, sample variance, and some further statistics. The drawn polygons are discarded afterwards. The vector r contains the length of each edge of the polygon. 
 
 The following options can be set:
 "<>CoBarSLink`Private`sphereRadiiUsage<>CoBarSLink`Private`confidenceUsage;
 
 
-RandomOpenPolygons::usage = "RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space. The result is equivalent to - but significantly faster to obtain than - RandomPoint[Sphere[ConstantArray[0.,d]],{samplecount,edgecount}].";
+RandomOpenPolygons::usage = "RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space. The result is equivalent to Accumulate[Append[#,ConstantArray[0.,d]]&/@RandomPoint[Sphere[ConstantArray[0.,d]],{samplecount,edgecount}]] -- just faster.";
 
 
-RandomClosedPolygons::usage = "RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space, closes them via the conformal barycenter method. Then it returns: 
-	(i)   the open polygons' unit edge vectors;
+RandomClosedPolygons::usage = "RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space, closes them via the conformal barycenter method. Then it returns the following data in an Association: 
+	(i)   \"VertexPositions\" - the open polygons' vertex positions (the first of each polygon vertex is duplicated and appended);
+	(ii)  the sampling weights (the type of sampling weights is determined by the value of the option \"QuotientSpace\" (see below)).
+
+The following options can be set:
+"<>CoBarSLink`Private`sphereRadiiUsage;
+
+
+ConformalClosures::usage = "ConformalClosures[r_?(VectorQ[#,NumericQ]&), p_?((ArrayQ[#]&&(ArrayDepth[#]==3))&)] closes the Length[r]-gons stored in the 3-tensor p via the conformal barycenter method. Then it returns
+	(i)   the open polygons' vertex positions.
 	(ii)  the conformal shift vectors; 
-	(iii) the closed polygons' unit edge vectors;
+	(iii) the closed polygons' vertex positions (each polygon's first vertex is duplicated and appended at the end;
 	(iv)  the sampling weights for the edge space; and
 	(v)   the sampling weights for the quotient space of the edge space by the action of SO(d).
 
@@ -77,18 +85,7 @@ The following options can be set:
 "<>CoBarSLink`Private`sphereRadiiUsage;
 
 
-ConformalClosures::usage = "ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))&)] closes the Length[r]-gons stored in the 3-tensor x via the conformal barycenter method. Then it returns: 
-	(i)   the open polygons' unit edge vectors;
-	(ii)  the conformal shift vectors; 
-	(iii) the closed polygons' unit edge vectors;
-	(iv)  the sampling weights for the edge space; and
-	(v)   the sampling weights for the quotient space of the edge space by the action of SO(d).
-
-The following options can be set:
-"<>CoBarSLink`Private`sphereRadiiUsage;
-
-
-ActionAngleSample::usage = "ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space.";
+ActionAngleSample::usage = "ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space and returns their vertex coordinates. The first of each polygon vertex is duplicated and appended.";
 
 
 (*Some error and warning messages.*)
@@ -284,13 +281,13 @@ Options[RandomOpenPolygons ]= {
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"]))
 };
 
-RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{x},
+RandomOpenPolygons[d_Integer?Positive, edgecount_Integer?Positive, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{p},
 
-	x = ConstantArray[0.,{samplecount,edgecount,d}];
+	p = ConstantArray[0.,{samplecount,edgecount+1,d}];
 
-	cRandomOpenPolygons[d][x,Min[samplecount,OptionValue["ThreadCount"]]];
+	cRandomOpenPolygons[d][p,Min[samplecount,OptionValue["ThreadCount"]]];
 
-	x
+	p
 ];
 
 
@@ -300,10 +297,11 @@ RandomClosedPolygons::len="Lengths of the input vectors in the second and third 
 
 Options[RandomClosedPolygons ]= {
 	"ThreadCount" :> ("ParallelThreadNumber"/.("ParallelOptions"/.SystemOptions["ParallelOptions"])),
-	"SphereRadii" -> "EdgeLengths"
+	"SphereRadii" -> "EdgeLengths",
+	"QuotientSpace" -> True
 };
 
-RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{W,edgecount,x,w,y,Klist,Kquotlist,\[Rho]},
+RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive, OptionsPattern[]]:=Module[{W,edgecount,q,Klist,\[Rho]},
 
 	If[2 Max[r] > Total[r], 
 		Message[CoBarSLink::badedgelengths]; 
@@ -314,24 +312,19 @@ RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_
 	If[\[Rho]===$Failed, Return[$Failed]];
 
 	edgecount=Length[r];
-		
-	x = ConstantArray[0.,{samplecount,edgecount,d}];
-	w = ConstantArray[0.,{samplecount,          d}];
-	y = ConstantArray[0.,{samplecount,edgecount,d}];
+	
+	q = ConstantArray[0.,{samplecount,edgecount+1,d}];
 
 	Klist     = ConstantArray[0.,{samplecount}];
-	Kquotlist = ConstantArray[0.,{samplecount}];
 
-	cRandomClosedPolygons[d][r,\[Rho],x,w,y,Klist,Kquotlist,Min[samplecount,OptionValue["ThreadCount"]]];
+	cRandomClosedPolygons[d][r,\[Rho],q,Klist,OptionValue["QuotientSpace"],Min[samplecount,OptionValue["ThreadCount"]]];
 
 	Association[
-		"OpenPolygonUnitEdgeVectors"->x,
-		"ShiftVectors"->w,
-		"ClosedPolygonUnitEdgeVectors"->y,
-		"EdgeSpaceSamplingWeights"->Klist,
-		"EdgeQuotientSpaceSamplingWeights"->Kquotlist,
+		"VertexPositions"->q,
+		"SamplingWeights"->Klist,
 		"EdgeLengths"->r,
-		"SphereRadii"->\[Rho]
+		"SphereRadii"->\[Rho],
+		"QuotientSpace"->OptionValue["QuotientSpace"]
 	]
 ];
 
@@ -345,7 +338,7 @@ Options[ConformalClosures ]= {
 	"SphereRadii" -> "EdgeLengths"
 };
 
-ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))&), OptionsPattern[]]:=Module[{W,edgecount,samplecount,d,w,y,Klist,Kquotlist,\[Rho]},
+ConformalClosures[r_?(VectorQ[#,NumericQ]&), p_?((ArrayQ[#]&&(ArrayDepth[#]==3))&), OptionsPattern[]]:=Module[{W,edgecount,samplecount,d,w,q,Klist,Kquotlist,\[Rho]},
 
 	If[2 Max[r] > Total[r], 
 		Message[CoBarSLink::badedgelengths]; 
@@ -355,25 +348,27 @@ ConformalClosures[r_?(VectorQ[#,NumericQ]&), x_?((ArrayQ[#]&&(ArrayDepth[#]==3))
 	\[Rho] = processSphereRadii[r, OptionValue["SphereRadii"]];
 	If[\[Rho]===$Failed, Return[$Failed]];
 
-	{samplecount, edgecount, d}= Dimensions[x];
+	samplecount = Dimensions[p][[1]];
+	edgecount   = Dimensions[p][[2]]-1;
+	d           = Dimensions[p][[3]];
 	
 	If[ Length[r] != edgecount,
 		Message[ConformalClosures::len];
 		Return[$Failed];
 	];
 	
-	w = ConstantArray[0.,{samplecount,          d}];
-	y = ConstantArray[0.,{samplecount,edgecount,d}];
+	w = ConstantArray[0.,{samplecount,            d}];
+	q = ConstantArray[0.,{samplecount,edgecount+1,d}];
 
 	Klist     = ConstantArray[0.,{samplecount}];
 	Kquotlist = ConstantArray[0.,{samplecount}];
 
-	cConformalClosures[d][r,\[Rho],x,w,y,Klist,Kquotlist,Min[samplecount,OptionValue["ThreadCount"]]];
+	cConformalClosures[d][r,\[Rho],p,w,q,Klist,Kquotlist,Min[samplecount,OptionValue["ThreadCount"]]];
 
 	Association[
-		"OpenPolygonUnitEdgeVectors"->x,
+		"OpenPolygonVertexPositions"->p,
 		"ShiftVectors"->w,
-		"ClosedPolygonUnitEdgeVectors"->y,
+		"ClosedPolygonVertexPositions"->q,
 		"EdgeSpaceSamplingWeights"->Klist,
 		"EdgeQuotientSpaceSamplingWeights"->Kquotlist,
 		"EdgeLengths"->r,
@@ -390,7 +385,8 @@ Options[ActionAngleSample] = {
 };
 
 ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{p,trials},
-	p = ConstantArray[0.,{samplecount,edgecount,3}];
+	p = ConstantArray[0.,{samplecount,edgecount+1,3}];
+	Print[Dimensions[p]];
 	trials = cActionAngleSample[TrueQ[OptionValue["Progressive"]]][p,OptionValue["ThreadCount"]];
 	Association[
 		"ClosedPolygons"->p,

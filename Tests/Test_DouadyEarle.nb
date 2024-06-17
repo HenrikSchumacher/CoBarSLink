@@ -1,0 +1,123 @@
+Notebook[{
+Cell[BoxData["Exit"], "Input",
+ CellChangeTimes->{{3.873864239407578*^9, 3.8738642403220377`*^9}},
+ CellLabel->"In[42]:=",ExpressionUUID->"e900fb1a-6400-48b5-9ddb-415fcad81665"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Quiet", "[", 
+    RowBox[{"LibraryFunctionUnload", "[", 
+     RowBox[{"CoBarSLink`Private`cDouadyEarleExtension", "[", "3", "]"}], 
+     "]"}], "]"}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Get", "[", "\[IndentingNewLine]", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"ParentDirectory", "[", 
+       RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+      "\"\<CoBarSLink.m\>\""}], "}"}], "]"}], "\[IndentingNewLine]", "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CoBarSLink`Private`clearLibraries", "[", "]"}], ";"}]}], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"a14e8661-385b-49e8-846a-93b79486cbef"],
+
+Cell[BoxData[{
+ RowBox[{"cE3", "=", 
+  RowBox[{
+  "CoBarSLink`Private`cDouadyEarleExtension", "[", "3", 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"disk", "=", 
+  RowBox[{"DiscretizeRegion", "[", 
+   RowBox[{
+    RowBox[{"Disk", "[", "]"}], ",", 
+    RowBox[{"MaxCellMeasure", "->", "0.000025"}]}], "]"}]}]}], "Input",
+ CellLabel->"In[4]:=",ExpressionUUID->"6bd8fa73-5c9a-43b5-b6e9-cc4ff3bf49cb"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"\[Omega]", "=", "12"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Gamma]", "=", 
+    RowBox[{"t", "\[Function]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sin", "[", "t", "]"}], " ", 
+        RowBox[{"Cos", "[", 
+         RowBox[{"\[Omega]", " ", "t"}], "]"}]}], ",", 
+       RowBox[{
+        RowBox[{"Sin", "[", "t", "]"}], " ", 
+        RowBox[{"Sign", "[", "t", "]"}], 
+        RowBox[{"Sin", "[", 
+         RowBox[{"\[Omega]", " ", "t"}], "]"}]}], ",", 
+       RowBox[{"Cos", "[", "t", "]"}]}], "}"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"curveplot", "=", 
+  RowBox[{"ParametricPlot3D", "[", 
+   RowBox[{
+    RowBox[{"\[Gamma]", "[", "t", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"t", ",", 
+      RowBox[{"-", "Pi"}], ",", "Pi"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"PlotStyle", "->", 
+     RowBox[{"{", 
+      RowBox[{"Gray", ",", 
+       RowBox[{"Specularity", "[", 
+        RowBox[{"White", ",", "30"}], "]"}], ",", 
+       RowBox[{"Tube", "[", "0.01", "]"}]}], "}"}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"PlotPoints", "->", "1000"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"MaxRecursion", "->", "5"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Lighting", "->", "\"\<Neutral\>\""}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellLabel->"In[71]:=",ExpressionUUID->"ca0b5b4f-97cf-464a-aca5-7bd2b130e999"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"n", "=", "1200"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"tlist", "=", 
+    RowBox[{"Most", "@", 
+     RowBox[{"Subdivide", "[", 
+      RowBox[{
+       RowBox[{"-", "Pi"}], ",", "Pi", ",", "n"}], "]"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"curvepts", "=", 
+    RowBox[{"\[Gamma]", "/@", "tlist"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"extendedpts", "=", 
+    RowBox[{
+     RowBox[{"CoBarSLink`Private`cDouadyEarleExtension", "[", "3", "]"}], "[", 
+     RowBox[{"curvepts", ",", 
+      RowBox[{"MeshCoordinates", "[", "disk", "]"}], ",", "n", ",", "8"}], 
+     "]"}]}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DouadyEarleExtension", "=", 
+    RowBox[{"MeshRegion", "[", 
+     RowBox[{"extendedpts", ",", 
+      RowBox[{"MeshCells", "[", 
+       RowBox[{"disk", ",", "2"}], "]"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", "\[IndentingNewLine]", 
+  RowBox[{"DouadyEarleExtension", ",", "\[IndentingNewLine]", "curveplot"}], 
+  "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->
+  "In[81]:=",ExpressionUUID->"ebca1ab1-e002-45ba-8613-d2ba72f7e635"]
+},
+WindowSize->{1496, 905},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+TaggingRules-><|"TryRealOnly" -> False|>,
+FrontEndVersion->"13.3 for Mac OS X ARM (64-bit) (July 24, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"73625570-1f10-4484-a975-174cf3ce5425"
+]
+

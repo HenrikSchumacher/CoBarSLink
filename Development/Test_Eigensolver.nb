@@ -81,7 +81,7 @@ Cell[BoxData[{
         RowBox[{"RuntimeOptions", "->", "\"\<Speed\>\""}]}], 
        "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
   ";"}]}], "Input",
- CellLabel->"In[98]:=",ExpressionUUID->"916c8e3a-c23e-40f0-8d53-2624163f623a"],
+ CellLabel->"In[3]:=",ExpressionUUID->"916c8e3a-c23e-40f0-8d53-2624163f623a"],
 
 Cell[BoxData[{
  RowBox[{
@@ -275,7 +275,126 @@ Cell[BoxData[{
 
 Cell[BoxData[
  RowBox[{"data", "//", "Dataset"}]], "Input",
- CellLabel->"In[107]:=",ExpressionUUID->"f1a7e756-a3ab-4f9b-ba83-e11a0c4c5556"]
+ CellLabel->
+  "In[107]:=",ExpressionUUID->"f1a7e756-a3ab-4f9b-ba83-e11a0c4c5556"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"d", "=", "6"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"edgecount", "=", "32"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Epsilon]", "=", "0.001"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"samplecount", "=", "1000000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"threadCount", "=", "8"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"r", "=", 
+   RowBox[{"ConstantArray", "[", 
+    RowBox[{"1.", ",", "edgecount"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[CapitalSigma]list", "=", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"#", "\[Transpose]"}], ".", "#"}], "&"}], ",", 
+      RowBox[{
+       RowBox[{"RandomClosedPolygons", "[", 
+        RowBox[{"d", ",", "r", ",", "samplecount", ",", 
+         RowBox[{"\"\<ThreadCount\>\"", "->", "threadCount"}]}], "]"}], "[", 
+       "\"\<ClosedPolygonUnitEdgeVectors\>\"", "]"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"tTiny", "=", 
+    RowBox[{
+     RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\[Lambda]Tiny", "=", 
+        RowBox[{
+         RowBox[{
+         "CoBarSLink`Private`cTinySelfAdjointMatrixEigenvalues", "[", "d", 
+          "]"}], "[", 
+         RowBox[{"\[CapitalSigma]list", ",", "threadCount"}], "]"}]}], ";"}], 
+      "\[IndentingNewLine]", "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"tLapack", "=", 
+    RowBox[{
+     RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\[Lambda]Lapack", "=", 
+        RowBox[{
+         RowBox[{"CoBarSLink`Private`cLapackEigenvalues", "[", "d", "]"}], 
+         "[", 
+         RowBox[{"\[CapitalSigma]list", ",", "threadCount"}], "]"}]}], ";"}], 
+      "\[IndentingNewLine]", "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Lambda]Tiny", "=", 
+   RowBox[{"Sort", "/@", "\[Lambda]Tiny"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Lambda]Lapack", "=", 
+    RowBox[{"Sort", "/@", "\[Lambda]Lapack"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Omega]Tiny", "=", 
+   RowBox[{
+    RowBox[{"cWeight", "[", "d", "]"}], "[", "\[Lambda]Tiny", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Omega]Lapack", "=", 
+    RowBox[{
+     RowBox[{"cWeight", "[", "d", "]"}], "[", "\[Lambda]Lapack", "]"}]}], 
+   ";"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"errors", "=", 
+     RowBox[{"Abs", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", "\[Lambda]Tiny", ")"}], "/", 
+        RowBox[{"(", "\[Lambda]Lapack", ")"}]}], "-", "1"}], "]"}]}], ";"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Lambda]errors", "=", 
+   RowBox[{"Abs", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"\[Epsilon]", "+", "\[Lambda]Tiny"}], ")"}], "/", 
+      RowBox[{"(", 
+       RowBox[{"\[Epsilon]", "+", "\[Lambda]Lapack"}], ")"}]}], "-", "1"}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Omega]errors", "=", 
+    RowBox[{"Abs", "[", 
+     RowBox[{
+      RowBox[{"\[Omega]Tiny", "/", "\[Omega]Lapack"}], "-", "1"}], "]"}]}], 
+   ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"Max", "[", "\[Lambda]errors", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Max", "[", "\[Omega]errors", "]"}]}], "Input",
+ CellLabel->"In[53]:=",ExpressionUUID->"fea1ac1b-d1fc-4f0c-bb31-9d97e149ed9d"],
+
+Cell[BoxData["8.770761894538737`*^-15"], "Output",
+ CellLabel->"Out[68]=",ExpressionUUID->"27d2f0d3-6e00-4fd9-ac83-8e813709dc28"],
+
+Cell[BoxData["2.353672812205332`*^-14"], "Output",
+ CellLabel->
+  "Out[69]=",ExpressionUUID->"946e336c-ecf1-4b56-894d-10e65a3e0a8b"]
+}, Open  ]]
 },
 WindowSize->{1496, 905},
 WindowMargins->{{1, Automatic}, {Automatic, 0}},

@@ -30,18 +30,18 @@ using namespace mma;
 
 EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res)
 {
-	MTensor x = get<MTensor>(Args[0]);
+	MTensor p = get<MTensor>(Args[0]);
 
 	const Int thread_count = get<Int>(Args[1]);
 
-	const Int sample_count = dimensions(x)[0];
-	const Int edge_count   = dimensions(x)[1];
+	const Int sample_count = dimensions(p)[0];
+	const Int edge_count   = dimensions(p)[1]-1;
 
 	CoBarS::Sampler<"<>ds<>",Real,Int> S ( edge_count );
 
 	Tools::Time start_time = Tools::Clock::now();
 	
-	S.CreateRandomOpenPolygons( data<Real>(x), sample_count, thread_count );
+	S.CreateRandomOpenPolygons( data<Real>(p), sample_count, thread_count );
 
 	Tools::Time stop_time = Tools::Clock::now();
 
@@ -49,7 +49,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	file << S.ClassName() << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in "<>ds<>" D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
 
-	disown(x);
+	disown(p);
 
 	return LIBRARY_NO_ERROR;
 }"];

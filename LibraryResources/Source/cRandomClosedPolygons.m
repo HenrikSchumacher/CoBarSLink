@@ -50,36 +50,23 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	MTensor r      = get<MTensor>(Args[0]);
 	MTensor rho    = get<MTensor>(Args[1]);
 
-	MTensor x      = get<MTensor>(Args[2]);
-	MTensor w      = get<MTensor>(Args[3]);
-	MTensor y      = get<MTensor>(Args[4]);
+	MTensor p      = get<MTensor>(Args[2]);
+	MTensor K      = get<MTensor>(Args[3]);
 
-	MTensor K      = get<MTensor>(Args[5]);
-	MTensor K_quot = get<MTensor>(Args[6]);
-
-	const Int thread_count = get<Int>(Args[7]);
+	const bool quot_space_Q = static_cast<bool>(get<mbool>(Args[4]));
+	const Int  thread_count = get<Int>(Args[5]);
 
 	const Int edge_count = static_cast<Int>( std::min(
-		std::min( dimensions(r)[0], dimensions(rho)[0] ) ,
-		std::min( dimensions(x)[1], dimensions(y)[1] )
+		std::min( dimensions(r)[0], dimensions(rho)[0] ) , dimensions(p)[1]-1
 	) );
 
-	const Int sample_count = static_cast<Int>( std::min(
-		std::min(
-			std::min( dimensions(x)[0], dimensions(y)[0] ),
-			std::min( dimensions(K)[0], dimensions(K_quot)[0] )
-		),
-		dimensions(w)[0]
-	) );
+	const Int sample_count = static_cast<Int>( std::min( dimensions(p)[0], dimensions(K)[0] ) );
 
 	CoBarS::Sampler<"<>ds<>",Real,Int,RNG_T,vectorizedQ,zerofyfirstQ> S ( data<Real>(r), data<Real>(rho), edge_count );
 
 	Tools::Time start_time = Tools::Clock::now();
 	
-	S.CreateRandomClosedPolygons( 
-		data<Real>(x), data<Real>(w), data<Real>(y), data<Real>(K), data<Real>(K_quot),
-		sample_count, thread_count 
-	);
+	S.CreateRandomClosedPolygons( data<Real>(p), data<Real>(K), sample_count, quot_space_Q, thread_count );
 
 	Tools::Time stop_time = Tools::Clock::now();
 
@@ -87,11 +74,8 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 
 	file << S.ClassName() << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in "<>ds<>" D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
 
-	disown(x);
-	disown(w);
-	disown(y);
+	disown(p);
 	disown(K);
-	disown(K_quot);
 	return LIBRARY_NO_ERROR;
 }"];
 
@@ -115,10 +99,8 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 			{Real,1,"Constant"},
 			{Real,1,"Constant"},
 			{Real,3,"Shared"},
-			{Real,2,"Shared"},
-			{Real,3,"Shared"},
 			{Real,1,"Shared"},
-			{Real,1,"Shared"},
+			"Boolean",
 			Integer
 		},
 		"Void"

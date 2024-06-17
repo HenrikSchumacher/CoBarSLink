@@ -17,7 +17,7 @@ answers and comparing the results. \
 14a573f8451c"],
 
 Cell[BoxData["Exit"], "Input",
- CellLabel->"In[47]:=",ExpressionUUID->"f4a2300d-b07c-4d44-bd02-bdd16cb87718"],
+ CellLabel->"In[17]:=",ExpressionUUID->"f4a2300d-b07c-4d44-bd02-bdd16cb87718"],
 
 Cell[CellGroupData[{
 
@@ -50,7 +50,7 @@ Cell[BoxData[{
    3.878474353228426*^9, {3.906718509439636*^9, 3.9067185106117992`*^9}, {
    3.906719087212371*^9, 3.906719088992435*^9}, {3.9067254054909697`*^9, 
    3.906725405640671*^9}},
- CellLabel->"In[1]:=",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
+ CellLabel->"In[40]:=",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
 
 Cell["\<\
 but you should alter the path accordingly if you\[CloseCurlyQuote]re working \
@@ -87,7 +87,7 @@ Cell[BoxData[
    3.880025124220018*^9, {3.880211409588235*^9, 3.880211413035837*^9}, {
    3.8802115642323227`*^9, 3.880211564380082*^9}, {3.906718513712249*^9, 
    3.906718515156498*^9}},
- CellLabel->"In[3]:=",ExpressionUUID->"be142f0b-f1e2-4e98-a1af-d6803b8b71bf"],
+ CellLabel->"In[53]:=",ExpressionUUID->"be142f0b-f1e2-4e98-a1af-d6803b8b71bf"],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.880019828605138*^9, 3.880019841183278*^9}, 
@@ -112,7 +112,7 @@ Cell[BoxData[
   3.880014592248131*^9, {3.8800146564608383`*^9, 3.880014740389144*^9}, 
    3.880025121108241*^9, 3.8802114207458076`*^9, {3.880211562077187*^9, 
    3.88021156222204*^9}, 3.9067185178191013`*^9},
- CellLabel->"In[4]:=",ExpressionUUID->"48e30f7c-8499-41a5-9a67-e2d3be5b2601"],
+ CellLabel->"In[54]:=",ExpressionUUID->"48e30f7c-8499-41a5-9a67-e2d3be5b2601"],
 
 Cell[BoxData[
  RowBox[{"result", "=", 
@@ -126,7 +126,7 @@ Cell[BoxData[
  CellChangeTimes->{
   3.880019087400272*^9, 3.880025122084902*^9, 3.88021142162536*^9, {
    3.880211560952134*^9, 3.880211561071986*^9}, 3.9067185191106*^9},
- CellLabel->"In[5]:=",ExpressionUUID->"398f3027-62b4-4a0c-bda7-269b92e95ec4"],
+ CellLabel->"In[55]:=",ExpressionUUID->"398f3027-62b4-4a0c-bda7-269b92e95ec4"],
 
 Cell[BoxData[
  RowBox[{"result", "=", 
@@ -137,7 +137,7 @@ Cell[BoxData[
    "]"}]}]], "Input",
  CellChangeTimes->{{3.880211429009582*^9, 3.88021143981341*^9}, {
    3.880211559634995*^9, 3.880211559827623*^9}, 3.906718520841827*^9},
- CellLabel->"In[6]:=",ExpressionUUID->"46bdc848-9552-4a17-bf9d-9bc35af40496"],
+ CellLabel->"In[56]:=",ExpressionUUID->"46bdc848-9552-4a17-bf9d-9bc35af40496"],
 
 Cell["\<\
 Sampling 1 million 4-gons in 3 dimensional space is very fast:\
@@ -158,7 +158,7 @@ Cell[BoxData[
       "]"}]}], ";"}], "\[IndentingNewLine]", "]"}]}]], "Input",
  CellChangeTimes->{{3.906816329772482*^9, 3.906816336186624*^9}, 
    3.906816514068121*^9},
- CellLabel->"In[7]:=",ExpressionUUID->"a9f35124-379e-4fc5-ad64-da39c9497b0c"],
+ CellLabel->"In[57]:=",ExpressionUUID->"a9f35124-379e-4fc5-ad64-da39c9497b0c"],
 
 Cell[BoxData[{
  RowBox[{
@@ -178,7 +178,7 @@ Cell[BoxData[{
  CellChangeTimes->{{3.880211550963018*^9, 3.880211614614382*^9}, 
    3.906718523364368*^9, {3.906723589224946*^9, 3.906723589495153*^9}, {
    3.9068160502157907`*^9, 3.906816057293573*^9}},
- CellLabel->"In[8]:=",ExpressionUUID->"9fe0844f-7289-46e5-910b-ab2741ab2684"],
+ CellLabel->"In[58]:=",ExpressionUUID->"9fe0844f-7289-46e5-910b-ab2741ab2684"],
 
 Cell["\<\
 You can sample several random variables at once with little extra cost.\
@@ -204,7 +204,7 @@ Cell[BoxData[
     "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.906815656069619*^9, 3.906815663256363*^9}, {
    3.906815764747325*^9, 3.906815769094667*^9}, 3.906815854320697*^9},
- CellLabel->"In[10]:=",ExpressionUUID->"9e7a04a7-8df3-4851-b6a6-af8fd8f40b95"],
+ CellLabel->"In[60]:=",ExpressionUUID->"9e7a04a7-8df3-4851-b6a6-af8fd8f40b95"],
 
 Cell[BoxData[{
  RowBox[{
@@ -235,7 +235,7 @@ Cell[BoxData[{
   3.90672577205529*^9}, {3.906725952923032*^9, 3.906725959647113*^9}, {
   3.9067262605624647`*^9, 3.9067262624408293`*^9}, {3.906815647458796*^9, 
   3.90681564880821*^9}},
- CellLabel->"In[11]:=",ExpressionUUID->"091c9254-a7d4-4dfa-9acf-c10e5d9cec5e"],
+ CellLabel->"In[61]:=",ExpressionUUID->"091c9254-a7d4-4dfa-9acf-c10e5d9cec5e"],
 
 Cell[BoxData[{
  RowBox[{"First", "@", 
@@ -259,7 +259,7 @@ Cell[BoxData[{
    RowBox[{"ChartLegends", "->", "Automatic"}]}], "]"}]}], "Input",
  CellChangeTimes->{{3.906726913757153*^9, 3.906726976701479*^9}, 
    3.906833292946949*^9, 3.9068333234971867`*^9, 3.9068333571864777`*^9},
- CellLabel->"In[13]:=",ExpressionUUID->"00090559-5e4b-4436-9d02-0c43b32a9e5e"],
+ CellLabel->"In[63]:=",ExpressionUUID->"00090559-5e4b-4436-9d02-0c43b32a9e5e"],
 
 Cell["We can sample in 3D...", "Text",
  CellChangeTimes->{{3.879948679500442*^9, 3.8799486940119762`*^9}, {
@@ -297,7 +297,7 @@ Cell[BoxData[{
  CellChangeTimes->{{3.8802116315339003`*^9, 3.8802117033379908`*^9}, {
    3.9067185267718687`*^9, 3.906718528938534*^9}, 3.9067258910564137`*^9, {
    3.906726112801255*^9, 3.906726122834684*^9}},
- CellLabel->"In[15]:=",ExpressionUUID->"27a9b78e-851f-4742-917e-f28c911f7c9b"],
+ CellLabel->"In[65]:=",ExpressionUUID->"27a9b78e-851f-4742-917e-f28c911f7c9b"],
 
 Cell["... we can sample in 4D...", "Text",
  CellChangeTimes->{{3.879948679500442*^9, 3.8799486940119762`*^9}, {
@@ -336,7 +336,7 @@ Cell[BoxData[{
    3.8802125427962017`*^9, 3.880212571159132*^9}, {3.89789879030007*^9, 
    3.897898796319393*^9}, 3.897898831116713*^9, {3.90671853145155*^9, 
    3.90671853277774*^9}, {3.9067260725217047`*^9, 3.9067261294368343`*^9}},
- CellLabel->"In[18]:=",ExpressionUUID->"3c13a7ec-c6e4-4b48-8dde-3a77d229c0ee"],
+ CellLabel->"In[68]:=",ExpressionUUID->"3c13a7ec-c6e4-4b48-8dde-3a77d229c0ee"],
 
 Cell["... we can also sample in 2D...", "Text",
  CellChangeTimes->{{3.879948679500442*^9, 3.8799486940119762`*^9}, {
@@ -377,7 +377,7 @@ Cell[BoxData[{
   3.897898799400159*^9, 3.897898816739088*^9}, {3.906718534221006*^9, 
   3.906718535686451*^9}, {3.906726142766638*^9, 3.9067261472911673`*^9}, {
   3.90672620390806*^9, 3.90672623586147*^9}},
- CellLabel->"In[21]:=",ExpressionUUID->"2c0ee165-abb9-423c-9e91-5d80ce0fbf65"],
+ CellLabel->"In[71]:=",ExpressionUUID->"2c0ee165-abb9-423c-9e91-5d80ce0fbf65"],
 
 Cell["\<\
 ... or in any other (not too large) dimension. The libraries will be \
@@ -415,7 +415,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{"result1", ",", "result2"}], "}"}], ",", "\"\<Wand\>\"", ",", 
    "\"\<PDF\>\""}], "]"}]}], "Input",
- CellLabel->"In[36]:=",ExpressionUUID->"1af82131-993b-438e-8d09-0d677e303fe0"],
+ CellLabel->"In[74]:=",ExpressionUUID->"1af82131-993b-438e-8d09-0d677e303fe0"],
 
 Cell["\<\
 FYI: This lists the paths of the dynamic libraries generated:\
@@ -429,7 +429,7 @@ e4e18f5e9110"],
 Cell[BoxData[
  RowBox[{"CoBarSLink`Private`listLibraries", "[", "]"}]], "Input",
  CellChangeTimes->{{3.906719266963923*^9, 3.906719267552031*^9}},
- CellLabel->"In[28]:=",ExpressionUUID->"0af92f7d-4ffb-486c-ba67-bb383883aded"],
+ CellLabel->"In[77]:=",ExpressionUUID->"0af92f7d-4ffb-486c-ba67-bb383883aded"],
 
 Cell["This deletes the libraries and restarts the package:", "Text",
  CellChangeTimes->{{3.879948679500442*^9, 3.8799486940119762`*^9}, {

@@ -1,0 +1,509 @@
+Notebook[{
+Cell[BoxData["Exit"], "Input",
+ CellLabel->
+  "In[251]:=",ExpressionUUID->"f4a2300d-b07c-4d44-bd02-bdd16cb87718"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"Get", "[", 
+  RowBox[{"Echo", "@", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"ParentDirectory", "[", 
+       RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+      "\"\<CoBarSLink.m\>\""}], "}"}], "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"CoBarSLink`Private`clearLibraries", "[", "]"}]}], "Input",
+ CellChangeTimes->{{3.873864232486377*^9, 3.873864248939806*^9}, 
+   3.873864409189021*^9, {3.8738658815335197`*^9, 3.873865882905177*^9}, 
+   3.878474353228426*^9, {3.906718509439636*^9, 3.9067185106117992`*^9}, {
+   3.906719087212371*^9, 3.906719088992435*^9}, {3.9067254054909697`*^9, 
+   3.906725405640671*^9}},
+ CellLabel->"In[95]:=",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
+
+Cell[BoxData["\<\"/Users/Henrik/github/CoBarsLink/CoBarSLink.m\"\>"], \
+"Echo",ExpressionUUID->"474ed74c-e5a6-40fe-a769-440f4e12ccf4"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["CoBarSample", \
+"Title",ExpressionUUID->"b5f40c1a-bf30-48cf-8a61-2762a5a2f5a2"],
+
+Cell[BoxData[
+ RowBox[{"?", "CoBarSample"}]], "Input",
+ CellLabel->
+  "In[177]:=",ExpressionUUID->"e1482df1-79bb-4df5-9760-d3d2d4ae19f8"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"result1", "=", 
+   RowBox[{"CoBarSample", "[", 
+    RowBox[{
+     RowBox[{"\"\<ChordLength\>\"", "[", 
+      RowBox[{"1", ",", "3"}], "]"}], ",", "3", ",", 
+     RowBox[{"ConstantArray", "[", 
+      RowBox[{"1", ",", "4"}], "]"}], ",", "1000000", ",", 
+     RowBox[{"\"\<QuotientSpace\>\"", "->", "False"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"result2", "=", 
+    RowBox[{"CoBarSample", "[", 
+     RowBox[{
+      RowBox[{"\"\<ChordLength\>\"", "[", 
+       RowBox[{"1", ",", "3"}], "]"}], ",", "3", ",", 
+      RowBox[{"ConstantArray", "[", 
+       RowBox[{"1", ",", "4"}], "]"}], ",", "1000000", ",", 
+      RowBox[{"\"\<QuotientSpace\>\"", "->", "True"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"Histogram", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"result1", ",", "result2"}], "}"}], ",", "\"\<Wand\>\"", ",", 
+   "\"\<CDF\>\""}], "]"}]}], "Input",
+ CellLabel->"In[3]:=",ExpressionUUID->"eadf45e2-6ba5-46e0-9605-4b5d698f576a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"First", "@", 
+   RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"result", "=", 
+      RowBox[{"CoBarSample", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "\"\<Gyradius\>\"", ",", "\"\<SquaredGyradius\>\"", ",", 
+          "\"\<TotalCurvature\>\"", ",", 
+          RowBox[{"\"\<ChordLength\>\"", "[", 
+           RowBox[{"1", ",", "3"}], "]"}]}], "}"}], ",", "3", ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "1", ",", "1", ",", "1", ",", "1"}], "}"}], ",", 
+        "1000000"}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Histogram", "[", 
+    RowBox[{"#", ",", "\"\<Wand\>\"", ",", "\"\<CDF\>\""}], "]"}], "&"}], "/@",
+   "result"}]}], "Input",
+ CellChangeTimes->{{3.90672355372808*^9, 3.906723565230795*^9}, {
+  3.906723597878729*^9, 3.906723598175111*^9}, {3.9067257549041557`*^9, 
+  3.90672577205529*^9}, {3.906725952923032*^9, 3.906725959647113*^9}, {
+  3.9067262605624647`*^9, 3.9067262624408293`*^9}, {3.906815647458796*^9, 
+  3.90681564880821*^9}},
+ CellLabel->"In[6]:=",ExpressionUUID->"c0c726c1-b621-4c0e-98b5-1c1076ea34af"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"result1", "=", 
+   RowBox[{"CoBarSample", "[", 
+    RowBox[{
+     RowBox[{"\"\<ChordLength\>\"", "[", 
+      RowBox[{"1", ",", "4"}], "]"}], ",", "2", ",", 
+     RowBox[{"ConstantArray", "[", 
+      RowBox[{"1", ",", "8"}], "]"}], ",", "1000000", ",", 
+     RowBox[{"\"\<QuotientSpace\>\"", "->", "False"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"result2", "=", 
+    RowBox[{"CoBarSample", "[", 
+     RowBox[{
+      RowBox[{"\"\<ChordLength\>\"", "[", 
+       RowBox[{"1", ",", "4"}], "]"}], ",", "2", ",", 
+      RowBox[{"ConstantArray", "[", 
+       RowBox[{"1", ",", "8"}], "]"}], ",", "1000000", ",", 
+      RowBox[{"\"\<QuotientSpace\>\"", "->", "True"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"Histogram", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"result1", ",", "result2"}], "}"}], ",", "\"\<Wand\>\"", ",", 
+   "\"\<PDF\>\""}], "]"}]}], "Input",
+ CellLabel->
+  "In[168]:=",ExpressionUUID->"e3c31606-bd19-4945-bded-40639d6dd118"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"result1", "=", 
+   RowBox[{"CoBarSample", "[", 
+    RowBox[{
+     RowBox[{"\"\<ChordLength\>\"", "[", 
+      RowBox[{"1", ",", "8"}], "]"}], ",", "6", ",", 
+     RowBox[{"ConstantArray", "[", 
+      RowBox[{"1", ",", "32"}], "]"}], ",", "1000000", ",", 
+     RowBox[{"\"\<QuotientSpace\>\"", "->", "False"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"result2", "=", 
+    RowBox[{"CoBarSample", "[", 
+     RowBox[{
+      RowBox[{"\"\<ChordLength\>\"", "[", 
+       RowBox[{"1", ",", "8"}], "]"}], ",", "6", ",", 
+      RowBox[{"ConstantArray", "[", 
+       RowBox[{"1", ",", "32"}], "]"}], ",", "1000000", ",", 
+      RowBox[{"\"\<QuotientSpace\>\"", "->", "True"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"Histogram", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"result1", ",", "result2"}], "}"}], ",", "\"\<Wand\>\"", ",", 
+   "\"\<PDF\>\""}], "]"}]}], "Input",
+ CellLabel->
+  "In[171]:=",ExpressionUUID->"a08d68c2-a9eb-43e2-bab3-95f10aafd751"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"result1", "=", 
+   RowBox[{"CoBarSample", "[", 
+    RowBox[{
+     RowBox[{"\"\<ChordLength\>\"", "[", 
+      RowBox[{"1", ",", "8"}], "]"}], ",", "8", ",", 
+     RowBox[{"ConstantArray", "[", 
+      RowBox[{"1", ",", "32"}], "]"}], ",", "1000000", ",", 
+     RowBox[{"\"\<QuotientSpace\>\"", "->", "False"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"result2", "=", 
+    RowBox[{"CoBarSample", "[", 
+     RowBox[{
+      RowBox[{"\"\<ChordLength\>\"", "[", 
+       RowBox[{"1", ",", "8"}], "]"}], ",", "8", ",", 
+      RowBox[{"ConstantArray", "[", 
+       RowBox[{"1", ",", "32"}], "]"}], ",", "1000000", ",", 
+      RowBox[{"\"\<QuotientSpace\>\"", "->", "True"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"Histogram", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"result1", ",", "result2"}], "}"}], ",", "\"\<Wand\>\"", ",", 
+   "\"\<PDF\>\""}], "]"}]}], "Input",
+ CellLabel->"In[174]:=",ExpressionUUID->"5bb7ec99-78a8-4d09-aacb-0fa128d73ddb"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["RandomOpenPolygons + ConformalClosure", \
+"Title",ExpressionUUID->"9295e778-50c5-4b0f-9f3c-250b7ead200d"],
+
+Cell[BoxData[
+ RowBox[{"?", "RandomOpenPolygons"}]], "Input",
+ CellLabel->"In[72]:=",ExpressionUUID->"1b30c699-1829-4b80-852e-8e04f5420de6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"d", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"n", "=", "10"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"samplecount", "=", "1000000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"p", "=", 
+     RowBox[{"RandomOpenPolygons", "[", 
+      RowBox[{"d", ",", "n", ",", "samplecount", ",", 
+       RowBox[{"\"\<ThreadCount\>\"", "->", "8"}]}], "]"}]}], ";"}], "//", 
+   "AbsoluteTiming"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Edgelengths", " ", "are", " ", "all", " ", "1."}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"MinMax", "[", 
+  RowBox[{"Map", "[", 
+   RowBox[{"Norm", ",", 
+    RowBox[{"Differences", "/@", "p"}], ",", 
+    RowBox[{"{", "2", "}"}]}], "]"}], "]"}]}], "Input",
+ CellLabel->
+  "In[133]:=",ExpressionUUID->"d1caeb60-f6d4-47b3-a0bf-b982b6c60d43"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"It", "'"}], "s", " ", "several", " ", "times", " ", "faster", 
+     " ", "than", " ", "using", " ", 
+     RowBox[{"Mathematica", " ", "--"}], " ", "in", " ", "particular", " ", 
+     "because", " ", "we", " ", "use", " ", "xoshiro256"}], "+", "."}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"p1", "=", 
+     RowBox[{"Accumulate", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Append", "[", 
+         RowBox[{"#", ",", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0.", ",", "d"}], "]"}]}], "]"}], "&"}], "/@", 
+       RowBox[{"RandomPoint", "[", 
+        RowBox[{
+         RowBox[{"Sphere", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0.", ",", "d"}], "]"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"samplecount", ",", "n"}], "}"}]}], "]"}]}], 
+      "\[IndentingNewLine]", "]"}]}], ";"}], "//", 
+   "AbsoluteTiming"}]}]], "Input",
+ CellLabel->"In[90]:=",ExpressionUUID->"9ca6ab79-98aa-4390-894a-6e209b90ac1b"],
+
+Cell[BoxData[
+ RowBox[{"?", "ConformalClosures"}]], "Input",
+ CellLabel->"In[92]:=",ExpressionUUID->"b981437c-5cb7-4851-8b73-645e97c84020"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"data", "=", 
+     RowBox[{"ConformalClosures", "[", 
+      RowBox[{
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"1.", ",", "n"}], "]"}], ",", "p"}], "]"}]}], ";"}], "//", 
+   "AbsoluteTiming"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"GraphicsRow", "[", 
+  RowBox[{"{", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Graphics3D", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"Orange", ",", 
+        RowBox[{"Specularity", "[", 
+         RowBox[{"White", ",", "30"}], "]"}], ",", 
+        RowBox[{"Tube", "[", 
+         RowBox[{
+          RowBox[{"data", "[", 
+           RowBox[{"[", 
+            RowBox[{"\"\<OpenPolygonVertexPositions\>\"", ",", "1"}], "]"}], 
+           "]"}], ",", "0.05"}], "]"}]}], "\[IndentingNewLine]", "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Lighting", "->", "\"\<Neutral\>\""}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Graphics3D", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"Orange", ",", 
+        RowBox[{"Specularity", "[", 
+         RowBox[{"White", ",", "30"}], "]"}], ",", 
+        RowBox[{"Tube", "[", 
+         RowBox[{
+          RowBox[{"data", "[", 
+           RowBox[{"[", 
+            RowBox[{"\"\<ClosedPolygonVertexPositions\>\"", ",", "1"}], "]"}],
+            "]"}], ",", "0.05"}], "]"}]}], "\[IndentingNewLine]", "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Lighting", "->", "\"\<Neutral\>\""}]}], "\[IndentingNewLine]", 
+     "]"}]}], "\[IndentingNewLine]", "}"}], "]"}]}], "Input",
+ CellLabel->"In[146]:=",ExpressionUUID->"6a9b4255-4fd9-43f6-8afe-86d281231ba5"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["RandomClosedPolygons", \
+"Title",ExpressionUUID->"e2332a8c-dd29-42bd-8e90-b67b180fd9ab"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"d", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"n", "=", "10"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"samplecount", "=", "1000000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"data1", "=", 
+    RowBox[{"RandomClosedPolygons", "[", 
+     RowBox[{"d", ",", 
+      RowBox[{"ConstantArray", "[", 
+       RowBox[{"1.", ",", "n"}], "]"}], ",", "samplecount", ",", 
+      RowBox[{"\"\<QuotientSpace\>\"", "->", "True"}]}], "]"}]}], ";"}], "//",
+   "AbsoluteTiming"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"data2", "=", 
+     RowBox[{"RandomClosedPolygons", "[", 
+      RowBox[{"d", ",", 
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"1.", ",", "n"}], "]"}], ",", "samplecount", ",", 
+       RowBox[{"\"\<QuotientSpace\>\"", "->", "False"}]}], "]"}]}], ";"}], "//",
+    "AbsoluteTiming"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Edgelengths", " ", "are", " ", "all", " ", "1."}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"MinMax", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{"Norm", ",", 
+     RowBox[{"Differences", "/@", 
+      RowBox[{"data1", "[", 
+       RowBox[{"[", "\"\<VertexPositions\>\"", "]"}], "]"}]}], ",", 
+     RowBox[{"{", "2", "}"}]}], "]"}], "]"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Curves", " ", "are", " ", 
+    RowBox[{"closed", ":"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Max", "[", 
+   RowBox[{"Abs", "[", 
+    RowBox[{
+     RowBox[{"data1", "[", 
+      RowBox[{"[", 
+       RowBox[{"\"\<VertexPositions\>\"", ",", "All", ",", 
+        RowBox[{"-", "1"}]}], "]"}], "]"}], "-", 
+     RowBox[{"data1", "[", 
+      RowBox[{"[", 
+       RowBox[{"\"\<VertexPositions\>\"", ",", "All", ",", "1"}], "]"}], 
+      "]"}]}], "]"}], "]"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Barycenters", " ", "are", " ", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Max", "[", 
+  RowBox[{
+   RowBox[{"Norm", "@*", "Mean"}], "/@", 
+   RowBox[{
+    RowBox[{"data1", "[", "\"\<VertexPositions\>\"", "]"}], "[", 
+    RowBox[{"[", 
+     RowBox[{"All", ",", 
+      RowBox[{"1", ";;", 
+       RowBox[{"-", "2"}]}]}], "]"}], "]"}]}], "]"}]}], "Input",
+ CellLabel->
+  "In[148]:=",ExpressionUUID->"80ad6e89-6a7b-4da1-bdd6-1ff444f5bb7a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"d", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"n", "=", "320"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"samplecount", "=", "100000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"data1", "=", 
+    RowBox[{"RandomClosedPolygons", "[", 
+     RowBox[{"d", ",", 
+      RowBox[{"ConstantArray", "[", 
+       RowBox[{"1.", ",", "n"}], "]"}], ",", "samplecount", ",", 
+      RowBox[{"\"\<QuotientSpace\>\"", "->", "True"}]}], "]"}]}], ";"}], "//",
+   "AbsoluteTiming"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"data2", "=", 
+     RowBox[{"RandomClosedPolygons", "[", 
+      RowBox[{"d", ",", 
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"1.", ",", "n"}], "]"}], ",", "samplecount", ",", 
+       RowBox[{"\"\<QuotientSpace\>\"", "->", "False"}]}], "]"}]}], ";"}], "//",
+    "AbsoluteTiming"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Edgelengths", " ", "are", " ", "all", " ", "1."}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"MinMax", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{"Norm", ",", 
+     RowBox[{"Differences", "/@", 
+      RowBox[{"data1", "[", 
+       RowBox[{"[", "\"\<VertexPositions\>\"", "]"}], "]"}]}], ",", 
+     RowBox[{"{", "2", "}"}]}], "]"}], "]"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Curves", " ", "are", " ", 
+    RowBox[{"closed", ":"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Max", "[", 
+   RowBox[{"Abs", "[", 
+    RowBox[{
+     RowBox[{"data1", "[", 
+      RowBox[{"[", 
+       RowBox[{"\"\<VertexPositions\>\"", ",", "All", ",", 
+        RowBox[{"-", "1"}]}], "]"}], "]"}], "-", 
+     RowBox[{"data1", "[", 
+      RowBox[{"[", 
+       RowBox[{"\"\<VertexPositions\>\"", ",", "All", ",", "1"}], "]"}], 
+      "]"}]}], "]"}], "]"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Barycenters", " ", "are", " ", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Max", "[", 
+   RowBox[{
+    RowBox[{"Norm", "@*", "Mean"}], "/@", 
+    RowBox[{
+     RowBox[{"data1", "[", "\"\<VertexPositions\>\"", "]"}], "[", 
+     RowBox[{"[", 
+      RowBox[{"All", ",", 
+       RowBox[{"1", ";;", 
+        RowBox[{"-", "2"}]}]}], "]"}], "]"}]}], "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"Histogram", "[", 
+  RowBox[{"data1", "[", "\"\<SamplingWeights\>\"", "]"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Histogram", "[", 
+  RowBox[{"data2", "[", "\"\<SamplingWeights\>\"", "]"}], "]"}]}], "Input",
+ CellLabel->"In[166]:=",ExpressionUUID->"46a56314-dde3-493c-a2d7-94a9a12df1e2"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["CoBarConfidenceSample", \
+"Title",ExpressionUUID->"5eb82c0d-5331-48e2-ac57-3ed1e3315669"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"d", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"n", "=", "16"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"r", "=", 
+   RowBox[{"ConstantArray", "[", 
+    RowBox[{
+     RowBox[{"2.", "/", "n"}], ",", "n"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"data", "=", 
+    RowBox[{"CoBarConfidenceSample", "[", 
+     RowBox[{
+     "\"\<SquaredGyradius\>\"", ",", "\[IndentingNewLine]", "d", ",", "r", 
+      ",", "0.000002", ",", "\[IndentingNewLine]", 
+      RowBox[{
+      "\"\<SphereRadii\>\"", "\[Rule]", "\"\<SymplecticQuotient\>\""}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<QuotientSpace\>\"", "\[Rule]", "True"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<ConfidenceLevel\>\"", "->", "0.999"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<MaxSamples\>\"", "->", "1000000000"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<ChunkSize\>\"", "->", "10000000"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"\"\<True squared gyradius\>\"", "->", 
+  RowBox[{
+   RowBox[{"1.", "/", "3"}], 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"n", "+", "1"}], ")"}], "/", 
+    RowBox[{"n", "^", "2"}]}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"Dataset", "[", "data", "]"}]}], "Input",
+ CellLabel->"In[176]:=",ExpressionUUID->"6053e111-d0f4-4dea-ba42-7e3df2dede61"]
+}, Open  ]]
+},
+WindowSize->{1496, 905},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+TaggingRules-><|"TryRealOnly" -> False|>,
+FrontEndVersion->"13.3 for Mac OS X ARM (64-bit) (July 24, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"7a5914a0-9202-413d-83d2-8d5cece86b88"
+]
+

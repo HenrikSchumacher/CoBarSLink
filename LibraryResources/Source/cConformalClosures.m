@@ -33,9 +33,9 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	MTensor r      = get<MTensor>(Args[0]);
 	MTensor rho    = get<MTensor>(Args[1]);
 
-	MTensor x      = get<MTensor>(Args[2]);
+	MTensor p      = get<MTensor>(Args[2]);
 	MTensor w      = get<MTensor>(Args[3]);
-	MTensor y      = get<MTensor>(Args[4]);
+	MTensor q      = get<MTensor>(Args[4]);
 
 	MTensor K      = get<MTensor>(Args[5]);
 	MTensor K_quot = get<MTensor>(Args[6]);
@@ -43,13 +43,13 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	const Int thread_count = get<Int>(Args[7]);
 
 	const Int edge_count = std::min(
-		std::min( dimensions(r)[0], dimensions(rho)[0] ),
-		std::min( dimensions(x)[1], dimensions(y)[1] )
+		std::min( dimensions(r)[0],   dimensions(rho)[0] ),
+		std::min( dimensions(p)[1]-1, dimensions(q)[1]-1 )
 	);
 
 	const Int sample_count = std::min(
 		std::min(
-			std::min( dimensions(x)[0], dimensions(y)[0] ),
+			std::min( dimensions(p)[0], dimensions(q)[0] ),
 			std::min( dimensions(K)[0], dimensions(K_quot)[0] )
 		),
 		dimensions(w)[0]
@@ -60,7 +60,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	Tools::Time start_time = Tools::Clock::now();
 	
 	S.ComputeConformalClosures( 
-		data<Real>(x), data<Real>(w), data<Real>(y), data<Real>(K), data<Real>(K_quot),
+		data<Real>(p), data<Real>(w), data<Real>(q), data<Real>(K), data<Real>(K_quot),
 		sample_count, thread_count 
 	);
 
@@ -71,7 +71,7 @@ EXTERN_C DLLEXPORT int "<>name<>"(WolframLibraryData libData, mint Argc, MArgume
 	file << S.ClassName() << \" sampled \" << sample_count << \" polygons with \" <<  edge_count << \" edges in "<>ds<>" D within \" << Tools::Duration(start_time,stop_time) << \" s.\" << std::endl;
 
 	disown(w);
-	disown(y);
+	disown(q);
 	disown(K);
 	disown(K_quot);
 	return LIBRARY_NO_ERROR;
