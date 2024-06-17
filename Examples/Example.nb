@@ -17,7 +17,7 @@ answers and comparing the results. \
 14a573f8451c"],
 
 Cell[BoxData["Exit"], "Input",
- CellLabel->"In[17]:=",ExpressionUUID->"f4a2300d-b07c-4d44-bd02-bdd16cb87718"],
+ CellLabel->"In[8]:=",ExpressionUUID->"f4a2300d-b07c-4d44-bd02-bdd16cb87718"],
 
 Cell[CellGroupData[{
 
@@ -50,7 +50,7 @@ Cell[BoxData[{
    3.878474353228426*^9, {3.906718509439636*^9, 3.9067185106117992`*^9}, {
    3.906719087212371*^9, 3.906719088992435*^9}, {3.9067254054909697`*^9, 
    3.906725405640671*^9}},
- CellLabel->"In[40]:=",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
+ CellLabel->"In[63]:=",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
 
 Cell["\<\
 but you should alter the path accordingly if you\[CloseCurlyQuote]re working \
@@ -60,10 +60,26 @@ elsewhere. \
   3.879944828451418*^9}},ExpressionUUID->"049ed49e-f68c-4ab3-9356-\
 0b16a4906846"],
 
-Cell["The first function in the library is CycleSampleCompressed:", "Text",
- CellChangeTimes->{{3.879948020483551*^9, 3.879948033599403*^9}, 
-   3.880012962547086*^9},ExpressionUUID->"23acb972-f7c6-4df9-a9ca-\
-1fa419d217fc"],
+Cell["Get an overview over the most important symbols this way:", \
+"Text",ExpressionUUID->"9fd8f8d3-d36a-4ad7-abc3-d69431d77dfa"],
+
+Cell[BoxData[
+ RowBox[{"?", "CoBarSLink`*"}]], "Input",
+ CellLabel->
+  "In[87]:=",ExpressionUUID->"ed9fc385-f53d-45d6-bdf4-f43defaf87f7"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["CoBarSample", \
+"Section",ExpressionUUID->"d72aa303-1363-4348-94cc-e7ee0661f203"],
+
+Cell["The first function in the library is CoBarSample:", \
+"Text",ExpressionUUID->"23acb972-f7c6-4df9-a9ca-1fa419d217fc"],
+
+Cell[BoxData[
+ RowBox[{"?", "CoBarSample"}]], "Input",
+ CellLabel->"In[93]:=",ExpressionUUID->"8640ef3e-00d9-465a-865c-a2289b7ba012"],
 
 Cell["\<\
 The edgelength vector r must have the property that no single edge has more \
@@ -448,6 +464,168 @@ Cell[BoxData[
  CellChangeTimes->{3.906719324476439*^9},
  CellLabel->
   "In[30]:=",ExpressionUUID->"72b4bec8-91bb-47f7-8223-ae4137b4b191"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["RandomPolygons", \
+"Section",ExpressionUUID->"13c1038d-a14a-4918-b64c-caf4029d65d2"],
+
+Cell[BoxData[
+ RowBox[{"?", "RandomClosedPolygons"}]], "Input",
+ CellLabel->"In[92]:=",ExpressionUUID->"486907f8-a278-4e6b-9586-0c74d401c9d6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"d", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"n", "=", "64"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"samplecount", "=", "1000000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"dataCoBarS", "=", 
+     RowBox[{"RandomClosedPolygons", "[", 
+      RowBox[{"d", ",", 
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"1.", ",", "n"}], "]"}], ",", "samplecount", ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<QuotientSpace\>\"", "->", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SphereRadii\>\"", "->", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"1.", ",", "n"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+    ";"}], "//", "AbsoluteTiming"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"dataCoBarS", "//", "Keys"}]}], "Input",
+ CellLabel->
+  "In[144]:=",ExpressionUUID->"a2d1f46d-2050-46f4-b8f8-8b88c137456c"],
+
+Cell["\<\
+The generated polygons are not only closed, they are also such that their \
+center of mass lies in the origin.\
+\>", "Text",ExpressionUUID->"7373dd2a-d081-4bb3-93b2-81cc889bfff6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"centersofmass", "=", 
+   RowBox[{"Mean", "/@", 
+    RowBox[{
+     RowBox[{"dataCoBarS", "[", "\"\<VertexPositions\>\"", "]"}], "[", 
+     RowBox[{"[", 
+      RowBox[{"All", ",", 
+       RowBox[{"1", ";;", 
+        RowBox[{"-", "2"}]}]}], "]"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Max", "[", 
+  RowBox[{"Norm", "/@", "centersofmass"}], "]"}]}], "Input",
+ CellLabel->
+  "In[149]:=",ExpressionUUID->"39f73135-2e28-40d8-b033-029130a02594"],
+
+Cell["\<\
+To compute the sampling mean you have to use the \
+\[OpenCurlyDoubleQuote]SamplingWeights\[CloseCurlyDoubleQuote] in the \
+returned data structure as follows:\
+\>", "Text",ExpressionUUID->"32f151e6-67da-4ce4-8269-4d2527c391a3"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "We", " ", "may", " ", "compute", " ", "like", " ", "this", " ", "because",
+     " ", "the", " ", "center", " ", "of", " ", "mass", " ", 
+    RowBox[{"vanishes", "."}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"squaredGyradii", "=", 
+     RowBox[{
+      RowBox[{"Total", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"dataCoBarS", "[", 
+          RowBox[{"[", 
+           RowBox[{"\"\<VertexPositions\>\"", ",", "All", ",", 
+            RowBox[{"1", ";;", 
+             RowBox[{"-", "2"}]}]}], "]"}], "]"}], "^", "2"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "3"}], "}"}]}], "]"}], "/", "n"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"samplingAverage", "=", 
+    RowBox[{
+     RowBox[{"squaredGyradii", ".", 
+      RowBox[{"dataCoBarS", "[", "\"\<SamplingWeights\>\"", "]"}]}], "/", 
+     RowBox[{"Total", "[", 
+      RowBox[{"dataCoBarS", "[", "\"\<SamplingWeights\>\"", "]"}], 
+      "]"}]}]}]}]}]], "Input",
+ CellLabel->"In[151]:=",ExpressionUUID->"2b8ae390-1d2e-4e4f-9891-b5eb2d14d0c6"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["ActionAngleSample", \
+"Section",ExpressionUUID->"8648563f-ab54-4e31-91af-b6227f71fc79"],
+
+Cell["\<\
+You can also use the Progressive Action Angle Method to generate closed \
+polygons.\
+\>", "Text",ExpressionUUID->"e5595792-7fe1-4504-8ace-1354d68cd202"],
+
+Cell[BoxData[
+ RowBox[{"?", "ActionAngleSample"}]], "Input",
+ CellLabel->
+  "In[153]:=",ExpressionUUID->"f0207a93-8580-447d-b284-635beb1fc77c"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"dataPAAM", "=", 
+     RowBox[{"ActionAngleSample", "[", 
+      RowBox[{"n", ",", "samplecount"}], "]"}]}], ";"}], "//", 
+   "AbsoluteTiming"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"dataPAAM", "//", "Keys"}]}], "Input",
+ CellLabel->
+  "In[160]:=",ExpressionUUID->"4d7367f2-f230-4d88-9277-383f482debd8"],
+
+Cell["Also theser polygons have center of mass in the origin:", \
+"Text",ExpressionUUID->"fe4630fb-7835-4c0a-85f9-169ddc2e1f1d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"centersofmass", "=", 
+   RowBox[{"Mean", "/@", 
+    RowBox[{
+     RowBox[{"dataPAAM", "[", "\"\<VertexPositions\>\"", "]"}], "[", 
+     RowBox[{"[", 
+      RowBox[{"All", ",", 
+       RowBox[{"1", ";;", 
+        RowBox[{"-", "2"}]}]}], "]"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Max", "[", 
+  RowBox[{"Norm", "/@", "centersofmass"}], "]"}]}], "Input",
+ CellLabel->
+  "In[162]:=",ExpressionUUID->"fdfd72db-a751-4c51-af6e-5f8be3d0de6d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"squaredGyradii", "=", 
+   RowBox[{
+    RowBox[{"Total", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"dataPAAM", "[", "\"\<VertexPositions\>\"", "]"}], "[", 
+        RowBox[{"[", 
+         RowBox[{"All", ",", 
+          RowBox[{"1", ";;", 
+           RowBox[{"-", "2"}]}]}], "]"}], "]"}], "^", "2"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"2", ",", "3"}], "}"}]}], "]"}], "/", "n"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"samplingAverage", "=", 
+  RowBox[{"Mean", "[", "squaredGyradii", "]"}]}]}], "Input",
+ CellLabel->"In[164]:=",ExpressionUUID->"2ea07ba9-f309-4dfb-8f52-0456a98cc5c3"]
 }, Open  ]]
 }, Open  ]]
 },

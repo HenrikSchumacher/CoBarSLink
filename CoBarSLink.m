@@ -67,7 +67,7 @@ RandomOpenPolygons::usage = "RandomOpenPolygons[d_Integer?Positive, edgecount_In
 
 
 RandomClosedPolygons::usage = "RandomClosedPolygons[d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer?Positive] generates samplecount open Length[r]-gons in d dimensional Euclidean space, closes them via the conformal barycenter method. Then it returns the following data in an Association: 
-	(i)   \"VertexPositions\" - the open polygons' vertex positions (the first of each polygon vertex is duplicated and appended);
+	(i)   \"VertexPositions\" - the closed polygons' vertex positions (the first of each polygon vertex is duplicated and appended);
 	(ii)  the sampling weights (the type of sampling weights is determined by the value of the option \"QuotientSpace\" (see below)).
 
 The following options can be set:
@@ -385,11 +385,12 @@ Options[ActionAngleSample] = {
 };
 
 ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive, OptionsPattern[]]:=Module[{p,trials},
+	
 	p = ConstantArray[0.,{samplecount,edgecount+1,3}];
-	Print[Dimensions[p]];
+	
 	trials = cActionAngleSample[TrueQ[OptionValue["Progressive"]]][p,OptionValue["ThreadCount"]];
 	Association[
-		"ClosedPolygons"->p,
+		"VertexPositions"->p,
 		"Trials"->trials
 	]
 ]
