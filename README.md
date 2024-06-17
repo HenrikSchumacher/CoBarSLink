@@ -34,6 +34,14 @@ After loading the package, you get an overview of the most important symbols in 
     
 To generate `samplecount` closed random `n`-gons in dimension `d`, simply run
 
-    
+    d   = 3;
+    n   = 64;
+    r   = ConstantArray[1., n];
+    rho = ConstantArray[1., n];
+    samplecount = 1000000;
+    dataCoBarS = RandomClosedPolygons[d, r, samplecount,
+        "QuotientSpace" -> True,
+        "SphereRadii" -> rho
+   ];
     
 See also the notebook files *.nb in the "Examples" subdirection for usage examples.
