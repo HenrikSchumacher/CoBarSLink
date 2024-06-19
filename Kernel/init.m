@@ -1,3 +1,3 @@
 (* ::Package:: *)
 
-Get["CycleSamplerLink`CycleSamplerLink`"];
+Get["CoBarSLink`CoBarSLink`"];
