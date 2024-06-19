@@ -50,14 +50,18 @@ confidenceUsage = "
 End[];
 
 
-CoBarSample::usage = "CoBarSample[randomvariable_String,d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer] draws samplecount samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
+CoBarSample::usage = "CoBarSample[funs:{__}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), samplecount_Integer] draws samplecount samples of closed polygons in d-dimensional Euclidean space and evaluates a list of random variables on them. The drawn polygons are discarded afterwards.
 The vector r contains the length of each edge of the polygon. 
+
+For the list of available random variables see $CoBarSRandomVariables.
 
 The following options can be set:
 "<>CoBarSLink`Private`sphereRadiiUsage;
 
 
 CoBarConfidenceSample::usage = "CoBarConfidenceSample[funs:{__}, d_Integer?Positive, r_?(VectorQ[#,NumericQ]&), confidenceradii:{___?NumericQ}, opts___] draws samples of closed polygons in d-dimensional Euclidean space and evaluates the list of random variables specified by funs on them. It stops if each random variable's confidence radius is below the prescribed value in the condidence radii. Returned are sample mean, sample variance, and some further statistics. The drawn polygons are discarded afterwards. The vector r contains the length of each edge of the polygon. 
+
+For the list of available random variables see $CoBarSRandomVariables.
 
 The following options can be set:
 "<>CoBarSLink`Private`sphereRadiiUsage<>CoBarSLink`Private`confidenceUsage;
@@ -86,6 +90,11 @@ The following options can be set:
 
 
 ActionAngleSample::usage = "ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space and returns their vertex coordinates. The first of each polygon vertex is duplicated and appended.";
+
+
+$CoBarSRandomVariables::usage = "List of the random variables that can be sampled by CoBarSample and CoBarConfidenceSample.";
+
+Protect[$CoBarSRandomVariables];
 
 
 (*Some error and warning messages.*)
@@ -122,6 +131,22 @@ LogFile[] := Import[$logFile,"Text"];
 If[Not@MemberQ[$LibraryPath, $libraryDirectory],AppendTo[$LibraryPath, $libraryDirectory]];
 
 $compilationOptions := $compilationOptions = Get[FileNameJoin[{$sourceDirectory,"BuildSettings.m"}]];
+
+
+$CoBarSRandomVariables = {
+"DiagonalLength",
+"Gyradius",
+"SquaredGyradius",
+"ShiftNorm",
+"TotalCurvature",
+"BendingEnergy",
+"MaxAngle",
+"EdgeSpaceSamplingWeight",
+"EdgeQuotientSpaceSamplingWeight",
+"IterationCount",
+"BarycenterNorm",
+"ChordLength"[i_Integer,j_Integer]
+};
 
 
 Get[FileNameJoin[{$sourceDirectory, "cSampleRandomVariables.m"}]];

@@ -37,12 +37,15 @@ Switch[ $OperatingSystem
 		"CompileOptions" -> {
 			" -Wall"
 			,"-Wextra"
-			,"-std=c++20"
 			,"-Wno-unused-parameter"
-			,"-fno-math-errno"
+			,"-mmacosx-version-min="<>StringSplit[Import["!sw_vers &2>1","Text"]][[4]]
+			,"-std=c++20"
 			,"-Ofast"
+			,"-flto"
+			,"-fno-math-errno"
 			,"-pthread"
-			,"-march=native","-mtune=native"
+			,"-march=native"
+			,"-mtune=native"
 		}
 		,"LinkerOptions"->{}
 		,"IncludeDirectories" -> {
@@ -55,7 +58,7 @@ Switch[ $OperatingSystem
 		,"ShellOutputFunction" -> Print
 	},
 	
-	"Windows", (* Compilation settings for Windows and Microsoft Visual Studio. Untested so far. *)
+	"Windows", (* Compilation settings for Windows and Microsoft Visual Studio. Untested so far (and quite certainly incomplete). *)
 	{
 		"CompileOptions" -> {"/EHsc", "/wd4244", "/DNOMINMAX","/O2"}
 		,"LinkerOptions"->{}
