@@ -1,8 +1,7 @@
 Notebook[{
 Cell[BoxData["Exit"], "Input",
  CellChangeTimes->{{3.9052502925206537`*^9, 3.905250293008569*^9}},
- CellLabel->
-  "In[522]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
+ CellLabel->"In[8]:=",ExpressionUUID->"878c0dcd-4b95-4163-a1b0-fa60423fa814"],
 
 Cell[BoxData[{
  RowBox[{
@@ -20,8 +19,8 @@ Cell[BoxData[{
     " ", "of", " ", "the", " ", "CoBarSLink", " ", 
     RowBox[{"package", "."}]}], "*)"}]}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"CoBarSLink`Private`clearLibraries", "[", "]"}], 
-  ";"}]}], "Input",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
+  RowBox[{"CoBarSLink`Private`clearLibraries", "[", "]"}], ";"}]}], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"b8f14180-66a1-4d9b-93a2-0fdb35d4ec9b"],
 
 Cell[BoxData[{
  RowBox[{

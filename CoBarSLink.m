@@ -92,9 +92,8 @@ The following options can be set:
 ActionAngleSample::usage = "ActionAngleSample[edgecount_Integer?Positive, samplecount_Integer?Positive] samples samplecount closed, equilateral polygons with edgecount edges in 3-dimensional Euclidean space and returns their vertex coordinates. The first of each polygon vertex is duplicated and appended.";
 
 
+Unprotect[$CoBarSRandomVariables];
 $CoBarSRandomVariables::usage = "List of the random variables that can be sampled by CoBarSample and CoBarConfidenceSample.";
-
-Protect[$CoBarSRandomVariables];
 
 
 (*Some error and warning messages.*)
@@ -147,6 +146,8 @@ $CoBarSRandomVariables = {
 "BarycenterNorm",
 "ChordLength"[i_Integer,j_Integer]
 };
+
+Protect[$CoBarSRandomVariables];
 
 
 Get[FileNameJoin[{$sourceDirectory, "cSampleRandomVariables.m"}]];

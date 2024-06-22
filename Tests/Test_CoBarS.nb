@@ -1,9 +1,6 @@
 Notebook[{
 Cell[BoxData["Exit"], "Input",
- CellLabel->
-  "In[251]:=",ExpressionUUID->"f4a2300d-b07c-4d44-bd02-bdd16cb87718"],
-
-Cell[CellGroupData[{
+ CellLabel->"In[13]:=",ExpressionUUID->"f4a2300d-b07c-4d44-bd02-bdd16cb87718"],
 
 Cell[BoxData[{
  RowBox[{"Get", "[", 
@@ -21,11 +18,7 @@ Cell[BoxData[{
    3.878474353228426*^9, {3.906718509439636*^9, 3.9067185106117992`*^9}, {
    3.906719087212371*^9, 3.906719088992435*^9}, {3.9067254054909697`*^9, 
    3.906725405640671*^9}},
- CellLabel->"In[95]:=",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
-
-Cell[BoxData["\<\"/Users/Henrik/github/CoBarsLink/CoBarSLink.m\"\>"], \
-"Echo",ExpressionUUID->"474ed74c-e5a6-40fe-a769-440f4e12ccf4"]
-}, Open  ]],
+ CellLabel->"In[1]:=",ExpressionUUID->"2e901413-b913-4d3e-8981-340bec02670f"],
 
 Cell[CellGroupData[{
 
@@ -34,8 +27,7 @@ Cell["CoBarSample", \
 
 Cell[BoxData[
  RowBox[{"?", "CoBarSample"}]], "Input",
- CellLabel->
-  "In[177]:=",ExpressionUUID->"e1482df1-79bb-4df5-9760-d3d2d4ae19f8"],
+ CellLabel->"In[3]:=",ExpressionUUID->"e1482df1-79bb-4df5-9760-d3d2d4ae19f8"],
 
 Cell[BoxData[{
  RowBox[{
@@ -64,7 +56,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{"result1", ",", "result2"}], "}"}], ",", "\"\<Wand\>\"", ",", 
    "\"\<CDF\>\""}], "]"}]}], "Input",
- CellLabel->"In[3]:=",ExpressionUUID->"eadf45e2-6ba5-46e0-9605-4b5d698f576a"],
+ CellLabel->"In[4]:=",ExpressionUUID->"eadf45e2-6ba5-46e0-9605-4b5d698f576a"],
 
 Cell[BoxData[{
  RowBox[{
@@ -95,7 +87,7 @@ Cell[BoxData[{
   3.90672577205529*^9}, {3.906725952923032*^9, 3.906725959647113*^9}, {
   3.9067262605624647`*^9, 3.9067262624408293`*^9}, {3.906815647458796*^9, 
   3.90681564880821*^9}},
- CellLabel->"In[6]:=",ExpressionUUID->"c0c726c1-b621-4c0e-98b5-1c1076ea34af"],
+ CellLabel->"In[7]:=",ExpressionUUID->"c0c726c1-b621-4c0e-98b5-1c1076ea34af"],
 
 Cell[BoxData[{
  RowBox[{
@@ -124,8 +116,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{"result1", ",", "result2"}], "}"}], ",", "\"\<Wand\>\"", ",", 
    "\"\<PDF\>\""}], "]"}]}], "Input",
- CellLabel->
-  "In[168]:=",ExpressionUUID->"e3c31606-bd19-4945-bded-40639d6dd118"],
+ CellLabel->"In[9]:=",ExpressionUUID->"e3c31606-bd19-4945-bded-40639d6dd118"],
 
 Cell[BoxData[{
  RowBox[{
@@ -154,8 +145,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{"result1", ",", "result2"}], "}"}], ",", "\"\<Wand\>\"", ",", 
    "\"\<PDF\>\""}], "]"}]}], "Input",
- CellLabel->
-  "In[171]:=",ExpressionUUID->"a08d68c2-a9eb-43e2-bab3-95f10aafd751"],
+ CellLabel->"In[12]:=",ExpressionUUID->"a08d68c2-a9eb-43e2-bab3-95f10aafd751"],
 
 Cell[BoxData[{
  RowBox[{
@@ -184,7 +174,8 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{"result1", ",", "result2"}], "}"}], ",", "\"\<Wand\>\"", ",", 
    "\"\<PDF\>\""}], "]"}]}], "Input",
- CellLabel->"In[174]:=",ExpressionUUID->"5bb7ec99-78a8-4d09-aacb-0fa128d73ddb"]
+ CellLabel->
+  "In[15]:=",ExpressionUUID->"5bb7ec99-78a8-4d09-aacb-0fa128d73ddb"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -219,8 +210,7 @@ Cell[BoxData[{
    RowBox[{"Norm", ",", 
     RowBox[{"Differences", "/@", "p"}], ",", 
     RowBox[{"{", "2", "}"}]}], "]"}], "]"}]}], "Input",
- CellLabel->
-  "In[133]:=",ExpressionUUID->"d1caeb60-f6d4-47b3-a0bf-b982b6c60d43"],
+ CellLabel->"In[18]:=",ExpressionUUID->"d1caeb60-f6d4-47b3-a0bf-b982b6c60d43"],
 
 Cell[BoxData[
  RowBox[{
@@ -251,7 +241,7 @@ Cell[BoxData[
           RowBox[{"samplecount", ",", "n"}], "}"}]}], "]"}]}], 
       "\[IndentingNewLine]", "]"}]}], ";"}], "//", 
    "AbsoluteTiming"}]}]], "Input",
- CellLabel->"In[90]:=",ExpressionUUID->"9ca6ab79-98aa-4390-894a-6e209b90ac1b"],
+ CellLabel->"In[23]:=",ExpressionUUID->"9ca6ab79-98aa-4390-894a-6e209b90ac1b"],
 
 Cell[BoxData[
  RowBox[{"?", "ConformalClosures"}]], "Input",
@@ -300,7 +290,8 @@ Cell[BoxData[{
       "\[IndentingNewLine]", 
       RowBox[{"Lighting", "->", "\"\<Neutral\>\""}]}], "\[IndentingNewLine]", 
      "]"}]}], "\[IndentingNewLine]", "}"}], "]"}]}], "Input",
- CellLabel->"In[146]:=",ExpressionUUID->"6a9b4255-4fd9-43f6-8afe-86d281231ba5"]
+ CellLabel->
+  "In[24]:=",ExpressionUUID->"6a9b4255-4fd9-43f6-8afe-86d281231ba5"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -374,8 +365,7 @@ Cell[BoxData[{
      RowBox[{"All", ",", 
       RowBox[{"1", ";;", 
        RowBox[{"-", "2"}]}]}], "]"}], "]"}]}], "]"}]}], "Input",
- CellLabel->
-  "In[148]:=",ExpressionUUID->"80ad6e89-6a7b-4da1-bdd6-1ff444f5bb7a"],
+ CellLabel->"In[26]:=",ExpressionUUID->"80ad6e89-6a7b-4da1-bdd6-1ff444f5bb7a"],
 
 Cell[BoxData[{
  RowBox[{
@@ -450,7 +440,8 @@ Cell[BoxData[{
   "]"}], "\[IndentingNewLine]", 
  RowBox[{"Histogram", "[", 
   RowBox[{"data2", "[", "\"\<SamplingWeights\>\"", "]"}], "]"}]}], "Input",
- CellLabel->"In[166]:=",ExpressionUUID->"46a56314-dde3-493c-a2d7-94a9a12df1e2"]
+ CellLabel->
+  "In[34]:=",ExpressionUUID->"46a56314-dde3-493c-a2d7-94a9a12df1e2"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -496,7 +487,8 @@ Cell[BoxData[{
      RowBox[{"n", "+", "1"}], ")"}], "/", 
     RowBox[{"n", "^", "2"}]}]}]}], "\[IndentingNewLine]", 
  RowBox[{"Dataset", "[", "data", "]"}]}], "Input",
- CellLabel->"In[176]:=",ExpressionUUID->"6053e111-d0f4-4dea-ba42-7e3df2dede61"]
+ CellLabel->
+  "In[44]:=",ExpressionUUID->"6053e111-d0f4-4dea-ba42-7e3df2dede61"]
 }, Open  ]]
 },
 WindowSize->{1496, 905},
