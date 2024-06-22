@@ -10,7 +10,7 @@ To make sure that all submodules are cloned, too, please clone by running the fo
 
     git clone --depth 1 --recurse-submodules --shallow-submodules git@github.com:HenrikSchumacher/CoBarSLink.git
 
-Currently the package is configured and tested only for macos (both Apple Silicon and Intel) and with Apple Clang as compiler. The library should compile also with other platforms, provided the correct compiler flags are given. These can be edited in the file `LibraryResources/Source/BuildSettings.m`. It's some time since I ran this build system under Linux or Windows. So please contact me if you are interested and need support. (Since I have no test systems some directions would be really appreciated.)
+Currently the package is configured and tested only for macos (both Apple Silicon and Intel) and with Apple Clang as compiler. The library should compile also with other platforms, provided the correct compiler flags are given. These can be edited in the file `LibraryResources/Source/BuildSettings.m`. It's some time since we ran this build system under Linux or Windows. So please contact us if you are interested and need support. Also, please contact us if you make this work on other sytems; we would gladly add the configurations into this package.
 
 # Usage
 
