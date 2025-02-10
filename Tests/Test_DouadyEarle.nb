@@ -1,3 +1,22 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      5467,        152]
+NotebookOptionsPosition[      4703,        133]
+NotebookOutlinePosition[      5137,        150]
+CellTagsIndexPosition[      5094,        147]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData["Exit"], "Input",
  CellChangeTimes->{{3.873864239407578*^9, 3.8738642403220377`*^9}},
@@ -110,14 +129,34 @@ Cell[BoxData[{
  RowBox[{"Show", "[", "\[IndentingNewLine]", 
   RowBox[{"DouadyEarleExtension", ",", "\[IndentingNewLine]", "curveplot"}], 
   "\[IndentingNewLine]", "]"}]}], "Input",
- CellLabel->
-  "In[81]:=",ExpressionUUID->"ebca1ab1-e002-45ba-8613-d2ba72f7e635"]
+ CellLabel->"In[81]:=",ExpressionUUID->"ebca1ab1-e002-45ba-8613-d2ba72f7e635"]
 },
 WindowSize->{1496, 905},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 TaggingRules-><|"TryRealOnly" -> False|>,
-FrontEndVersion->"13.3 for Mac OS X ARM (64-bit) (July 24, 2023)",
+FrontEndVersion->"14.1 for Mac OS X ARM (64-bit) (July 16, 2024)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"73625570-1f10-4484-a975-174cf3ce5425"
 ]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 177, 2, 39, "Input",ExpressionUUID->"e900fb1a-6400-48b5-9ddb-415fcad81665"],
+Cell[734, 24, 768, 18, 185, "Input",ExpressionUUID->"a14e8661-385b-49e8-846a-93b79486cbef"],
+Cell[1505, 44, 399, 10, 63, "Input",ExpressionUUID->"6bd8fa73-5c9a-43b5-b6e9-cc4ff3bf49cb"],
+Cell[1907, 56, 1469, 38, 234, "Input",ExpressionUUID->"ca0b5b4f-97cf-464a-aca5-7bd2b130e999"],
+Cell[3379, 96, 1320, 35, 331, "Input",ExpressionUUID->"ebca1ab1-e002-45ba-8613-d2ba72f7e635"]
+}
+]
+*)
+
+(* End of internal cache information *)
 
