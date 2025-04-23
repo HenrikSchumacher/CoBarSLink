@@ -14,7 +14,8 @@ Switch[ $OperatingSystem
 			,"-gcolumn-info"
 			,"-mmacosx-version-min="<>StringSplit[Import["!sw_vers &2>1","Text"]][[4]]
 			,"-std=c++20"
-			,"-Ofast"
+			,"-O3"
+			,"-ffast-math"
 			,"-flto"
 			,"-fno-math-errno"
 			,"-pthread"
@@ -40,7 +41,8 @@ Switch[ $OperatingSystem
 			,"-Wno-unused-parameter"
 			,"-mmacosx-version-min="<>StringSplit[Import["!sw_vers &2>1","Text"]][[4]]
 			,"-std=c++20"
-			,"-Ofast"
+			,"-O3"
+			,"-ffast-math"
 			,"-flto"
 			,"-fno-math-errno"
 			,"-pthread"
